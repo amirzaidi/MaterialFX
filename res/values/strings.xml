@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010-2011 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">MusicFX</string>
+
+    <!-- preference keys, common for all activities -->
+    <string name="first_use_dailog_shown_key">FIRST_USE_DIALOG_SHOWN_KEY_</string>
+
+    <!-- ControlPanelMusic strings -->
+    <string name="no_effects">Effects not available</string>
+    <string name="main_toggle_effects_title">LifeVibes MusicFX</string>
+    <string name="main_toggle_effects_summary">Turn all effects on/off</string>
+    <string name="eq_title">Equalizer:</string>
+    <string name="eq_summary">Equalizer presets or user defined EQ</string>
+    <string name="eq_dialog_title">Equalizer</string>
+    <string name="headset_plug">Please plug headphones for these effects</string>
+    <string name="bass_boost_strength">Bass boost for headphones</string>
+    <string name="virtualizer_strength">3D effect for headphones</string>
+    <string name="pr_title">Reverb:</string>
+    <string name="pr_summary">Additional room reverberation effects</string>
+    <string name="pr_dialog_title">Reverb Preset</string>
+    <string name="effects_enabled">Effects enabled</string>
+    <string name="pr">PR</string>
+    <string name="eq">EQ</string>
+    <string name="bb">BB</string>
+    <string name="vi">VI</string>
+    <string name="setup">Setup</string>
+    <string name="virtualizer">Virtualizer</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="bass_boost">Bass Boost</string>
+    <string name="presets">Presets</string>
+    <string name="enhancements_off">Enhancements Off</string>
+    <string name="enhancements_on">Enhancements On</string>
+    <string name="ci_extreme">FX Booster</string>
+    <string name="user">User</string>
+    <string name="reset_defaults_title">Reset to defaults</string>
+    <string name="reset_defaults_summary">Resets all effects to their defaults</string>
+    <string name="reset_defaults_dialog_title">Reset to defaults</string>
+    <string name="reset_defaults_dialog_message">Reset to the default effects settings for LifeVibes MusicFX?</string>
+    <string name="first_use_dialog_message">MusicFX has now enabled the Android audio effects for this media application, enjoy it!</string>
+
+    <string name="text_launcher_bottom">You can refine the settings and enable additional effects from the sound effects menu item in the Android music player, that will from now on be available in playback mode.</string>
+    <string name="text_launcher_mid">The effects are now automatically switched on for the standard Android music player, and any other media application that has adopted the new Android audio effects capabilities.</string>
+    <string name="text_launcher_top">You have installed the MusicFX plug-in, which enables you to experience the audio effects that come with Android on your device.</string>
+    <string name="about_title">About</string>
+    <string name="about_version">version</string>
+    <string name="about_version_error">Cannot load Version!</string>
+    <string name="text_about_top">LifeVibes MusicFX\nControl panel for audio effects</string>
+    <string name="text_about_company">NXP Software</string>
+    <string name="text_about_mid">From the contributors to the Android audio effects, enriching the sound experience for the Android music player and any other media application that adopts the new Android audio effects capabilities.</string>
+    <string name="text_about_bottom">&quot;LifeVibes&quot; is a trademark of NXP Software. All other names mentioned are trademarks, registered trademarks or service marks of their respective owners.</string>
+    <string name="menu_about">About</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_feedback">Feedback</string>
+    <string name="menu_developers">Developers</string>
+    <string name="feedback_email_address">feedback@lifevibesfx.com</string>
+    <string name="feedback_email_subject">LifeVibes MusicFX control panel feedback</string>
+    <string name="feedback_email_title">Send mail...</string>
+    <string name="url_help">http://lifevibesfx.com/LifeVibesFX/help.html</string>
+    <string name="url_developers">http://lifevibesfx.com/LifeVibesFX/developers.html</string>
+    <string name="browser_error_dialog_title">No network connection</string>
+    <string name="browser_error_dialog_text">Browser cannot load this page because there is no Internet connection.</string>
+</resources>
