@@ -739,12 +739,17 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                             ControlPanelEffect.Key.bb_strength));
         }
         if (mEqualizerSupported) {
+            String [] presets = getEQPresetStrings();
+            int idx = ControlPanelEffect.getParameterInt(mContext,
+                                    mCallingPackageName, mAudioSession,
+                                    ControlPanelEffect.Key.eq_current_preset);
+            if (idx >= presets.length) {
+                idx = 0;
+            }
             ((TextView) findViewById(R.id.eqPresetsTitleTextView))
                     .setText(getString(R.string.eq_title)
                             + " "
-                            + getEQPresetStrings()[ControlPanelEffect.getParameterInt(mContext,
-                                    mCallingPackageName, mAudioSession,
-                                    ControlPanelEffect.Key.eq_current_preset)]);
+                            + presets[idx]);
         }
         if (mPresetReverbSupported) {
             ((TextView) findViewById(R.id.eRPresetsTitleTextView))
