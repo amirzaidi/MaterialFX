@@ -54,7 +54,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.lifevibes.audiofx.OpenSLESConstants;
 
 import java.util.HashMap;
@@ -284,16 +283,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                     setEnabledAllChilds(viewGroup, isChecked);
                     // update UI according to headset state
                     updateUIHeadset();
-
-                    // Flurry
-                    Log.v(TAG, "Flurry: EVENT_EFFECTS_CHANGED");
-                    FlurryAgent.setContinueSessionMillis(0);
-                    FlurryAgent.onStartSession(mContext, getString(R.string.flurry_api_key));
-                    final Map<String, String> map = new HashMap<String, String>();
-                    map.put(Common.PARAM_PACKAGE_NAME, mCallingPackageName);
-                    map.put(Common.PARAM_EFFECTS_ENABLED, Boolean.valueOf(isChecked).toString());
-                    FlurryAgent.onEvent(Common.EVENT_EFFECTS_CHANGED, map);
-                    FlurryAgent.onEndSession(mContext);
                 }
             });
 
@@ -1032,41 +1021,5 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     public boolean onOptionsItemSelected(final MenuItem item) {
         Common.handleMenuItem(this, item);
         return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onStart()
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Log.v(TAG, "Flurry: EVENT_CONTROL_PANEL_OPENED");
-        FlurryAgent.setContinueSessionMillis(0);
-        FlurryAgent.onStartSession(this, getString(R.string.flurry_api_key));
-        final Map<String, String> map = new HashMap<String, String>();
-        map.put(Common.PARAM_PACKAGE_NAME, mCallingPackageName);
-        FlurryAgent.onEvent(Common.EVENT_CONTROL_PANEL_OPENED, map);
-        FlurryAgent.onEndSession(this);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onStop()
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        Log.v(TAG, "Flurry: EVENT_CONTROL_PANEL_CLOSED");
-        FlurryAgent.setContinueSessionMillis(0);
-        FlurryAgent.onStartSession(this, getString(R.string.flurry_api_key));
-        final Map<String, String> map = new HashMap<String, String>();
-        map.put(Common.PARAM_PACKAGE_NAME, mCallingPackageName);
-        FlurryAgent.onEvent(Common.EVENT_CONTROL_PANEL_CLOSED, map);
-        FlurryAgent.onEndSession(this);
     }
 }

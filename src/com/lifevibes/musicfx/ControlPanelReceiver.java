@@ -23,8 +23,6 @@ import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.flurry.android.FlurryAgent;
-
 import java.util.HashMap;
 
 public class ControlPanelReceiver extends BroadcastReceiver {
@@ -71,31 +69,11 @@ public class ControlPanelReceiver extends BroadcastReceiver {
                     ControlPanelEffect.Key.global_enabled.toString(),
                     ControlPanelEffect.GLOBAL_ENABLED_DEFAULT);
 
-            // Flurry
-            Log.v(TAG,
-                    "Flurry: EVENT_AUDIO_SESSION_OPENED globalEnabled "
-                            + Boolean.toString(isGlobalEnabled));
-            FlurryAgent.setContinueSessionMillis(0);
-            FlurryAgent.onStartSession(context, context.getString(R.string.flurry_api_key));
-            final HashMap<String, String> map = new HashMap<String, String>();
-            map.put(Common.PARAM_PACKAGE_NAME, packageName);
-            map.put(Common.PARAM_EFFECTS_ENABLED, Boolean.toString(isGlobalEnabled));
-            FlurryAgent.onEvent(Common.EVENT_AUDIO_SESSION_OPENED, map);
-            FlurryAgent.onEndSession(context);
-
             ControlPanelEffect.openSession(context, packageName, audioSession);
         }
 
         // close audio session
         if (action.equals(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION)) {
-
-            // Flurry
-            Log.v(TAG, "Flurry: EVENT_AUDIO_SESSION_CLOSED");
-            FlurryAgent.setContinueSessionMillis(0);
-            FlurryAgent.onStartSession(context, context.getString(R.string.flurry_api_key));
-            final HashMap<String, String> map = new HashMap<String, String>();
-            FlurryAgent.onEvent(Common.EVENT_AUDIO_SESSION_CLOSED, map);
-            FlurryAgent.onEndSession(context);
 
             ControlPanelEffect.closeSession(context, packageName, audioSession);
         }

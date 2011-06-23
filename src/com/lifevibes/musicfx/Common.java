@@ -30,19 +30,6 @@ import android.widget.TextView;
 
 class Common {
 
-    // Flurry events
-    final static String EVENT_AUDIO_SESSION_OPENED = "_AudioSessionOpened";
-    final static String PARAM_EFFECTS_ENABLED = "EffectsEnabled";
-    final static String PARAM_PACKAGE_NAME = "Package";
-
-    final static String EVENT_CONTROL_PANEL_OPENED = "_ControlPanelOpened";
-    final static String EVENT_CONTROL_PANEL_CLOSED = "_ControlPanelClosed";
-
-    final static String EVENT_AUDIO_SESSION_CLOSED = "_AudioSessionClosed";
-    final static String EVENT_EFFECTS_CHANGED = "_EffectsChanged";
-
-    final static String EVENT_DUMMY = "EVENT_DUMMY";
-
     final static int DIALOG_ABOUT = 1000;
 
     static String mVersionName;
