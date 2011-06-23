@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lifevibes.musicfx;
+package com.android.musicfx;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -54,7 +54,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lifevibes.audiofx.OpenSLESConstants;
+import com.android.audiofx.OpenSLESConstants;
 
 import java.util.HashMap;
 import java.util.Map;

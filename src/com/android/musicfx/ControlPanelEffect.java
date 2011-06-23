@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lifevibes.musicfx;
+package com.android.musicfx;
 
 import android.content.Context;
 import android.content.SharedPreferences;

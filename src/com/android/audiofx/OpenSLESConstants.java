@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lifevibes.audiofx;
+package com.android.audiofx;
 
 /**
  * OpenSL ES constants class

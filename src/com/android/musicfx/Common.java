@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lifevibes.musicfx;
+package com.android.musicfx;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,7 +42,7 @@ class Common {
         if (item.getTitle().equals(context.getString(R.string.menu_help))) {
             final Intent browserIntent = new Intent(null, Uri.parse(context
                     .getString(R.string.url_help)));
-            browserIntent.setClassName(context, "com.lifevibes.musicfx.ActivityBrowser");
+            browserIntent.setClass(context, ActivityBrowser.class);
             context.startActivity(browserIntent);
         }
 
@@ -68,7 +68,7 @@ class Common {
         if (item.getTitle().equals(context.getString(R.string.menu_developers))) {
             final Intent browserIntent = new Intent(null, Uri.parse(context
                     .getString(R.string.url_developers)));
-            browserIntent.setClassName(context, "com.lifevibes.musicfx.ActivityBrowser");
+            browserIntent.setClass(context, ActivityBrowser.class);
             context.startActivity(browserIntent);
         }
     }

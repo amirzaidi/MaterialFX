@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lifevibes.musicfx;
+package com.android.musicfx;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -85,7 +85,7 @@ public class ActivityFirstUse extends Activity {
         final String prefsKey = context.getString(R.string.first_use_dailog_shown_key);
         if (!prefs.getBoolean(prefsKey, false)) {
             final Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setClassName(context, "com.lifevibes.musicfx.ActivityFirstUse");
+            intent.setClass(context, ActivityFirstUse.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
             final SharedPreferences.Editor editor = prefs.edit();
