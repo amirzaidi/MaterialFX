@@ -488,9 +488,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     protected Dialog onCreateDialog(final int id) {
         final AlertDialog alertDialog;
         switch (id) {
-        case Common.DIALOG_ABOUT: {
-            return Common.createDialog(this).create();
-        }
         case DIALOG_EQUALIZER: {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.eq_dialog_title);
@@ -647,9 +644,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     @Override
     protected void onPrepareDialog(final int id, final Dialog dialog, final Bundle args) {
         switch (id) {
-        case Common.DIALOG_ABOUT: {
-            break;
-        }
         case DIALOG_EQUALIZER: {
             mEQPreset = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
                     mAudioSession, ControlPanelEffect.Key.eq_current_preset);
@@ -999,32 +993,5 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         final Toast toast = Toast.makeText(context, getString(R.string.headset_plug), duration);
         toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
         toast.show();
-    }
-
-    /*
-     * Creates the options menu
-     *
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-     */
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        // Inflate the currently selected menu XML resource.
-        final MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options, menu);
-
-        return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-     */
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        Common.handleMenuItem(this, item);
-        return true;
     }
 }

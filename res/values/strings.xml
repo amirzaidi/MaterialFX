@@ -48,26 +48,4 @@
     <string name="reset_defaults_summary">Resets all effects to their defaults</string>
     <string name="reset_defaults_dialog_title">Reset to defaults</string>
     <string name="reset_defaults_dialog_message">Reset to the default effects settings for LifeVibes MusicFX?</string>
-
-    <string name="text_launcher_bottom">You can refine the settings and enable additional effects from the sound effects menu item in the Android music player, that will from now on be available in playback mode.</string>
-    <string name="text_launcher_mid">The effects are now automatically switched on for the standard Android music player, and any other media application that has adopted the new Android audio effects capabilities.</string>
-    <string name="text_launcher_top">You have installed the MusicFX plug-in, which enables you to experience the audio effects that come with Android on your device.</string>
-    <string name="about_title">About</string>
-    <string name="about_version">version</string>
-    <string name="about_version_error">Cannot load Version!</string>
-    <string name="text_about_top">LifeVibes MusicFX\nControl panel for audio effects</string>
-    <string name="text_about_company">NXP Software</string>
-    <string name="text_about_mid">From the contributors to the Android audio effects, enriching the sound experience for the Android music player and any other media application that adopts the new Android audio effects capabilities.</string>
-    <string name="text_about_bottom">&quot;LifeVibes&quot; is a trademark of NXP Software. All other names mentioned are trademarks, registered trademarks or service marks of their respective owners.</string>
-    <string name="menu_about">About</string>
-    <string name="menu_help">Help</string>
-    <string name="menu_feedback">Feedback</string>
-    <string name="menu_developers">Developers</string>
-    <string name="feedback_email_address">feedback@lifevibesfx.com</string>
-    <string name="feedback_email_subject">LifeVibes MusicFX control panel feedback</string>
-    <string name="feedback_email_title">Send mail...</string>
-    <string name="url_help">http://lifevibesfx.com/LifeVibesFX/help.html</string>
-    <string name="url_developers">http://lifevibesfx.com/LifeVibesFX/developers.html</string>
-    <string name="browser_error_dialog_title">No network connection</string>
-    <string name="browser_error_dialog_text">Browser cannot load this page because there is no Internet connection.</string>
 </resources>
