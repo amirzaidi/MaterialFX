@@ -59,15 +59,6 @@
                     android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ActivityFirstUse"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Dialog">
-            <intent-filter>
-                <category
-                    android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <receiver
             android:name=".ControlPanelReceiver">
             <intent-filter>
@@ -79,15 +70,6 @@
                     android:name="AudioEffect.ACTION_SET_PARAM" />
                 <action
                     android:name="AudioEffect.ACTION_GET_PARAM" />
-                <category
-                    android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".FirstUseReceiver">
-            <intent-filter>
-                <action
-                    android:name="android.media.action.OPEN_AUDIO_EFFECT_CONTROL_SESSION" />
                 <category
                     android:name="android.intent.category.DEFAULT" />
             </intent-filter>

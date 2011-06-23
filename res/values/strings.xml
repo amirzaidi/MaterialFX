@@ -17,9 +17,6 @@
 <resources>
     <string name="app_name">MusicFX</string>
 
-    <!-- preference keys, common for all activities -->
-    <string name="first_use_dailog_shown_key">FIRST_USE_DIALOG_SHOWN_KEY_</string>
-
     <!-- ControlPanelMusic strings -->
     <string name="no_effects">Effects not available</string>
     <string name="main_toggle_effects_title">LifeVibes MusicFX</string>
@@ -51,7 +48,6 @@
     <string name="reset_defaults_summary">Resets all effects to their defaults</string>
     <string name="reset_defaults_dialog_title">Reset to defaults</string>
     <string name="reset_defaults_dialog_message">Reset to the default effects settings for LifeVibes MusicFX?</string>
-    <string name="first_use_dialog_message">MusicFX has now enabled the Android audio effects for this media application, enjoy it!</string>
 
     <string name="text_launcher_bottom">You can refine the settings and enable additional effects from the sound effects menu item in the Android music player, that will from now on be available in playback mode.</string>
     <string name="text_launcher_mid">The effects are now automatically switched on for the standard Android music player, and any other media application that has adopted the new Android audio effects capabilities.</string>
