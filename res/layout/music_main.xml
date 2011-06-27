@@ -48,8 +48,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:gravity="center_vertical"
-        android:paddingRight="?android:attr/scrollbarSize"
-        android:background="@android:drawable/list_selector_background">
+        android:paddingRight="?android:attr/scrollbarSize">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,14 +75,12 @@
                 android:maxLines="4"
                 android:text="@string/main_toggle_effects_summary" />
         </RelativeLayout>
-        <CheckBox
+        <Switch
             android:id="@+id/mainToggleEffectsCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dip"
-            android:layout_gravity="center_vertical"
-            android:focusable="false"
-            android:clickable="false" />
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
     <ImageView
         android:src="@android:drawable/divider_horizontal_dark"

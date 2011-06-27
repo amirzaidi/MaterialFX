@@ -269,7 +269,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             // Set the listener for the main enhancements toggle button.
             // Depending on the state enable the supported effects if they were
             // checked in the setup tab.
-            final CheckBox toggleEffects = (CheckBox) findViewById(R.id.mainToggleEffectsCheckBox);
+            final CompoundButton toggleEffects = (CompoundButton) findViewById(R.id.mainToggleEffectsCheckBox);
             toggleEffects.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(final CompoundButton buttonView,
@@ -286,13 +286,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                 }
             });
 
-            mainToggleView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    toggleEffects.toggle();
-                }
-            });
-            ((LinearLayout) findViewById(R.id.mainToggleEffectsLayout)).setVisibility(View.VISIBLE);
+            mainToggleView.setVisibility(View.VISIBLE);
 
             // Initialize the Virtualizer elements.
             // Set the SeekBar listener.
@@ -718,7 +712,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     private void updateUI() {
         final boolean isEnabled = ControlPanelEffect.getParameterBoolean(mContext,
                 mCallingPackageName, mAudioSession, ControlPanelEffect.Key.global_enabled);
-        ((CheckBox) findViewById(R.id.mainToggleEffectsCheckBox)).setChecked(isEnabled);
+        ((CompoundButton) findViewById(R.id.mainToggleEffectsCheckBox)).setChecked(isEnabled);
         setEnabledAllChilds((ViewGroup) findViewById(R.id.contentSoundEffects), isEnabled);
         updateUIHeadset();
 
@@ -761,7 +755,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      * control/events.
      */
     private void updateUIHeadset() {
-        if (((CheckBox) findViewById(R.id.mainToggleEffectsCheckBox)).isChecked()) {
+        if (((CompoundButton) findViewById(R.id.mainToggleEffectsCheckBox)).isChecked()) {
             ((TextView) findViewById(R.id.vIStrengthText)).setEnabled(mIsHeadsetOn);
             ((SeekBar) findViewById(R.id.vIStrengthSeekBar)).setEnabled(mIsHeadsetOn);
             findViewById(R.id.vILayout).setEnabled(!mIsHeadsetOn);
