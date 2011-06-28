@@ -168,7 +168,7 @@
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
                     android:text="@string/bass_boost_strength" />
-                <SeekBar
+                <com.android.musicfx.seekbar.SeekBar
                     android:id="@+id/bBStrengthSeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -202,7 +202,7 @@
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
                     android:text="@string/virtualizer_strength" />
-                <SeekBar
+                <com.android.musicfx.seekbar.SeekBar
                     android:id="@+id/vIStrengthSeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
