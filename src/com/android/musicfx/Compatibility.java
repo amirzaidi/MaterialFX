@@ -70,6 +70,8 @@ public class Compatibility {
             if (defPackage == null || defName == null) {
                 Log.e(TAG, "no default set!");
                 // TODO pick a default here?
+                finish();
+                return;
             } else {
                 i.setComponent(new ComponentName(defPackage, defName));
             }
