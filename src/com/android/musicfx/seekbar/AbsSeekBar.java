@@ -40,6 +40,7 @@ public abstract class AbsSeekBar extends ProgressBar {
      */
     boolean mIsUserSeekable = true;
 
+    boolean mIsVertical = false;
     /**
      * On key presses (right or left), the amount to increment/decrement the
      * progress.
@@ -101,7 +102,11 @@ public abstract class AbsSeekBar extends ProgressBar {
             // Assuming the thumb drawable is symmetric, set the thumb offset
             // such that the thumb will hang halfway off either edge of the
             // progress bar.
-            mThumbOffset = thumb.getIntrinsicWidth() / 2;
+            if (mIsVertical) {
+                mThumbOffset = thumb.getIntrinsicHeight() / 2;
+            } else {
+                mThumbOffset = thumb.getIntrinsicWidth() / 2;
+            }
 
             // If we're updating get the new states
             if (needUpdate &&
@@ -205,7 +210,7 @@ public abstract class AbsSeekBar extends ProgressBar {
         super.onProgressRefresh(scale, fromUser);
         Drawable thumb = mThumb;
         if (thumb != null) {
-            setThumbPos(getWidth(), thumb, scale, Integer.MIN_VALUE);
+            setThumbPos(getWidth(), getHeight(), thumb, scale, Integer.MIN_VALUE);
             /*
              * Since we draw translated, the drawable's bounds that it signals
              * for invalidation won't be the actual bounds we want invalidated,
@@ -224,34 +229,67 @@ public abstract class AbsSeekBar extends ProgressBar {
     private void updateThumbPos(int w, int h) {
         Drawable d = getCurrentDrawable();
         Drawable thumb = mThumb;
-        int thumbHeight = thumb == null ? 0 : thumb.getIntrinsicHeight();
-        // The max height does not incorporate padding, whereas the height
-        // parameter does
-        int trackHeight = Math.min(mMaxHeight, h - mPaddingTop - mPaddingBottom);
-        
-        int max = getMax();
-        float scale = max > 0 ? (float) getProgress() / (float) max : 0;
-        
-        if (thumbHeight > trackHeight) {
-            if (thumb != null) {
-                setThumbPos(w, thumb, scale, 0);
-            }
-            int gapForCenteringTrack = (thumbHeight - trackHeight) / 2;
-            if (d != null) {
-                // Canvas will be translated by the padding, so 0,0 is where we start drawing
-                d.setBounds(0, gapForCenteringTrack, 
-                        w - mPaddingRight - mPaddingLeft, h - mPaddingBottom - gapForCenteringTrack
-                        - mPaddingTop);
+        if (mIsVertical) {
+            int thumbWidth = thumb == null ? 0 : thumb.getIntrinsicWidth();
+            // The max width does not incorporate padding, whereas the width
+            // parameter does
+            int trackWidth = Math.min(mMaxWidth, w - mPaddingLeft - mPaddingRight);
+
+            int max = getMax();
+            float scale = max > 0 ? (float) getProgress() / (float) max : 0;
+
+            if (thumbWidth > trackWidth) {
+                if (thumb != null) {
+                    setThumbPos(w, h, thumb, scale, 0);
+                }
+                int gapForCenteringTrack = (thumbWidth - trackWidth) / 2;
+                if (d != null) {
+                    // Canvas will be translated by the padding, so 0,0 is where we start drawing
+                    d.setBounds(gapForCenteringTrack, 0,
+                            w - mPaddingRight - gapForCenteringTrack - mPaddingLeft,
+                            h - mPaddingBottom - mPaddingTop);
+                }
+            } else {
+                if (d != null) {
+                    // Canvas will be translated by the padding, so 0,0 is where we start drawing
+                    d.setBounds(0, 0, w - mPaddingRight - mPaddingLeft, h - mPaddingBottom
+                            - mPaddingTop);
+                }
+                int gap = (trackWidth - thumbWidth) / 2;
+                if (thumb != null) {
+                    setThumbPos(w, h, thumb, scale, gap);
+                }
             }
         } else {
-            if (d != null) {
-                // Canvas will be translated by the padding, so 0,0 is where we start drawing
-                d.setBounds(0, 0, w - mPaddingRight - mPaddingLeft, h - mPaddingBottom
-                        - mPaddingTop);
-            }
-            int gap = (trackHeight - thumbHeight) / 2;
-            if (thumb != null) {
-                setThumbPos(w, thumb, scale, gap);
+            int thumbHeight = thumb == null ? 0 : thumb.getIntrinsicHeight();
+            // The max height does not incorporate padding, whereas the height
+            // parameter does
+            int trackHeight = Math.min(mMaxHeight, h - mPaddingTop - mPaddingBottom);
+
+            int max = getMax();
+            float scale = max > 0 ? (float) getProgress() / (float) max : 0;
+
+            if (thumbHeight > trackHeight) {
+                if (thumb != null) {
+                    setThumbPos(w, h, thumb, scale, 0);
+                }
+                int gapForCenteringTrack = (thumbHeight - trackHeight) / 2;
+                if (d != null) {
+                    // Canvas will be translated by the padding, so 0,0 is where we start drawing
+                    d.setBounds(0, gapForCenteringTrack,
+                            w - mPaddingRight - mPaddingLeft, h - mPaddingBottom - gapForCenteringTrack
+                            - mPaddingTop);
+                }
+            } else {
+                if (d != null) {
+                    // Canvas will be translated by the padding, so 0,0 is where we start drawing
+                    d.setBounds(0, 0, w - mPaddingRight - mPaddingLeft, h - mPaddingBottom
+                            - mPaddingTop);
+                }
+                int gap = (trackHeight - thumbHeight) / 2;
+                if (thumb != null) {
+                    setThumbPos(w, h, thumb, scale, gap);
+                }
             }
         }
     }
@@ -259,29 +297,49 @@ public abstract class AbsSeekBar extends ProgressBar {
     /**
      * @param gap If set to {@link Integer#MIN_VALUE}, this will be ignored and
      */
-    private void setThumbPos(int w, Drawable thumb, float scale, int gap) {
-        int available = w - mPaddingLeft - mPaddingRight;
+    private void setThumbPos(int w, int h, Drawable thumb, float scale, int gap) {
+        int available;
         int thumbWidth = thumb.getIntrinsicWidth();
         int thumbHeight = thumb.getIntrinsicHeight();
-        available -= thumbWidth;
+        if (mIsVertical) {
+            available = h - mPaddingTop - mPaddingBottom - thumbHeight;
+        } else {
+            available = w - mPaddingLeft - mPaddingRight - thumbWidth;
+        }
 
         // The extra space for the thumb to move on the track
         available += mThumbOffset * 2;
 
-        int thumbPos = (int) (scale * available);
 
-        int topBound, bottomBound;
-        if (gap == Integer.MIN_VALUE) {
-            Rect oldBounds = thumb.getBounds();
-            topBound = oldBounds.top;
-            bottomBound = oldBounds.bottom;
+        if (mIsVertical) {
+            int thumbPos = (int) ((1.0f - scale) * available);
+            int leftBound, rightBound;
+            if (gap == Integer.MIN_VALUE) {
+                Rect oldBounds = thumb.getBounds();
+                leftBound = oldBounds.left;
+                rightBound = oldBounds.right;
+            } else {
+                leftBound = gap;
+                rightBound = gap + thumbWidth;
+            }
+
+            // Canvas will be translated, so 0,0 is where we start drawing
+            thumb.setBounds(leftBound, thumbPos, rightBound, thumbPos + thumbHeight);
         } else {
-            topBound = gap;
-            bottomBound = gap + thumbHeight;
+            int thumbPos = (int) (scale * available);
+            int topBound, bottomBound;
+            if (gap == Integer.MIN_VALUE) {
+                Rect oldBounds = thumb.getBounds();
+                topBound = oldBounds.top;
+                bottomBound = oldBounds.bottom;
+            } else {
+                topBound = gap;
+                bottomBound = gap + thumbHeight;
+            }
+
+            // Canvas will be translated, so 0,0 is where we start drawing
+            thumb.setBounds(thumbPos, topBound, thumbPos + thumbWidth, bottomBound);
         }
-        
-        // Canvas will be translated, so 0,0 is where we start drawing
-        thumb.setBounds(thumbPos, topBound, thumbPos + thumbWidth, bottomBound);
     }
     
     @Override
@@ -289,11 +347,17 @@ public abstract class AbsSeekBar extends ProgressBar {
         super.onDraw(canvas);
         if (mThumb != null) {
             canvas.save();
-            // Translate the padding. For the x, we need to allow the thumb to
+            // Translate the padding. For the x/y, we need to allow the thumb to
             // draw in its extra space
-            canvas.translate(mPaddingLeft - mThumbOffset, mPaddingTop);
-            mThumb.draw(canvas);
-            canvas.restore();
+            if (mIsVertical) {
+                canvas.translate(mPaddingLeft, mPaddingTop - mThumbOffset);
+                mThumb.draw(canvas);
+                canvas.restore();
+            } else {
+                canvas.translate(mPaddingLeft - mThumbOffset, mPaddingTop);
+                mThumb.draw(canvas);
+                canvas.restore();
+            }
         }
     }
 
@@ -314,6 +378,12 @@ public abstract class AbsSeekBar extends ProgressBar {
         
         setMeasuredDimension(resolveSizeAndState(dw, widthMeasureSpec, 0),
                 resolveSizeAndState(dh, heightMeasureSpec, 0));
+
+        // TODO should probably make this an explicit attribute instead of implicitly
+        // setting it based on the size
+        if (getMeasuredHeight() > getMeasuredWidth()) {
+            mIsVertical = true;
+        }
     }
     
     @Override
@@ -354,22 +424,40 @@ public abstract class AbsSeekBar extends ProgressBar {
     }
 
     private void trackTouchEvent(MotionEvent event) {
-        final int width = getWidth();
-        final int available = width - mPaddingLeft - mPaddingRight;
-        int x = (int)event.getX();
-        float scale;
         float progress = 0;
-        if (x < mPaddingLeft) {
-            scale = 0.0f;
-        } else if (x > width - mPaddingRight) {
-            scale = 1.0f;
+        if (mIsVertical) {
+            final int height = getHeight();
+            final int available = height - mPaddingTop - mPaddingBottom;
+            int y = (int)event.getY();
+            float scale;
+            if (y < mPaddingTop) {
+                scale = 1.0f;
+            } else if (y > height - mPaddingBottom) {
+                scale = 0.0f;
+            } else {
+                scale = 1.0f - (float)(y - mPaddingTop) / (float)available;
+                progress = mTouchProgressOffset;
+            }
+
+            final int max = getMax();
+            progress += scale * max;
         } else {
-            scale = (float)(x - mPaddingLeft) / (float)available;
-            progress = mTouchProgressOffset;
+            final int width = getWidth();
+            final int available = width - mPaddingLeft - mPaddingRight;
+            int x = (int)event.getX();
+            float scale;
+            if (x < mPaddingLeft) {
+                scale = 0.0f;
+            } else if (x > width - mPaddingRight) {
+                scale = 1.0f;
+            } else {
+                scale = (float)(x - mPaddingLeft) / (float)available;
+                progress = mTouchProgressOffset;
+            }
+
+            final int max = getMax();
+            progress += scale * max;
         }
-        
-        final int max = getMax();
-        progress += scale * max;
         
         setProgress((int) progress, true);
     }
@@ -407,18 +495,20 @@ public abstract class AbsSeekBar extends ProgressBar {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (isEnabled()) {
             int progress = getProgress();
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_DPAD_LEFT:
-                    if (progress <= 0) break;
+            if ((keyCode == KeyEvent.KEYCODE_DPAD_LEFT && !mIsVertical)
+                    || (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && mIsVertical)) {
+                if (progress > 0) {
                     setProgress(progress - mKeyProgressIncrement, true);
                     onKeyChange();
                     return true;
-            
-                case KeyEvent.KEYCODE_DPAD_RIGHT:
-                    if (progress >= getMax()) break;
+                }
+            } else if ((keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && !mIsVertical)
+                    || (keyCode == KeyEvent.KEYCODE_DPAD_UP && mIsVertical)) {
+                if (progress < getMax()) {
                     setProgress(progress + mKeyProgressIncrement, true);
                     onKeyChange();
                     return true;
+                }
             }
         }
 
