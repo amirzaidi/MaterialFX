@@ -56,7 +56,9 @@ import android.widget.Toast;
 
 import com.android.audiofx.OpenSLESConstants;
 
+import java.util.Formatter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -108,6 +110,9 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     private int mPRPreset;
 
     private boolean mIsHeadsetOn = false;
+
+    private StringBuilder mFormatBuilder = new StringBuilder();
+    private Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
 
     /**
      * Mapping for the EQ widget ids per band
@@ -791,8 +796,8 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                 centerFreqHz = centerFreqHz / 1000;
                 unitPrefix = "k";
             }
-            ((TextView) mEqualizerView.findViewById(EQViewElementIds[band][0])).setText(String
-                    .format("%.0f ", centerFreqHz) + unitPrefix + "Hz");
+            ((TextView) mEqualizerView.findViewById(EQViewElementIds[band][0])).setText(
+                    format("%.0f ", centerFreqHz) + unitPrefix + "Hz");
             mEqualizerSeekBar[band] = (SeekBar) mEqualizerView
                     .findViewById(EQViewElementIds[band][1]);
             mEqualizerSeekBar[band].setMax(mEqualizerMaxBandLevel - mEqualizerMinBandLevel);
@@ -810,6 +815,12 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             // Value text
             mEqualizerView.findViewById(EQViewElementIds[band][2]).setVisibility(View.GONE);
         }
+    }
+
+    private String format(String format, Object... args) {
+        mFormatBuilder.setLength(0);
+        mFormatter.format(format, args);
+        return mFormatBuilder.toString();
     }
 
     /*
@@ -901,7 +912,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      */
     private void equalizerBandUpdateDisplay(final short band, final short level) {
         final int dBValue = level / 100;
-        mEqualizerValueText[band].setText(String.format("%d dB", dBValue));
+        mEqualizerValueText[band].setText(format("%d dB", dBValue));
     }
 
     /**
