@@ -19,17 +19,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/mainViewLifeVibesLogo"
-        android:layout_width="match_parent"
-        android:layout_height="60dip"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/lifevibes_logo" />
-    <ImageView
-        android:src="@android:drawable/divider_horizontal_dark"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY" />
+
     <TextView
         android:id="@+id/noEffectsTextView"
         android:layout_width="wrap_content"
@@ -42,10 +32,12 @@
         android:text="@string/no_effects"
         android:layout_weight="1"
         android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/mainToggleEffectsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#999"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:gravity="center_vertical"
         android:paddingRight="?android:attr/scrollbarSize">
@@ -82,31 +74,31 @@
             android:layout_marginRight="4dip"
             android:layout_gravity="center_vertical" />
     </LinearLayout>
-    <ImageView
-        android:src="@android:drawable/divider_horizontal_dark"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY" />
+
     <ScrollView
         android:id="@+id/contentSoundEffects"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/listPreferredItemHeight"
             android:gravity="center_vertical"
             android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/eqLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 android:minHeight="?android:attr/listPreferredItemHeight"
                 android:gravity="center_vertical"
                 android:paddingRight="?android:attr/scrollbarSize"
                 android:focusable="true"
                 android:background="@android:drawable/list_selector_background">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -130,8 +122,7 @@
                         android:layout_below="@+id/eqPresetsTitleTextView"
                         android:layout_alignLeft="@+id/eqPresetsTitleTextView"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:maxLines="4"
-                        android:text="@string/eq_summary" />
+                        android:maxLines="4" />
                 </RelativeLayout>
                 <ImageView
                     android:id="@+id/eqPresetsImageView"
@@ -142,11 +133,9 @@
                     android:background="@drawable/btn_circle"
                     android:src="@drawable/ic_btn_round_more" />
             </LinearLayout>
-            <ImageView
-                android:src="@android:drawable/divider_horizontal_dark"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY" />
+
+            <include layout="@layout/music_eq" />
+
             <LinearLayout
                 android:id="@+id/bBLayout"
                 android:layout_width="match_parent"
@@ -176,11 +165,7 @@
                     android:paddingLeft="20dip"
                     android:paddingRight="20dip" />
             </LinearLayout>
-            <ImageView
-                android:src="@android:drawable/divider_horizontal_dark"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY" />
+
             <LinearLayout
                 android:id="@+id/vILayout"
                 android:layout_width="match_parent"
@@ -210,12 +195,7 @@
                     android:paddingLeft="20dip"
                     android:paddingRight="20dip" />
             </LinearLayout>
-            <ImageView
-                android:src="@android:drawable/divider_horizontal_dark"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:visibility="gone" />
+
             <LinearLayout
                 android:id="@+id/eRLayout"
                 android:layout_width="match_parent"
@@ -261,11 +241,7 @@
                     android:background="@drawable/btn_circle"
                     android:src="@drawable/ic_btn_round_more" />
             </LinearLayout>
-            <ImageView
-                android:src="@android:drawable/divider_horizontal_dark"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY" />
+
             <LinearLayout
                 android:id="@+id/resetDefaultsLayout"
                 android:layout_width="match_parent"
@@ -296,11 +272,6 @@
                     android:maxLines="4"
                     android:text="@string/reset_defaults_summary" />
             </LinearLayout>
-            <ImageView
-                android:src="@android:drawable/divider_horizontal_dark"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

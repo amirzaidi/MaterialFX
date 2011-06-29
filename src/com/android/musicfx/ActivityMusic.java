@@ -301,7 +301,9 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
                     @Override
                     public boolean onTouch(final View v, final MotionEvent event) {
-                        showHeadsetMsg();
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            showHeadsetMsg();
+                        }
                         return false;
                     }
                 });
@@ -351,7 +353,9 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
                     @Override
                     public boolean onTouch(final View v, final MotionEvent event) {
-                        showHeadsetMsg();
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            showHeadsetMsg();
+                        }
                         return false;
                     }
                 });
@@ -404,6 +408,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                         showDialog(DIALOG_EQUALIZER);
                     }
                 });
+                equalizerInit(findViewById(R.id.eqcontainer));
             }
 
             // Initialize the Preset Reverb elements.
@@ -433,6 +438,9 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             mainToggleView.setVisibility(View.GONE);
             ((TextView) findViewById(R.id.noEffectsTextView)).setVisibility(View.VISIBLE);
         }
+
+        // TODO, actually use the action bar
+        getActionBar().hide();
     }
 
     /*
@@ -496,20 +504,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                         public void onClick(final DialogInterface dialog, final int item) {
                             if (item != mEQPresetPrevious) {
                                 equalizerSetPreset(item);
-                                final ListView listView = ((AlertDialog) dialog).getListView();
-                                // For the user preset, where EQ sliders need to be shown at the
-                                // bottom of the list when selected, the footer view of a list is
-                                // used to display them in.
-                                // This footer view will then be added or removed from the list
-                                // depending on whether user preset is selected or not.
-                                // Using transcript mode to scroll to bottom when in user
-                                if (!isEqualizerUserPreset(item)) {
-                                    listView.removeFooterView(mEqualizerView);
-                                    listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_DISABLED);
-                                } else {
-                                    listView.addFooterView(mEqualizerView);
-                                    listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-                                }
                             }
                             mEQPresetPrevious = item;
                         }
@@ -520,9 +514,9 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                     final ListView listView = ((AlertDialog) dialog).getListView();
                     final int newPreset = listView.getCheckedItemPosition();
                     equalizerSetPreset(newPreset);
-                    ((TextView) findViewById(R.id.eqPresetsTitleTextView))
-                            .setText(getString(R.string.eq_title) + " "
-                                    + listView.getItemAtPosition(newPreset).toString());
+                    ((TextView) findViewById(R.id.eqPresetsSummaryTextView))
+                            .setText(listView.getItemAtPosition(newPreset).toString());
+                    equalizerUpdateDisplay();
                 }
             });
             builder.setNegativeButton(android.R.string.cancel,
@@ -535,10 +529,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             builder.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(final DialogInterface dialog) {
-                    if (!isEqualizerUserPreset(mEQPreset)) {
-                        final ListView listView = ((AlertDialog) dialog).getListView();
-                        listView.removeFooterView(mEqualizerView);
-                    }
                     equalizerSetPreset(mEQPreset);
                     final int[] presetUserBandLevels = ControlPanelEffect.getParameterIntArray(
                             mContext, mCallingPackageName, mAudioSession,
@@ -562,11 +552,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
             alertDialog = builder.create();
             final LayoutInflater factory = LayoutInflater.from(this);
-            mEqualizerView = factory.inflate(R.layout.music_eq, null);
-            equalizerInit();
-            final ListView listView = alertDialog.getListView();
-            // Add empty footer view
-            listView.addFooterView(mEqualizerView);
 
             mEQPresetUserPos = getEQPresetStrings().length - 1;
             break;
@@ -653,26 +638,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             final ListView listView = ((AlertDialog) dialog).getListView();
             listView.setItemChecked(mEQPreset, true);
             listView.setSelection(mEQPreset);
-
-            if (isEqualizerUserPreset(mEQPreset)) {
-                if (listView.getFooterViewsCount() == 0) {
-                    listView.addFooterView(mEqualizerView);
-                    listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-                }
-                equalizerUpdateDisplay();
-            } else {
-                // FIXME: because of a probable bug in Android removeFooterView, we need to catch
-                // NPE which is sometimes thrown from inside removeFooterView (encountered only in
-                // Honeycomb).
-                // Should ideally be be avoided otherwise.
-                try {
-                    listView.removeFooterView(mEqualizerView);
-                    listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_DISABLED);
-                } catch (final NullPointerException e) {
-                    Log.w(TAG, "onPrepareDialog: DIALOG_EQUALIZER: removeFooterView: " + e);
-                }
-            }
-
             break;
         }
         case DIALOG_PRESET_REVERB: {
@@ -739,10 +704,9 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             if (idx >= presets.length) {
                 idx = 0;
             }
-            ((TextView) findViewById(R.id.eqPresetsTitleTextView))
-                    .setText(getString(R.string.eq_title)
-                            + " "
-                            + presets[idx]);
+            ((TextView) findViewById(R.id.eqPresetsSummaryTextView))
+                    .setText(presets[idx]);
+            equalizerUpdateDisplay();
         }
         if (mPresetReverbSupported) {
             ((TextView) findViewById(R.id.eRPresetsTitleTextView))
@@ -773,7 +737,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     /**
      * Initializes the equalizer elements. Set the SeekBars and Spinner listeners.
      */
-    private void equalizerInit() {
+    private void equalizerInit(View eqcontainer) {
         // Initialize the N-Band Equalizer elements.
         mNumberEqualizerBands = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
                 mAudioSession, ControlPanelEffect.Key.eq_num_bands);
@@ -796,12 +760,12 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                 centerFreqHz = centerFreqHz / 1000;
                 unitPrefix = "k";
             }
-            ((TextView) mEqualizerView.findViewById(EQViewElementIds[band][0])).setText(
+            ((TextView) eqcontainer.findViewById(EQViewElementIds[band][0])).setText(
                     format("%.0f ", centerFreqHz) + unitPrefix + "Hz");
-            mEqualizerSeekBar[band] = (SeekBar) mEqualizerView
+            mEqualizerSeekBar[band] = (SeekBar) eqcontainer
                     .findViewById(EQViewElementIds[band][1]);
             mEqualizerSeekBar[band].setMax(mEqualizerMaxBandLevel - mEqualizerMinBandLevel);
-            mEqualizerValueText[band] = (TextView) mEqualizerView
+            mEqualizerValueText[band] = (TextView) eqcontainer
                     .findViewById(EQViewElementIds[band][2]);
             mEqualizerSeekBar[band].setOnSeekBarChangeListener(this);
         }
@@ -809,12 +773,13 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         // Hide the inactive Equalizer bands.
         for (int band = mNumberEqualizerBands; band < EQUALIZER_MAX_BANDS; band++) {
             // CenterFreq text
-            mEqualizerView.findViewById(EQViewElementIds[band][0]).setVisibility(View.GONE);
+            eqcontainer.findViewById(EQViewElementIds[band][0]).setVisibility(View.GONE);
             // SeekBar
-            mEqualizerView.findViewById(EQViewElementIds[band][1]).setVisibility(View.GONE);
+            eqcontainer.findViewById(EQViewElementIds[band][1]).setVisibility(View.GONE);
             // Value text
-            mEqualizerView.findViewById(EQViewElementIds[band][2]).setVisibility(View.GONE);
+            eqcontainer.findViewById(EQViewElementIds[band][2]).setVisibility(View.GONE);
         }
+        equalizerUpdateDisplay();
     }
 
     private String format(String format, Object... args) {
