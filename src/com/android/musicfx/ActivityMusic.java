@@ -16,6 +16,10 @@
 
 package com.android.musicfx;
 
+import com.android.audiofx.OpenSLESConstants;
+import com.android.musicfx.seekbar.SeekBar;
+import com.android.musicfx.seekbar.SeekBar.OnSeekBarChangeListener;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -34,32 +38,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import com.android.musicfx.seekbar.SeekBar;
-import com.android.musicfx.seekbar.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.audiofx.OpenSLESConstants;
-
 import java.util.Formatter;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  *
@@ -98,14 +91,13 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
     // Equalizer fields
     private final SeekBar[] mEqualizerSeekBar = new SeekBar[EQUALIZER_MAX_BANDS];
-    private final TextView[] mEqualizerValueText = new TextView[EQUALIZER_MAX_BANDS];
     private int mNumberEqualizerBands;
     private int mEqualizerMinBandLevel;
     private int mEQPresetUserPos = 1;
-    private View mEqualizerView;
     private int mEQPreset;
     private int mEQPresetPrevious;
     private int[] mEQPresetUserBandLevelsPrev;
+    private String[] mEQPresetNames;
 
     private int mPRPreset;
 
@@ -118,38 +110,38 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      * Mapping for the EQ widget ids per band
      */
     private static final int[][] EQViewElementIds = {
-            { R.id.EQBand0TextView, R.id.EQBand0SeekBar, R.id.EQBand0Value },
-            { R.id.EQBand1TextView, R.id.EQBand1SeekBar, R.id.EQBand1Value },
-            { R.id.EQBand2TextView, R.id.EQBand2SeekBar, R.id.EQBand2Value },
-            { R.id.EQBand3TextView, R.id.EQBand3SeekBar, R.id.EQBand3Value },
-            { R.id.EQBand4TextView, R.id.EQBand4SeekBar, R.id.EQBand4Value },
-            { R.id.EQBand5TextView, R.id.EQBand5SeekBar, R.id.EQBand5Value },
-            { R.id.EQBand6TextView, R.id.EQBand6SeekBar, R.id.EQBand6Value },
-            { R.id.EQBand7TextView, R.id.EQBand7SeekBar, R.id.EQBand7Value },
-            { R.id.EQBand8TextView, R.id.EQBand8SeekBar, R.id.EQBand8Value },
-            { R.id.EQBand9TextView, R.id.EQBand9SeekBar, R.id.EQBand9Value },
-            { R.id.EQBand10TextView, R.id.EQBand10SeekBar, R.id.EQBand10Value },
-            { R.id.EQBand11TextView, R.id.EQBand11SeekBar, R.id.EQBand11Value },
-            { R.id.EQBand12TextView, R.id.EQBand12SeekBar, R.id.EQBand12Value },
-            { R.id.EQBand13TextView, R.id.EQBand13SeekBar, R.id.EQBand13Value },
-            { R.id.EQBand14TextView, R.id.EQBand14SeekBar, R.id.EQBand14Value },
-            { R.id.EQBand15TextView, R.id.EQBand15SeekBar, R.id.EQBand15Value },
-            { R.id.EQBand16TextView, R.id.EQBand16SeekBar, R.id.EQBand16Value },
-            { R.id.EQBand17TextView, R.id.EQBand17SeekBar, R.id.EQBand17Value },
-            { R.id.EQBand18TextView, R.id.EQBand18SeekBar, R.id.EQBand18Value },
-            { R.id.EQBand19TextView, R.id.EQBand19SeekBar, R.id.EQBand19Value },
-            { R.id.EQBand20TextView, R.id.EQBand20SeekBar, R.id.EQBand20Value },
-            { R.id.EQBand21TextView, R.id.EQBand21SeekBar, R.id.EQBand21Value },
-            { R.id.EQBand22TextView, R.id.EQBand22SeekBar, R.id.EQBand22Value },
-            { R.id.EQBand23TextView, R.id.EQBand23SeekBar, R.id.EQBand23Value },
-            { R.id.EQBand24TextView, R.id.EQBand24SeekBar, R.id.EQBand24Value },
-            { R.id.EQBand25TextView, R.id.EQBand25SeekBar, R.id.EQBand25Value },
-            { R.id.EQBand26TextView, R.id.EQBand26SeekBar, R.id.EQBand26Value },
-            { R.id.EQBand27TextView, R.id.EQBand27SeekBar, R.id.EQBand27Value },
-            { R.id.EQBand28TextView, R.id.EQBand28SeekBar, R.id.EQBand28Value },
-            { R.id.EQBand29TextView, R.id.EQBand29SeekBar, R.id.EQBand29Value },
-            { R.id.EQBand30TextView, R.id.EQBand30SeekBar, R.id.EQBand30Value },
-            { R.id.EQBand31TextView, R.id.EQBand31SeekBar, R.id.EQBand31Value } };
+            { R.id.EQBand0TextView, R.id.EQBand0SeekBar },
+            { R.id.EQBand1TextView, R.id.EQBand1SeekBar },
+            { R.id.EQBand2TextView, R.id.EQBand2SeekBar },
+            { R.id.EQBand3TextView, R.id.EQBand3SeekBar },
+            { R.id.EQBand4TextView, R.id.EQBand4SeekBar },
+            { R.id.EQBand5TextView, R.id.EQBand5SeekBar },
+            { R.id.EQBand6TextView, R.id.EQBand6SeekBar },
+            { R.id.EQBand7TextView, R.id.EQBand7SeekBar },
+            { R.id.EQBand8TextView, R.id.EQBand8SeekBar },
+            { R.id.EQBand9TextView, R.id.EQBand9SeekBar },
+            { R.id.EQBand10TextView, R.id.EQBand10SeekBar },
+            { R.id.EQBand11TextView, R.id.EQBand11SeekBar },
+            { R.id.EQBand12TextView, R.id.EQBand12SeekBar },
+            { R.id.EQBand13TextView, R.id.EQBand13SeekBar },
+            { R.id.EQBand14TextView, R.id.EQBand14SeekBar },
+            { R.id.EQBand15TextView, R.id.EQBand15SeekBar },
+            { R.id.EQBand16TextView, R.id.EQBand16SeekBar },
+            { R.id.EQBand17TextView, R.id.EQBand17SeekBar },
+            { R.id.EQBand18TextView, R.id.EQBand18SeekBar },
+            { R.id.EQBand19TextView, R.id.EQBand19SeekBar },
+            { R.id.EQBand20TextView, R.id.EQBand20SeekBar },
+            { R.id.EQBand21TextView, R.id.EQBand21SeekBar },
+            { R.id.EQBand22TextView, R.id.EQBand22SeekBar },
+            { R.id.EQBand23TextView, R.id.EQBand23SeekBar },
+            { R.id.EQBand24TextView, R.id.EQBand24SeekBar },
+            { R.id.EQBand25TextView, R.id.EQBand25SeekBar },
+            { R.id.EQBand26TextView, R.id.EQBand26SeekBar },
+            { R.id.EQBand27TextView, R.id.EQBand27SeekBar },
+            { R.id.EQBand28TextView, R.id.EQBand28SeekBar },
+            { R.id.EQBand29TextView, R.id.EQBand29SeekBar },
+            { R.id.EQBand30TextView, R.id.EQBand30SeekBar },
+            { R.id.EQBand31TextView, R.id.EQBand31SeekBar } };
 
     // Preset Reverb fields
     /**
@@ -267,6 +259,19 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         setContentView(R.layout.music_main);
         final ViewGroup viewGroup = (ViewGroup) findViewById(R.id.contentSoundEffects);
         final View mainToggleView = findViewById(R.id.mainToggleEffectsLayout);
+
+        // Fill array with presets from AudioEffects call.
+        // allocate a space for 2 extra strings (CI Extreme & User)
+        final int numPresets = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
+                mAudioSession, ControlPanelEffect.Key.eq_num_presets);
+        mEQPresetNames = new String[numPresets + 2];
+        for (short i = 0; i < numPresets; i++) {
+            mEQPresetNames[i] = ControlPanelEffect.getParameterString(mContext,
+                    mCallingPackageName, mAudioSession, ControlPanelEffect.Key.eq_preset_name, i);
+        }
+        mEQPresetNames[numPresets] = getString(R.string.ci_extreme);
+        mEQPresetNames[numPresets + 1] = getString(R.string.user);
+        mEQPresetUserPos = numPresets + 1;
 
         // Watch for button clicks and initialization.
         if ((mVirtualizerSupported) || (mBassBoostSupported) || (mEqualizerSupported)
@@ -498,7 +503,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         case DIALOG_EQUALIZER: {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.eq_dialog_title);
-            builder.setSingleChoiceItems(getEQPresetStrings(), -1,
+            builder.setSingleChoiceItems(mEQPresetNames, -1,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, final int item) {
@@ -514,9 +519,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                     final ListView listView = ((AlertDialog) dialog).getListView();
                     final int newPreset = listView.getCheckedItemPosition();
                     equalizerSetPreset(newPreset);
-                    ((TextView) findViewById(R.id.eqPresetsSummaryTextView))
-                            .setText(listView.getItemAtPosition(newPreset).toString());
-                    equalizerUpdateDisplay();
                 }
             });
             builder.setNegativeButton(android.R.string.cancel,
@@ -552,8 +554,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
             alertDialog = builder.create();
             final LayoutInflater factory = LayoutInflater.from(this);
-
-            mEQPresetUserPos = getEQPresetStrings().length - 1;
             break;
         }
         case DIALOG_PRESET_REVERB: {
@@ -697,7 +697,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                             ControlPanelEffect.Key.bb_strength));
         }
         if (mEqualizerSupported) {
-            String [] presets = getEQPresetStrings();
+            final String [] presets = mEQPresetNames;
             int idx = ControlPanelEffect.getParameterInt(mContext,
                                     mCallingPackageName, mAudioSession,
                                     ControlPanelEffect.Key.eq_current_preset);
@@ -765,8 +765,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             mEqualizerSeekBar[band] = (SeekBar) eqcontainer
                     .findViewById(EQViewElementIds[band][1]);
             mEqualizerSeekBar[band].setMax(mEqualizerMaxBandLevel - mEqualizerMinBandLevel);
-            mEqualizerValueText[band] = (TextView) eqcontainer
-                    .findViewById(EQViewElementIds[band][2]);
             mEqualizerSeekBar[band].setOnSeekBarChangeListener(this);
         }
 
@@ -776,9 +774,15 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             eqcontainer.findViewById(EQViewElementIds[band][0]).setVisibility(View.GONE);
             // SeekBar
             eqcontainer.findViewById(EQViewElementIds[band][1]).setVisibility(View.GONE);
-            // Value text
-            eqcontainer.findViewById(EQViewElementIds[band][2]).setVisibility(View.GONE);
         }
+
+        // TODO: get the actual values from somewhere
+        TextView tv = (TextView) findViewById(R.id.maxLevelText);
+        tv.setText("+15 dB");
+        tv = (TextView) findViewById(R.id.centerLevelText);
+        tv.setText("0 dB");
+        tv = (TextView) findViewById(R.id.minLevelText);
+        tv.setText("-15 dB");
         equalizerUpdateDisplay();
     }
 
@@ -804,7 +808,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         for (short band = 0; band < mNumberEqualizerBands; band++) {
             if (id == EQViewElementIds[band][1]) {
                 final short level = (short) (progress + mEqualizerMinBandLevel);
-                equalizerBandUpdateDisplay(band, level);
                 if (fromUser) {
                     equalizerBandUpdate(band, level);
                 }
@@ -822,7 +825,14 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
     @Override
     public void onStartTrackingTouch(final SeekBar seekbar) {
-        // Do nothing
+        // get current levels
+        final int[] bandLevels = ControlPanelEffect.getParameterIntArray(mContext,
+                mCallingPackageName, mAudioSession, ControlPanelEffect.Key.eq_band_level);
+        // copy current levels to user preset
+        for (short band = 0; band < mNumberEqualizerBands; band++) {
+            equalizerBandUpdate(band, bandLevels[band]);
+        }
+        equalizerSetPreset(mEQPresetUserPos);
     }
 
     /*
@@ -848,7 +858,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                 mCallingPackageName, mAudioSession, ControlPanelEffect.Key.eq_band_level);
         for (short band = 0; band < mNumberEqualizerBands; band++) {
             final int level = bandLevels[band];
-            equalizerBandUpdateDisplay(band, (short) level);
             final int progress = level - mEqualizerMinBandLevel;
             mEqualizerSeekBar[band].setProgress(progress);
         }
@@ -862,36 +871,9 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      * @param level
      *            EQ band level
      */
-    private void equalizerBandUpdate(final short band, final short level) {
+    private void equalizerBandUpdate(final int band, final int level) {
         ControlPanelEffect.setParameterInt(mContext, mCallingPackageName, mAudioSession,
                 ControlPanelEffect.Key.eq_band_level, level, band);
-    }
-
-    /**
-     * Updates the EQ band level display.
-     *
-     * @param band
-     *            Band id
-     * @param level
-     *            EQ band level
-     */
-    private void equalizerBandUpdateDisplay(final short band, final short level) {
-        final int dBValue = level / 100;
-        mEqualizerValueText[band].setText(format("%d dB", dBValue));
-    }
-
-    /**
-     * Sets the given EQ preset.
-     *
-     * @param preset
-     *            EQ preset id.
-     */
-    private void equalizerSetPreset(final short preset) {
-        ControlPanelEffect.setParameterInt(mContext, mCallingPackageName, mAudioSession,
-                ControlPanelEffect.Key.eq_current_preset, preset);
-        if (isEqualizerUserPreset(preset)) {
-            equalizerUpdateDisplay();
-        }
     }
 
     /**
@@ -901,7 +883,11 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      *            EQ preset id.
      */
     private void equalizerSetPreset(final int preset) {
-        equalizerSetPreset((short) preset);
+        ControlPanelEffect.setParameterInt(mContext, mCallingPackageName, mAudioSession,
+                ControlPanelEffect.Key.eq_current_preset, preset);
+        equalizerUpdateDisplay();
+        ((TextView) findViewById(R.id.eqPresetsSummaryTextView))
+        .setText(mEQPresetNames[preset]);
     }
 
     /**
@@ -909,27 +895,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      */
     private boolean isEqualizerUserPreset(final int preset) {
         return (preset == mEQPresetUserPos);
-    }
-
-    /**
-     * Gets the EQ preset names
-     *
-     * @return
-     */
-    private final String[] getEQPresetStrings() {
-        final int numPresets = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
-                mAudioSession, ControlPanelEffect.Key.eq_num_presets);
-        // Fill array with presets from AudioEffects call.
-        // allocate a space for 2 extra strings (CI Extreme & User)
-        final String[] eQViewPresetStrings = new String[numPresets + 2];
-        for (short i = 0; i < numPresets; i++) {
-            eQViewPresetStrings[i] = ControlPanelEffect.getParameterString(mContext,
-                    mCallingPackageName, mAudioSession, ControlPanelEffect.Key.eq_preset_name, i);
-        }
-
-        eQViewPresetStrings[numPresets] = getString(R.string.ci_extreme);
-        eQViewPresetStrings[numPresets + 1] = getString(R.string.user);
-        return eQViewPresetStrings;
     }
 
     /**

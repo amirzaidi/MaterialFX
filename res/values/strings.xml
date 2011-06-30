@@ -19,8 +19,7 @@
 
     <!-- ControlPanelMusic strings -->
     <string name="no_effects">Effects not available</string>
-    <string name="main_toggle_effects_title">LifeVibes MusicFX</string>
-    <string name="main_toggle_effects_summary">Turn all effects on/off</string>
+    <string name="main_toggle_effects_title">Audio effects</string>
     <string name="eq_title">Equalizer:</string>
     <string name="eq_summary">Equalizer presets or user defined EQ</string>
     <string name="eq_dialog_title">Equalizer</string>
