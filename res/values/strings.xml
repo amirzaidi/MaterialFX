@@ -24,8 +24,8 @@
     <string name="eq_summary">Equalizer presets or user defined EQ</string>
     <string name="eq_dialog_title">Equalizer</string>
     <string name="headset_plug">Please plug headphones for these effects</string>
-    <string name="bass_boost_strength">Bass boost for headphones</string>
-    <string name="virtualizer_strength">3D effect for headphones</string>
+    <string name="bass_boost_strength">Bass boost</string>
+    <string name="virtualizer_strength">3D effect</string>
     <string name="pr_title">Reverb:</string>
     <string name="pr_summary">Additional room reverberation effects</string>
     <string name="pr_dialog_title">Reverb Preset</string>

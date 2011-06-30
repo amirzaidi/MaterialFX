@@ -127,19 +127,20 @@
                 android:layout_marginRight="6dip"
                 android:layout_marginTop="6dip"
                 android:layout_marginBottom="6dip"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:background="@android:drawable/list_selector_background">
                 <TextView
                     android:id="@+id/bBStrengthText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
                     android:text="@string/bass_boost_strength" />
                 <com.android.musicfx.seekbar.SeekBar
                     android:id="@+id/bBStrengthSeekBar"
-                    android:layout_width="match_parent"
+                    android:layout_width="170dip"
                     android:layout_height="wrap_content"
                     android:paddingTop="2dip"
                     android:paddingLeft="20dip"
@@ -157,19 +158,20 @@
                 android:layout_marginRight="6dip"
                 android:layout_marginTop="6dip"
                 android:layout_marginBottom="6dip"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:background="@android:drawable/list_selector_background">
                 <TextView
                     android:id="@+id/vIStrengthText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
                     android:text="@string/virtualizer_strength" />
                 <com.android.musicfx.seekbar.SeekBar
                     android:id="@+id/vIStrengthSeekBar"
-                    android:layout_width="match_parent"
+                    android:layout_width="170dip"
                     android:layout_height="wrap_content"
                     android:paddingTop="2dip"
                     android:paddingLeft="20dip"
