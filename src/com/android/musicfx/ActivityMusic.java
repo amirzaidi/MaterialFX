@@ -290,7 +290,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                             mAudioSession, ControlPanelEffect.Key.global_enabled, isChecked);
                     // Enable Linear layout (in scroll layout) view with all
                     // effect contents depending on checked state
-                    setEnabledAllChilds(viewGroup, isChecked);
+                    setEnabledAllChildren(viewGroup, isChecked);
                     // update UI according to headset state
                     updateUIHeadset();
                 }
@@ -658,19 +658,19 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     }
 
     /**
-     * En/disables all childs for a given view. For linear and relative layout childs do this
+     * En/disables all children for a given view. For linear and relative layout children do this
      * recursively
      *
-     * @param view
+     * @param viewGroup
      * @param enabled
      */
-    private void setEnabledAllChilds(final ViewGroup viewGroup, final boolean enabled) {
+    private void setEnabledAllChildren(final ViewGroup viewGroup, final boolean enabled) {
         final int count = viewGroup.getChildCount();
         for (int i = 0; i < count; i++) {
             final View view = viewGroup.getChildAt(i);
             if ((view instanceof LinearLayout) || (view instanceof RelativeLayout)) {
                 final ViewGroup vg = (ViewGroup) view;
-                setEnabledAllChilds(vg, enabled);
+                setEnabledAllChildren(vg, enabled);
             }
             view.setEnabled(enabled);
         }
@@ -683,7 +683,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         final boolean isEnabled = ControlPanelEffect.getParameterBoolean(mContext,
                 mCallingPackageName, mAudioSession, ControlPanelEffect.Key.global_enabled);
         ((CompoundButton) findViewById(R.id.mainToggleEffectsCheckBox)).setChecked(isEnabled);
-        setEnabledAllChilds((ViewGroup) findViewById(R.id.contentSoundEffects), isEnabled);
+        setEnabledAllChildren((ViewGroup) findViewById(R.id.contentSoundEffects), isEnabled);
         updateUIHeadset();
 
         if (mVirtualizerSupported) {
