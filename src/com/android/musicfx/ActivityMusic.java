@@ -631,6 +631,9 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         case DIALOG_EQUALIZER: {
             mEQPreset = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
                     mAudioSession, ControlPanelEffect.Key.eq_current_preset);
+            if (mEQPreset >= mEQPresetNames.length) {
+                mEQPreset = 0;
+            }
             mEQPresetPrevious = mEQPreset;
             mEQPresetUserBandLevelsPrev = ControlPanelEffect.getParameterIntArray(mContext,
                     mCallingPackageName, mAudioSession,
