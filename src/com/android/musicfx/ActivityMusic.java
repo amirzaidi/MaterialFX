@@ -70,7 +70,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      */
     static final int DIALOG_EQUALIZER = 0;
     static final int DIALOG_PRESET_REVERB = 1;
-    static final int DIALOG_RESET_DEFAULTS = 2;
 
     /**
      * Indicates if Virtualizer effect is supported.
@@ -429,15 +428,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                 });
             }
 
-            // init reset defaults
-            final View view = findViewById(R.id.resetDefaultsLayout);
-            view.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(final View v) {
-                    showDialog(DIALOG_RESET_DEFAULTS);
-                }
-            });
         } else {
             viewGroup.setVisibility(View.GONE);
             mainToggleView.setVisibility(View.GONE);
@@ -594,22 +584,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             alertDialog = builder.create();
             break;
         }
-        case DIALOG_RESET_DEFAULTS: {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.reset_defaults_dialog_title);
-            builder.setMessage(getString(R.string.reset_defaults_dialog_message));
-            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(final DialogInterface dialog, final int whichButton) {
-                    ControlPanelEffect.setEffectDefaults(mContext, mCallingPackageName,
-                            mAudioSession);
-                    updateUI();
-                }
-            });
-            builder.setNegativeButton(android.R.string.cancel, null);
-            alertDialog = builder.create();
-            break;
-        }
         default:
             Log.e(TAG, "onCreateDialog invalid Dialog id: " + id);
             alertDialog = null;
@@ -649,9 +623,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             final ListView listView = ((AlertDialog) dialog).getListView();
             listView.setItemChecked(mPRPreset, true);
             listView.setSelection(mPRPreset);
-            break;
-        }
-        case DIALOG_RESET_DEFAULTS: {
             break;
         }
         default:

@@ -1259,50 +1259,6 @@ public class ControlPanelEffect {
     }
 
     /**
-     * Sets the defaults for all effects.
-     *
-     * @param context
-     * @param packageName
-     * @param audioSession
-     *            System wide unique audio session identifier.
-     */
-    public static void setEffectDefaults(final Context context, final String packageName,
-            final int audioSession) {
-        final SharedPreferences prefs = context.getSharedPreferences(packageName,
-                Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = prefs.edit();
-
-        setParameterBoolean(context, packageName, audioSession, Key.global_enabled,
-                GLOBAL_ENABLED_DEFAULT);
-        setParameterBoolean(context, packageName, audioSession, Key.virt_enabled,
-                VIRTUALIZER_ENABLED_DEFAULT);
-        setParameterInt(context, packageName, audioSession, Key.virt_strength,
-                VIRTUALIZER_STRENGTH_DEFAULT);
-        setParameterBoolean(context, packageName, audioSession, Key.bb_enabled,
-                BASS_BOOST_ENABLED_DEFAULT);
-        setParameterInt(context, packageName, audioSession, Key.bb_strength,
-                BASS_BOOST_STRENGTH_DEFAULT);
-        setParameterBoolean(context, packageName, audioSession, Key.eq_enabled,
-                EQUALIZER_ENABLED_DEFAULT);
-        // CI preset idx = numPresets
-        final int numPresets = prefs.getInt(Key.eq_num_presets.toString(), EQUALIZER_NUMBER_PRESETS_DEFAULT);
-        setParameterInt(context, packageName, audioSession, Key.eq_current_preset, numPresets);
-        // Reset User EQ levels
-        final int numBands = prefs.getInt(Key.eq_num_bands.toString(), EQUALIZER_NUMBER_BANDS_DEFAULT);
-        final short[] eQPresetUserBandLevelDefault = Arrays.copyOf(
-                EQUALIZER_PRESET_USER_BAND_LEVEL_DEFAULT, numBands);
-        for (short band = 0; band < numBands; band++) {
-            editor.putInt(Key.eq_preset_user_band_level.toString() + band,
-                    eQPresetUserBandLevelDefault[band]);
-        }
-        setParameterBoolean(context, packageName, numBands, Key.pr_enabled,
-                PRESET_REVERB_ENABLED_DEFAULT);
-        setParameterInt(context, packageName, numBands, Key.pr_current_preset,
-                PRESET_REVERB_CURRENT_PRESET_DEFAULT);
-        editor.commit();
-    }
-
-    /**
      * Gets the virtualizer effect for the given audio session. If the effect on the session doesn't
      * exist yet, create it and add to collection.
      *
