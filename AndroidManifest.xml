@@ -42,6 +42,10 @@
                     android:name="android.intent.category.CATEGORY_CONTENT_MUSIC" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ControlPanelPicker"
+            android:theme="@*android:style/Theme.Holo.Dialog.Alert"
+            android:excludeFromRecents="true" />
         <receiver
             android:name=".ControlPanelReceiver">
             <intent-filter>
@@ -76,7 +80,7 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-        <service android:name="Compatibility$Receiver$Service" android:exported="false" />
+        <service android:name="Compatibility$Service" android:exported="false" />
         <activity
             android:name="Compatibility$Redirector">
             <intent-filter

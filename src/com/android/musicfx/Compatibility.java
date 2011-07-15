@@ -69,9 +69,13 @@ public class Compatibility {
             log("read " + defPackage + "/" + defName + " as default");
             if (defPackage == null || defName == null) {
                 Log.e(TAG, "no default set!");
-                // TODO pick a default here?
-                finish();
-                return;
+                // use the built-in panel
+                i.setComponent(new ComponentName(this, ActivityMusic.class));
+                // also save it as the default
+                Intent updateIntent = new Intent(this, Service.class);
+                updateIntent.putExtra("defPackage", getPackageName());
+                updateIntent.putExtra("defName", ActivityMusic.class.getName());
+                startService(updateIntent);
             } else {
                 i.setComponent(new ComponentName(defPackage, defName));
             }
@@ -94,118 +98,139 @@ public class Compatibility {
         @Override
         public void onReceive(final Context context, final Intent intent) {
 
+            log("received");
             Intent updateIntent = new Intent(context, Service.class);
             updateIntent.putExtra("reason", intent);
             context.startService(updateIntent);
         }
+    }
 
-        public static class Service extends IntentService {
+    public static class Service extends IntentService {
 
-            PackageManager mPackageManager;
+        PackageManager mPackageManager;
 
-            public Service() {
-                super("CompatibilityService");
+        public Service() {
+            super("CompatibilityService");
+        }
+
+        @Override
+        protected void onHandleIntent(final Intent intent) {
+            log("handleintent");
+            if (mPackageManager == null) {
+                mPackageManager = getPackageManager();
             }
 
-            @Override
-            protected void onHandleIntent(final Intent intent) {
-                if (mPackageManager == null) {
-                    mPackageManager = getPackageManager();
+            String defPackage = intent.getStringExtra("defPackage");
+            String defName = intent.getStringExtra("defName");
+            if (defPackage != null && defName != null) {
+                setDefault(defPackage, defName);
+                return;
+            }
+
+            Intent packageIntent = intent.getParcelableExtra("reason");
+            Bundle b = packageIntent.getExtras();
+            if (b != null) b.size();
+            log("intentservice saw: " + packageIntent + " " + b);
+            // TODO, be smarter about package upgrades (which results in three
+            // broadcasts: removed, added, replaced)
+            Uri packageUri = packageIntent.getData();
+            String updatedPackage = null;
+            if (packageUri != null) {
+                updatedPackage = packageUri.toString().substring(8);
+                pickDefaultControlPanel(updatedPackage);
+            }
+        }
+
+        private void pickDefaultControlPanel(String updatedPackage) {
+
+            ResolveInfo defPanel = null;
+            ResolveInfo otherPanel = null;
+            ResolveInfo thisPanel = null;
+            Intent i = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
+            List<ResolveInfo> ris = mPackageManager.queryIntentActivities(i, PackageManager.GET_DISABLED_COMPONENTS);
+            log("found: " + ris.size());
+            SharedPreferences pref = getSharedPreferences("musicfx", MODE_PRIVATE);
+            String savedDefPackage = pref.getString("defaultpanelpackage", null);
+            String savedDefName = pref.getString("defaultpanelname", null);
+            log("saved default: " + savedDefName);
+            for (ResolveInfo foo: ris) {
+                if (foo.activityInfo.name.equals(Compatibility.Redirector.class.getName())) {
+                    log("skipping " + foo);
+                    continue;
                 }
-                Intent packageIntent = intent.getParcelableExtra("reason");
-                Bundle b = packageIntent.getExtras();
-                if (b != null) b.size();
-                log("intentservice saw: " + packageIntent + " " + b);
-                // TODO, be smarter about package upgrades (which results in three
-                // broadcasts: removed, added, replaced)
-                Uri packageUri = packageIntent.getData();
-                String updatedPackage = null;
-                if (packageUri != null) {
-                    updatedPackage = packageUri.toString().substring(8);
-                    pickDefaultControlPanel(updatedPackage);
+                log("considering " + foo);
+                if (foo.activityInfo.name.equals(savedDefName) &&
+                        foo.activityInfo.packageName.equals(savedDefPackage) &&
+                        foo.activityInfo.enabled) {
+                    log("default: " + savedDefName);
+                    defPanel = foo;
+                    break;
+                } else if (foo.activityInfo.packageName.equals(updatedPackage)) {
+                    log("choosing newly installed package " + updatedPackage);
+                    otherPanel = foo;
+                } else if (otherPanel == null && !foo.activityInfo.packageName.equals(getPackageName())) {
+                    otherPanel = foo;
+                } else {
+                    thisPanel = foo;
                 }
             }
 
-            private void pickDefaultControlPanel(String updatedPackage) {
-
-                ResolveInfo defPanel = null;
-                ResolveInfo otherPanel = null;
-                ResolveInfo thisPanel = null;
-                Intent i = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
-                List<ResolveInfo> ris = mPackageManager.queryIntentActivities(i, PackageManager.GET_DISABLED_COMPONENTS);
-                log("found: " + ris.size());
-                ResolveInfo ri = mPackageManager.resolveActivity(i, 0);
-                log("resolved: " + ri + " " + (ri != null ? ri.activityInfo.enabled : ""));
-                for (ResolveInfo foo: ris) {
-                    if (foo.activityInfo.name.equals(Compatibility.Redirector.class.getName())) {
-                        log("skipping " + foo);
-                        continue;
+            if (defPanel == null) {
+                // pick a default control panel
+                if (otherPanel == null) {
+                    if (thisPanel == null) {
+                        Log.e(TAG, "No control panels found!");
+                        return;
                     }
-                    log("considering " + foo);
-                    if (ri != null && foo.activityInfo.name.equals(ri.activityInfo.name) &&
-                            foo.activityInfo.packageName.equals(ri.activityInfo.packageName) &&
-                            foo.activityInfo.enabled) {
-                        log("default: " + ri.activityInfo.name);
-                        defPanel = foo;
-                        break;
-                    } else if (foo.activityInfo.packageName.equals(updatedPackage)) {
-                        log("choosing newly installed package " + updatedPackage);
-                        otherPanel = foo;
-                    } else if (otherPanel == null && !foo.activityInfo.packageName.equals(getPackageName())) {
-                        otherPanel = foo;
-                    } else {
-                        thisPanel = foo;
-                    }
+                    otherPanel = thisPanel;
                 }
-
-                if (defPanel == null) {
-                    // pick a default control panel
-                    if (otherPanel == null) {
-                        if (thisPanel == null) {
-                            Log.e(TAG, "No control panels found!");
-                            return;
-                        }
-                        otherPanel = thisPanel;
-                    }
-                    defPanel = otherPanel;
-                }
-
-                // Now that we have selected a default control panel activity, ensure
-                // that the broadcast receiver(s) in that same package are enabled,
-                // and the ones in the other packages are disabled.
-                String defPackage = defPanel.activityInfo.packageName;
-                i = new Intent(AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION);
-                ris = mPackageManager.queryBroadcastReceivers(i, PackageManager.GET_DISABLED_COMPONENTS);
-                setupReceivers(ris, defPackage);
-                // The open and close receivers are likely the same, but they may not be.
-                i = new Intent(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION);
-                ris = mPackageManager.queryBroadcastReceivers(i, PackageManager.GET_DISABLED_COMPONENTS);
-                setupReceivers(ris, defPackage);
-
-                // Write the selected default to the prefs so that the Redirector activity
-                // knows which one to use.
-                SharedPreferences pref = getSharedPreferences("musicfx", MODE_PRIVATE);
-                Editor ed = pref.edit();
-                ed.putString("defaultpanelpackage", defPackage);
-                ed.putString("defaultpanelname", defPanel.activityInfo.name);
-                ed.commit();
-                log("wrote " + defPackage + "/" + defPanel.activityInfo.name + " as default");
+                defPanel = otherPanel;
             }
 
-            private void setupReceivers(List<ResolveInfo> ris, String defPackage) {
-                for (ResolveInfo foo: ris) {
-                    ComponentName comp = new ComponentName(foo.activityInfo.packageName, foo.activityInfo.name);
-                    if (foo.activityInfo.packageName.equals(defPackage)) {
-                        log("enabling receiver " + foo);
-                        mPackageManager.setComponentEnabledSetting(comp,
-                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                                PackageManager.DONT_KILL_APP);
-                    } else {
-                        log("disabling receiver " + foo);
-                        mPackageManager.setComponentEnabledSetting(comp,
-                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                PackageManager.DONT_KILL_APP);
-                    }
+            // Now that we have selected a default control panel activity, ensure
+            // that the broadcast receiver(s) in that same package are enabled,
+            // and the ones in the other packages are disabled.
+            String defPackage = defPanel.activityInfo.packageName;
+            String defName = defPanel.activityInfo.name;
+            setDefault(defPackage, defName);
+        }
+
+        private void setDefault(String defPackage, String defName) {
+            Intent i = new Intent(AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION);
+            List<ResolveInfo> ris = mPackageManager.queryBroadcastReceivers(i, PackageManager.GET_DISABLED_COMPONENTS);
+            setupReceivers(ris, defPackage);
+            // The open and close receivers are likely the same, but they may not be.
+            i = new Intent(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION);
+            ris = mPackageManager.queryBroadcastReceivers(i, PackageManager.GET_DISABLED_COMPONENTS);
+            setupReceivers(ris, defPackage);
+
+            // Write the selected default to the prefs so that the Redirector activity
+            // knows which one to use.
+            SharedPreferences pref = getSharedPreferences("musicfx", MODE_PRIVATE);
+            Editor ed = pref.edit();
+            ed.putString("defaultpanelpackage", defPackage);
+            ed.putString("defaultpanelname", defName);
+            ed.commit();
+            log("wrote " + defPackage + "/" + defName + " as default");
+        }
+
+        private void setupReceivers(List<ResolveInfo> ris, String defPackage) {
+            // TODO - we may need to keep track of active sessions and send "open session"
+            // broadcast to newly enabled receivers, while sending "close session" to
+            // receivers that are about to be disabled. We could also consider just
+            // killing the process hosting the disabled components.
+            for (ResolveInfo foo: ris) {
+                ComponentName comp = new ComponentName(foo.activityInfo.packageName, foo.activityInfo.name);
+                if (foo.activityInfo.packageName.equals(defPackage)) {
+                    log("enabling receiver " + foo);
+                    mPackageManager.setComponentEnabledSetting(comp,
+                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                            PackageManager.DONT_KILL_APP);
+                } else {
+                    log("disabling receiver " + foo);
+                    mPackageManager.setComponentEnabledSetting(comp,
+                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP);
                 }
             }
         }
