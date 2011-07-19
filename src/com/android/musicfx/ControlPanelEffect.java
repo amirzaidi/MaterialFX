@@ -104,7 +104,7 @@ public class ControlPanelEffect {
             HASHMAP_INITIAL_CAPACITY, HASHMAP_LOAD_FACTOR, HASHMAP_CONCURRENCY_LEVEL);
 
     // Defaults
-    final static boolean GLOBAL_ENABLED_DEFAULT = true;
+    final static boolean GLOBAL_ENABLED_DEFAULT = false;
     private final static boolean VIRTUALIZER_ENABLED_DEFAULT = true;
     private final static int VIRTUALIZER_STRENGTH_DEFAULT = 1000;
     private final static boolean BASS_BOOST_ENABLED_DEFAULT = true;
