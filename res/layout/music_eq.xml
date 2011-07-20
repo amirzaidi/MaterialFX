@@ -53,13 +53,14 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand0SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand0TextView"
             android:layout_width="50dip"
@@ -73,9 +74,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand1SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand1TextView"
             android:layout_width="50dip"
@@ -89,9 +90,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand2SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand2TextView"
             android:layout_width="50dip"
@@ -105,9 +106,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand3SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand3TextView"
             android:layout_width="50dip"
@@ -121,9 +122,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand4SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand4TextView"
             android:layout_width="50dip"
@@ -137,9 +138,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand5SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand5TextView"
             android:layout_width="50dip"
@@ -153,9 +154,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand6SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand6TextView"
             android:layout_width="50dip"
@@ -169,9 +170,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand7SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand7TextView"
             android:layout_width="50dip"
@@ -185,9 +186,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand8SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand8TextView"
             android:layout_width="50dip"
@@ -201,9 +202,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand9SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand9TextView"
             android:layout_width="50dip"
@@ -217,9 +218,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand10SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand10TextView"
             android:layout_width="50dip"
@@ -233,9 +234,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand11SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand11TextView"
             android:layout_width="50dip"
@@ -249,9 +250,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand12SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand12TextView"
             android:layout_width="50dip"
@@ -265,9 +266,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand13SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand13TextView"
             android:layout_width="50dip"
@@ -281,9 +282,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand14SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand14TextView"
             android:layout_width="50dip"
@@ -297,9 +298,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand15SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand15TextView"
             android:layout_width="50dip"
@@ -313,9 +314,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand16SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand16TextView"
             android:layout_width="50dip"
@@ -329,9 +330,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand17SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand17TextView"
             android:layout_width="50dip"
@@ -345,9 +346,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand18SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand18TextView"
             android:layout_width="50dip"
@@ -361,9 +362,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand19SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand19TextView"
             android:layout_width="50dip"
@@ -377,9 +378,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand20SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand20TextView"
             android:layout_width="50dip"
@@ -393,9 +394,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand21SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand21TextView"
             android:layout_width="50dip"
@@ -409,9 +410,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand22SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand22TextView"
             android:layout_width="50dip"
@@ -425,9 +426,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand23SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand23TextView"
             android:layout_width="50dip"
@@ -441,9 +442,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand24SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand24TextView"
             android:layout_width="50dip"
@@ -457,9 +458,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand25SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand25TextView"
             android:layout_width="50dip"
@@ -473,9 +474,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand26SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand26TextView"
             android:layout_width="50dip"
@@ -489,9 +490,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand27SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand27TextView"
             android:layout_width="50dip"
@@ -505,9 +506,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand28SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand28TextView"
             android:layout_width="50dip"
@@ -521,9 +522,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand29SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand29TextView"
             android:layout_width="50dip"
@@ -537,9 +538,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand30SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand30TextView"
             android:layout_width="50dip"
@@ -553,9 +554,9 @@
         <com.android.musicfx.seekbar.SeekBar
             android:id="@+id/EQBand31SeekBar"
             style="@style/Widget.Holo.SeekBar.Vertical"
-            android:layout_margin="5dip"
+            android:layout_margin="@dimen/eq_slider_margin"
             android:layout_width="wrap_content"
-            android:layout_height="180dip" />
+            android:layout_height="@dimen/eq_slider_height" />
         <TextView
             android:id="@+id/EQBand31TextView"
             android:layout_width="50dip"
