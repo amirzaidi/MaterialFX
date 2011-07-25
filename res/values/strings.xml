@@ -21,7 +21,6 @@
     <string name="no_effects">Effects not available</string>
     <string name="main_toggle_effects_title">Audio effects</string>
     <string name="eq_title">Equalizer:</string>
-    <string name="eq_summary">Equalizer presets or user defined EQ</string>
     <string name="eq_dialog_title">Equalizer</string>
     <string name="headset_plug">Please plug headphones for these effects</string>
     <string name="bass_boost_strength">Bass boost</string>
@@ -29,24 +28,9 @@
     <string name="pr_title">Reverb:</string>
     <string name="pr_summary">Additional room reverberation effects</string>
     <string name="pr_dialog_title">Reverb Preset</string>
-    <string name="effects_enabled">Effects enabled</string>
-    <string name="pr">PR</string>
-    <string name="eq">EQ</string>
-    <string name="bb">BB</string>
-    <string name="vi">VI</string>
     <string name="setup">Setup</string>
-    <string name="virtualizer">Virtualizer</string>
-    <string name="equalizer">Equalizer</string>
-    <string name="bass_boost">Bass Boost</string>
-    <string name="presets">Presets</string>
-    <string name="enhancements_off">Enhancements Off</string>
-    <string name="enhancements_on">Enhancements On</string>
     <string name="ci_extreme">FX Booster</string>
     <string name="user">User</string>
-    <string name="reset_defaults_title">Reset to defaults</string>
-    <string name="reset_defaults_summary">Resets all effects to their defaults</string>
-    <string name="reset_defaults_dialog_title">Reset to defaults</string>
-    <string name="reset_defaults_dialog_message">Reset to the default effects settings for LifeVibes MusicFX?</string>
 
     <!-- title of control panel picker dialog [CHAR LIMIT=30] -->
     <string name="picker_title">Music effects control panel"</string>
