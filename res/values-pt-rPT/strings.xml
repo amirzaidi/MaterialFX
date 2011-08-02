@@ -16,65 +16,20 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- no translation found for app_name (5717136097222561957) -->
-    <skip />
+    <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
     <string name="no_effects" msgid="2597309825423473135">"Efeitos não disponíveis"</string>
-    <!-- no translation found for main_toggle_effects_title (612896145300512593) -->
-    <skip />
-    <!-- no translation found for eq_title (8116550830057445149) -->
-    <skip />
-    <!-- no translation found for eq_summary (6170202469301015939) -->
-    <skip />
-    <!-- no translation found for eq_dialog_title (2020244436368289652) -->
-    <skip />
-    <!-- no translation found for headset_plug (1161319499289612110) -->
-    <skip />
-    <!-- no translation found for bass_boost_strength (882301530007752270) -->
-    <skip />
-    <!-- no translation found for virtualizer_strength (5035111173763913313) -->
-    <skip />
-    <!-- no translation found for pr_title (873875523196045130) -->
-    <skip />
-    <!-- no translation found for pr_summary (7457279522425453515) -->
-    <skip />
-    <!-- no translation found for pr_dialog_title (5858360745954538612) -->
-    <skip />
-    <!-- no translation found for effects_enabled (1509551534825330010) -->
-    <skip />
-    <!-- no translation found for pr (874416552579639037) -->
-    <skip />
-    <!-- no translation found for eq (4862559350705259099) -->
-    <skip />
-    <!-- no translation found for bb (804045388554493966) -->
-    <skip />
-    <!-- no translation found for vi (3040338624383623064) -->
-    <skip />
-    <!-- no translation found for setup (1103677904576339192) -->
-    <skip />
-    <!-- no translation found for virtualizer (2966663091217161117) -->
-    <skip />
-    <!-- no translation found for equalizer (2742608322610487562) -->
-    <skip />
-    <!-- no translation found for bass_boost (5593630386853708907) -->
-    <skip />
-    <!-- no translation found for presets (5728189859060536396) -->
-    <skip />
-    <!-- no translation found for enhancements_off (3159525285370072102) -->
-    <skip />
-    <!-- no translation found for enhancements_on (5245445629743462104) -->
-    <skip />
-    <!-- no translation found for ci_extreme (8814436348926909207) -->
-    <skip />
-    <!-- no translation found for user (3949460956502898057) -->
-    <skip />
-    <!-- no translation found for reset_defaults_title (3751231969552972319) -->
-    <skip />
-    <!-- no translation found for reset_defaults_summary (6304492142600048944) -->
-    <skip />
-    <!-- no translation found for reset_defaults_dialog_title (7510587082771027971) -->
-    <skip />
-    <!-- no translation found for reset_defaults_dialog_message (5632108107156701000) -->
-    <skip />
+    <string name="main_toggle_effects_title" msgid="612896145300512593">"Efeitos de áudio"</string>
+    <string name="eq_title" msgid="8116550830057445149">"Equalizador:"</string>
+    <string name="eq_dialog_title" msgid="2020244436368289652">"Equalizador"</string>
+    <string name="headset_plug" msgid="1161319499289612110">"Ligue os auscultadores para estes efeitos"</string>
+    <string name="bass_boost_strength" msgid="882301530007752270">"Aumento de graves"</string>
+    <string name="virtualizer_strength" msgid="5035111173763913313">"Efeito 3D"</string>
+    <string name="pr_title" msgid="873875523196045130">"Repercussão:"</string>
+    <string name="pr_summary" msgid="7457279522425453515">"Efeitos de repercussão da sala adicionais"</string>
+    <string name="pr_dialog_title" msgid="5858360745954538612">"Repercussão Predefinida"</string>
+    <string name="setup" msgid="1103677904576339192">"Configuração"</string>
+    <string name="ci_extreme" msgid="8814436348926909207">"Amplificafor FX"</string>
+    <string name="user" msgid="3949460956502898057">"Utilizador"</string>
     <!-- no translation found for picker_title (8464126693702817261) -->
     <skip />
 </resources>
