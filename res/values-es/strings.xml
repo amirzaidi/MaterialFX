@@ -30,6 +30,5 @@
     <string name="setup" msgid="1103677904576339192">"Configuración"</string>
     <string name="ci_extreme" msgid="8814436348926909207">"FX Booster"</string>
     <string name="user" msgid="3949460956502898057">"Usuario"</string>
-    <!-- no translation found for picker_title (8464126693702817261) -->
-    <skip />
+    <string name="picker_title" msgid="8464126693702817261">"Panel control efectos música"</string>
 </resources>

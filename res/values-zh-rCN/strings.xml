@@ -16,33 +16,19 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- no translation found for app_name (5717136097222561957) -->
-    <skip />
-    <string name="no_effects" msgid="2597309825423473135">"音效无法使用"</string>
-    <!-- no translation found for main_toggle_effects_title (612896145300512593) -->
-    <skip />
-    <!-- no translation found for eq_title (8116550830057445149) -->
-    <skip />
-    <!-- no translation found for eq_dialog_title (2020244436368289652) -->
-    <skip />
-    <!-- no translation found for headset_plug (1161319499289612110) -->
-    <skip />
-    <!-- no translation found for bass_boost_strength (882301530007752270) -->
-    <skip />
-    <!-- no translation found for virtualizer_strength (5035111173763913313) -->
-    <skip />
-    <!-- no translation found for pr_title (873875523196045130) -->
-    <skip />
-    <!-- no translation found for pr_summary (7457279522425453515) -->
-    <skip />
-    <!-- no translation found for pr_dialog_title (5858360745954538612) -->
-    <skip />
-    <!-- no translation found for setup (1103677904576339192) -->
-    <skip />
-    <!-- no translation found for ci_extreme (8814436348926909207) -->
-    <skip />
-    <!-- no translation found for user (3949460956502898057) -->
-    <skip />
-    <!-- no translation found for picker_title (8464126693702817261) -->
-    <skip />
+    <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
+    <string name="no_effects" msgid="2597309825423473135">"音效不可用"</string>
+    <string name="main_toggle_effects_title" msgid="612896145300512593">"音效"</string>
+    <string name="eq_title" msgid="8116550830057445149">"均衡器："</string>
+    <string name="eq_dialog_title" msgid="2020244436368289652">"均衡器"</string>
+    <string name="headset_plug" msgid="1161319499289612110">"请插上耳机以便感受各种音效。"</string>
+    <string name="bass_boost_strength" msgid="882301530007752270">"低音增强"</string>
+    <string name="virtualizer_strength" msgid="5035111173763913313">"3D 音效"</string>
+    <string name="pr_title" msgid="873875523196045130">"混响效果："</string>
+    <string name="pr_summary" msgid="7457279522425453515">"其他室内混响效果"</string>
+    <string name="pr_dialog_title" msgid="5858360745954538612">"混响效果预设"</string>
+    <string name="setup" msgid="1103677904576339192">"设置"</string>
+    <string name="ci_extreme" msgid="8814436348926909207">"音效增强器"</string>
+    <string name="user" msgid="3949460956502898057">"用户"</string>
+    <string name="picker_title" msgid="8464126693702817261">"音乐效果控制面板"</string>
 </resources>
