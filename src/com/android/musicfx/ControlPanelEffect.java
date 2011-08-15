@@ -171,6 +171,7 @@ public class ControlPanelEffect {
                     VIRTUALIZER_STRENGTH_DEFAULT);
             editor.putBoolean(Key.virt_enabled.toString(), isVIEnabled);
             editor.putInt(Key.virt_strength.toString(), vIStrength);
+
             // BassBoost
             final boolean isBBEnabled = prefs.getBoolean(Key.bb_enabled.toString(),
                     BASS_BOOST_ENABLED_DEFAULT);
@@ -178,6 +179,7 @@ public class ControlPanelEffect {
                     BASS_BOOST_STRENGTH_DEFAULT);
             editor.putBoolean(Key.bb_enabled.toString(), isBBEnabled);
             editor.putInt(Key.bb_strength.toString(), bBStrength);
+
             // Equalizer
             synchronized (mEQInitLock) {
                 // If EQ is not initialized already create "dummy" audio session created by
@@ -187,7 +189,7 @@ public class ControlPanelEffect {
                     final int session = mediaPlayer.getAudioSessionId();
                     Equalizer equalizerEffect = null;
                     try {
-                        Log.d(TAG, "Creating dummy EQ effect");
+                        Log.d(TAG, "Creating dummy EQ effect on session " + session);
                         equalizerEffect = new Equalizer(PRIORITY, session);
 
                         mEQBandLevelRange = equalizerEffect.getBandLevelRange();
@@ -219,6 +221,7 @@ public class ControlPanelEffect {
                         Log.e(TAG, "Equalizer: " + e);
                     } finally {
                         if (equalizerEffect != null) {
+                            Log.d(TAG, "Releasing dummy EQ effect");
                             equalizerEffect.release();
                         }
                         mediaPlayer.release();
@@ -346,16 +349,32 @@ public class ControlPanelEffect {
                         if (virtualizerEffect != null) {
                             virtualizerEffect.setEnabled(prefs.getBoolean(
                                     Key.virt_enabled.toString(), VIRTUALIZER_ENABLED_DEFAULT));
+                            final int vIStrength = prefs.getInt(Key.virt_strength.toString(),
+                                    VIRTUALIZER_STRENGTH_DEFAULT);
+                            setParameterInt(context, packageName,
+                                    audioSession, Key.virt_strength, vIStrength);
                         }
                         final BassBoost bassBoostEffect = getBassBoostEffect(audioSession);
                         if (bassBoostEffect != null) {
                             bassBoostEffect.setEnabled(prefs.getBoolean(Key.bb_enabled.toString(),
                                     BASS_BOOST_ENABLED_DEFAULT));
+                            final int bBStrength = prefs.getInt(Key.bb_strength.toString(),
+                                    BASS_BOOST_STRENGTH_DEFAULT);
+                            setParameterInt(context, packageName,
+                                    audioSession, Key.bb_strength, bBStrength);
                         }
                         final Equalizer equalizerEffect = getEqualizerEffect(audioSession);
                         if (equalizerEffect != null) {
                             equalizerEffect.setEnabled(prefs.getBoolean(Key.eq_enabled.toString(),
                                     EQUALIZER_ENABLED_DEFAULT));
+                            final int[] bandLevels = getParameterIntArray(context,
+                                    packageName, audioSession, Key.eq_band_level);
+                            final int len = bandLevels.length;
+                            for (short band = 0; band < len; band++) {
+                                final int level = bandLevels[band];
+                                setParameterInt(context, packageName,
+                                        audioSession, Key.eq_band_level, level, band);
+                            }
                         }
                         // XXX: Preset Reverb not used for the moment, so commented out the effect
                         // creation to not use MIPS
@@ -373,17 +392,23 @@ public class ControlPanelEffect {
                 } else {
                     // disable all
                     if (controlMode == ControlMode.CONTROL_EFFECTS) {
-                        final Virtualizer virtualizerEffect = getVirtualizerEffect(audioSession);
+                        final Virtualizer virtualizerEffect = getVirtualizerEffectNoCreate(audioSession);
                         if (virtualizerEffect != null) {
+                            mVirtualizerInstances.remove(audioSession, virtualizerEffect);
                             virtualizerEffect.setEnabled(false);
+                            virtualizerEffect.release();
                         }
-                        final BassBoost bassBoostEffect = getBassBoostEffect(audioSession);
+                        final BassBoost bassBoostEffect = getBassBoostEffectNoCreate(audioSession);
                         if (bassBoostEffect != null) {
+                            mBassBoostInstances.remove(audioSession, bassBoostEffect);
                             bassBoostEffect.setEnabled(false);
+                            bassBoostEffect.release();
                         }
-                        final Equalizer equalizerEffect = getEqualizerEffect(audioSession);
+                        final Equalizer equalizerEffect = getEqualizerEffectNoCreate(audioSession);
                         if (equalizerEffect != null) {
+                            mEQInstances.remove(audioSession, equalizerEffect);
                             equalizerEffect.setEnabled(false);
+                            equalizerEffect.release();
                         }
                         // XXX: Preset Reverb not used for the moment, so commented out the effect
                         // creation to not use MIPS
@@ -937,6 +962,10 @@ public class ControlPanelEffect {
                 GLOBAL_ENABLED_DEFAULT);
         editor.putBoolean(Key.global_enabled.toString(), isGlobalEnabled);
 
+        if (!isGlobalEnabled) {
+            return;
+        }
+
         // Manage audioSession information
 
         // Retrieve AudioSession Id from map
@@ -1266,8 +1295,11 @@ public class ControlPanelEffect {
      *            System wide unique audio session identifier.
      * @return virtualizerEffect
      */
+    private static Virtualizer getVirtualizerEffectNoCreate(final int audioSession) {
+        return mVirtualizerInstances.get(audioSession);
+    }
     private static Virtualizer getVirtualizerEffect(final int audioSession) {
-        Virtualizer virtualizerEffect = mVirtualizerInstances.get(audioSession);
+        Virtualizer virtualizerEffect = getVirtualizerEffectNoCreate(audioSession);
         if (virtualizerEffect == null) {
             try {
                 final Virtualizer newVirtualizerEffect = new Virtualizer(PRIORITY, audioSession);
@@ -1296,8 +1328,12 @@ public class ControlPanelEffect {
      *            System wide unique audio session identifier.
      * @return bassBoostEffect
      */
+    private static BassBoost getBassBoostEffectNoCreate(final int audioSession) {
+        return mBassBoostInstances.get(audioSession);
+    }
     private static BassBoost getBassBoostEffect(final int audioSession) {
-        BassBoost bassBoostEffect = mBassBoostInstances.get(audioSession);
+
+        BassBoost bassBoostEffect = getBassBoostEffectNoCreate(audioSession);
         if (bassBoostEffect == null) {
             try {
                 final BassBoost newBassBoostEffect = new BassBoost(PRIORITY, audioSession);
@@ -1325,8 +1361,11 @@ public class ControlPanelEffect {
      *            System wide unique audio session identifier.
      * @return equalizerEffect
      */
+    private static Equalizer getEqualizerEffectNoCreate(final int audioSession) {
+        return mEQInstances.get(audioSession);
+    }
     private static Equalizer getEqualizerEffect(final int audioSession) {
-        Equalizer equalizerEffect = mEQInstances.get(audioSession);
+        Equalizer equalizerEffect = getEqualizerEffectNoCreate(audioSession);
         if (equalizerEffect == null) {
             try {
                 final Equalizer newEqualizerEffect = new Equalizer(PRIORITY, audioSession);
