@@ -43,11 +43,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,12 +68,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      * Max number of EQ bands supported
      */
     private final static int EQUALIZER_MAX_BANDS = 32;
-
-    /**
-     * Dialog IDS
-     */
-    static final int DIALOG_EQUALIZER = 0;
-    static final int DIALOG_PRESET_REVERB = 1;
 
     /**
      * Indicates if Virtualizer effect is supported.
@@ -99,6 +97,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     private String[] mEQPresetNames;
 
     private int mPRPreset;
+    private int mPRPresetPrevious;
 
     private boolean mIsHeadsetOn = false;
 
@@ -404,28 +403,23 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
             // Initialize the Equalizer elements.
             if (mEqualizerSupported) {
-                final View view = findViewById(R.id.eqLayout);
-                view.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(final View v) {
-                        showDialog(DIALOG_EQUALIZER);
-                    }
-                });
-                equalizerInit(findViewById(R.id.eqcontainer));
+                mEQPreset = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
+                        mAudioSession, ControlPanelEffect.Key.eq_current_preset);
+                if (mEQPreset >= mEQPresetNames.length) {
+                    mEQPreset = 0;
+                }
+                mEQPresetPrevious = mEQPreset;
+                equalizerSpinnerInit((Spinner)findViewById(R.id.eqSpinner));
+                equalizerBandsInit(findViewById(R.id.eqcontainer));
             }
 
             // Initialize the Preset Reverb elements.
             // Set Spinner listeners.
             if (mPresetReverbSupported) {
-                final View view = findViewById(R.id.eRLayout);
-                view.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(final View v) {
-                        showDialog(DIALOG_PRESET_REVERB);
-                    }
-                });
+                mPRPreset = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
+                        mAudioSession, ControlPanelEffect.Key.pr_current_preset);
+                mPRPresetPrevious = mPRPreset;
+                reverbSpinnerInit((Spinner)findViewById(R.id.prSpinner));
             }
 
         } else {
@@ -479,157 +473,50 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         unregisterReceiver(mReceiver);
     }
 
-    /*
-     * Create dialogs for about, EQ preset control, PR and reset to default (alert) dialogs
-     *
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onCreateDialog(int)
-     */
-    @Override
-    protected Dialog onCreateDialog(final int id) {
-        final AlertDialog alertDialog;
-        switch (id) {
-        case DIALOG_EQUALIZER: {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.eq_dialog_title);
-            builder.setSingleChoiceItems(mEQPresetNames, -1,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int item) {
-                            if (item != mEQPresetPrevious) {
-                                equalizerSetPreset(item);
-                            }
-                            mEQPresetPrevious = item;
-                        }
-                    });
-            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(final DialogInterface dialog, final int whichButton) {
-                    final ListView listView = ((AlertDialog) dialog).getListView();
-                    final int newPreset = listView.getCheckedItemPosition();
-                    equalizerSetPreset(newPreset);
-                }
-            });
-            builder.setNegativeButton(android.R.string.cancel,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int whichButton) {
-                            dialog.cancel();
-                        }
-                    });
-            builder.setOnCancelListener(new OnCancelListener() {
-                @Override
-                public void onCancel(final DialogInterface dialog) {
-                    equalizerSetPreset(mEQPreset);
-                    final int[] presetUserBandLevels = ControlPanelEffect.getParameterIntArray(
-                            mContext, mCallingPackageName, mAudioSession,
-                            ControlPanelEffect.Key.eq_preset_user_band_level);
-                    short band = 0;
-                    for (final int bandLevel : mEQPresetUserBandLevelsPrev) {
-                        if (bandLevel != presetUserBandLevels[band]) {
-                            if (!isEqualizerUserPreset(mEQPreset)) {
-                                ControlPanelEffect.setParameterInt(mContext, mCallingPackageName,
-                                        mAudioSession,
-                                        ControlPanelEffect.Key.eq_preset_user_band_level,
-                                        bandLevel, band);
-                            } else {
-                                equalizerBandUpdate(band, (short) bandLevel);
-                            }
-                        }
-                        band++;
-                    }
-                }
-            });
+    private void reverbSpinnerInit(Spinner spinner) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, PRESETREVERBPRESETSTRINGS);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-            alertDialog = builder.create();
-            final LayoutInflater factory = LayoutInflater.from(this);
-            break;
-        }
-        case DIALOG_PRESET_REVERB: {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.pr_dialog_title);
-            builder.setSingleChoiceItems(PRESETREVERBPRESETSTRINGS, -1,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int item) {
-                            presetReverbSetPreset(item);
-                        }
-                    });
-            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(final DialogInterface dialog, final int whichButton) {
-                    final ListView listView = ((AlertDialog) dialog).getListView();
-                    final int newPreset = listView.getCheckedItemPosition();
-                    presetReverbSetPreset(newPreset);
-                    ((TextView) findViewById(R.id.eRPresetsTitleTextView))
-                            .setText(getString(R.string.pr_title) + " "
-                                    + listView.getItemAtPosition(newPreset).toString());
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != mPRPresetPrevious) {
+                    presetReverbSetPreset(position);
                 }
-            });
-            builder.setNegativeButton(android.R.string.cancel,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int whichButton) {
-                            dialog.cancel();
-                        }
-                    });
-            builder.setOnCancelListener(new OnCancelListener() {
-                @Override
-                public void onCancel(final DialogInterface dialog) {
-                    presetReverbSetPreset(mPRPreset);
-                }
-            });
-
-            alertDialog = builder.create();
-            break;
-        }
-        default:
-            Log.e(TAG, "onCreateDialog invalid Dialog id: " + id);
-            alertDialog = null;
-            break;
-        }
-        return alertDialog;
-    }
-
-    /*
-     * Updates dialog (selections) before they are shown if necessary
-     *
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onPrepareDialog(int, android.app.Dialog, android.os.Bundle)
-     */
-    @Override
-    protected void onPrepareDialog(final int id, final Dialog dialog, final Bundle args) {
-        switch (id) {
-        case DIALOG_EQUALIZER: {
-            mEQPreset = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
-                    mAudioSession, ControlPanelEffect.Key.eq_current_preset);
-            if (mEQPreset >= mEQPresetNames.length) {
-                mEQPreset = 0;
+                mPRPresetPrevious = position;
             }
-            mEQPresetPrevious = mEQPreset;
-            mEQPresetUserBandLevelsPrev = ControlPanelEffect.getParameterIntArray(mContext,
-                    mCallingPackageName, mAudioSession,
-                    ControlPanelEffect.Key.eq_preset_user_band_level);
-            final ListView listView = ((AlertDialog) dialog).getListView();
-            listView.setItemChecked(mEQPreset, true);
-            listView.setSelection(mEQPreset);
-            break;
-        }
-        case DIALOG_PRESET_REVERB: {
-            mPRPreset = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
-                    mAudioSession, ControlPanelEffect.Key.pr_current_preset);
-            final ListView listView = ((AlertDialog) dialog).getListView();
-            listView.setItemChecked(mPRPreset, true);
-            listView.setSelection(mPRPreset);
-            break;
-        }
-        default:
-            Log.e(TAG, "onPrepareDialog invalid Dialog id: " + id);
-            break;
-        }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinner.setSelection(mPRPreset);
     }
+
+    private void equalizerSpinnerInit(Spinner spinner) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, mEQPresetNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != mEQPresetPrevious) {
+                    equalizerSetPreset(position);
+                }
+                mEQPresetPrevious = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinner.setSelection(mEQPreset);
+    }
+
 
     /**
      * En/disables all children for a given view. For linear and relative layout children do this
@@ -671,24 +558,13 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                             ControlPanelEffect.Key.bb_strength));
         }
         if (mEqualizerSupported) {
-            final String [] presets = mEQPresetNames;
-            int idx = ControlPanelEffect.getParameterInt(mContext,
-                                    mCallingPackageName, mAudioSession,
-                                    ControlPanelEffect.Key.eq_current_preset);
-            if (idx >= presets.length) {
-                idx = 0;
-            }
-            ((TextView) findViewById(R.id.eqPresetsSummaryTextView))
-                    .setText(presets[idx]);
             equalizerUpdateDisplay();
         }
         if (mPresetReverbSupported) {
-            ((TextView) findViewById(R.id.eRPresetsTitleTextView))
-                    .setText(getString(R.string.pr_title)
-                            + " "
-                            + PRESETREVERBPRESETSTRINGS[ControlPanelEffect.getParameterInt(
+            int reverb = ControlPanelEffect.getParameterInt(
                                     mContext, mCallingPackageName, mAudioSession,
-                                    ControlPanelEffect.Key.pr_current_preset)]);
+                                    ControlPanelEffect.Key.pr_current_preset);
+            ((Spinner)findViewById(R.id.prSpinner)).setSelection(reverb);
         }
     }
 
@@ -711,7 +587,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     /**
      * Initializes the equalizer elements. Set the SeekBars and Spinner listeners.
      */
-    private void equalizerInit(View eqcontainer) {
+    private void equalizerBandsInit(View eqcontainer) {
         // Initialize the N-Band Equalizer elements.
         mNumberEqualizerBands = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
                 mAudioSession, ControlPanelEffect.Key.eq_num_bands);
@@ -860,26 +736,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         ControlPanelEffect.setParameterInt(mContext, mCallingPackageName, mAudioSession,
                 ControlPanelEffect.Key.eq_current_preset, preset);
         equalizerUpdateDisplay();
-        ((TextView) findViewById(R.id.eqPresetsSummaryTextView))
-        .setText(mEQPresetNames[preset]);
-    }
-
-    /**
-     * Checks if an User EQ preset is set.
-     */
-    private boolean isEqualizerUserPreset(final int preset) {
-        return (preset == mEQPresetUserPos);
-    }
-
-    /**
-     * Sets the given PR preset.
-     *
-     * @param preset
-     *            PR preset id.
-     */
-    private void presetReverbSetPreset(final short preset) {
-        ControlPanelEffect.setParameterInt(mContext, mCallingPackageName, mAudioSession,
-                ControlPanelEffect.Key.pr_current_preset, preset);
     }
 
     /**
@@ -889,7 +745,8 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      *            PR preset id.
      */
     private void presetReverbSetPreset(final int preset) {
-        presetReverbSetPreset((short) preset);
+        ControlPanelEffect.setParameterInt(mContext, mCallingPackageName, mAudioSession,
+                ControlPanelEffect.Key.pr_current_preset, preset);
     }
 
     /**

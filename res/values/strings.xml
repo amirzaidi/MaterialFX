@@ -20,7 +20,6 @@
     <!-- ControlPanelMusic strings -->
     <string name="no_effects">Effects not available</string>
     <string name="main_toggle_effects_title">Audio effects</string>
-    <string name="eq_title">Equalizer:</string>
     <string name="eq_dialog_title">Equalizer</string>
     <string name="headset_plug">Please plug headphones for these effects</string>
     <string name="bass_boost_strength">Bass boost</string>
