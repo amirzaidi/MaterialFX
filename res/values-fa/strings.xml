@@ -19,7 +19,6 @@
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
     <string name="no_effects" msgid="2597309825423473135">"جلوه‌ها در دسترس نیستند"</string>
     <string name="main_toggle_effects_title" msgid="612896145300512593">"جلوه‌های صوتی"</string>
-    <string name="eq_title" msgid="8116550830057445149">"اکولایزر:"</string>
     <string name="eq_dialog_title" msgid="2020244436368289652">"اکولایزر"</string>
     <string name="headset_plug" msgid="1161319499289612110">"برای این جلوه‌ها لطفاً هدفون را وصل کنید"</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"تقویت باس"</string>

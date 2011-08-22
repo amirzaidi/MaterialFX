@@ -19,7 +19,6 @@
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
     <string name="no_effects" msgid="2597309825423473135">"Ефекти нису доступни"</string>
     <string name="main_toggle_effects_title" msgid="612896145300512593">"Аудио ефекти"</string>
-    <string name="eq_title" msgid="8116550830057445149">"Еквилајзер:"</string>
     <string name="eq_dialog_title" msgid="2020244436368289652">"Еквилајзер"</string>
     <string name="headset_plug" msgid="1161319499289612110">"Прикључите слушалице за ове ефекте"</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"Појачавање басова"</string>

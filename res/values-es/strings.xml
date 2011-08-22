@@ -19,7 +19,6 @@
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
     <string name="no_effects" msgid="2597309825423473135">"Efectos no disponibles"</string>
     <string name="main_toggle_effects_title" msgid="612896145300512593">"Efectos de audio"</string>
-    <string name="eq_title" msgid="8116550830057445149">"Ecualizador:"</string>
     <string name="eq_dialog_title" msgid="2020244436368289652">"Ecualizador"</string>
     <string name="headset_plug" msgid="1161319499289612110">"Para disfrutar los efectos, debes conectar los auriculares."</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"Refuerzo de graves"</string>
@@ -30,5 +29,5 @@
     <string name="setup" msgid="1103677904576339192">"Configuración"</string>
     <string name="ci_extreme" msgid="8814436348926909207">"FX Booster"</string>
     <string name="user" msgid="3949460956502898057">"Usuario"</string>
-    <string name="picker_title" msgid="8464126693702817261">"Panel control efectos música"</string>
+    <string name="picker_title" msgid="8464126693702817261">"Panel de control de efectos de música"</string>
 </resources>
