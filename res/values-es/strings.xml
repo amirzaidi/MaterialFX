@@ -20,7 +20,7 @@
     <string name="no_effects" msgid="2597309825423473135">"Efectos no disponibles"</string>
     <string name="main_toggle_effects_title" msgid="612896145300512593">"Efectos de audio"</string>
     <string name="eq_dialog_title" msgid="2020244436368289652">"Ecualizador"</string>
-    <string name="headset_plug" msgid="1161319499289612110">"Para disfrutar los efectos, debes conectar los auriculares."</string>
+    <string name="headset_plug" msgid="1161319499289612110">"Para disfrutar de los efectos, debes conectar los auriculares."</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"Refuerzo de graves"</string>
     <string name="virtualizer_strength" msgid="5035111173763913313">"Efecto 3D"</string>
     <string name="pr_title" msgid="873875523196045130">"Reverberación:"</string>
