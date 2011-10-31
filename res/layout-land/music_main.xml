@@ -33,28 +33,6 @@
         android:layout_weight="1"
         android:visibility="gone" />
 
-    <RelativeLayout
-        android:id="@+id/mainToggleEffectsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:background="#999"
-        android:gravity="center_vertical"
-        android:paddingRight="4dip">
-        <TextView
-            android:id="@+id/mainToggleEffectsTitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dip"
-            android:layout_alignParentLeft="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/eq_dialog_title" />
-        <Switch
-            android:id="@+id/mainToggleEffectsCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
-
     <FrameLayout
         android:id="@+id/contentSoundEffects"
         android:layout_width="match_parent"
