@@ -689,6 +689,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             equalizerBandUpdate(band, bandLevels[band]);
         }
         equalizerSetPreset(mEQPresetUserPos);
+        ((Spinner)findViewById(R.id.eqSpinner)).setSelection(mEQPresetUserPos);
     }
 
     /*
