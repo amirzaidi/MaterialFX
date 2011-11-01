@@ -20,6 +20,7 @@ import com.android.audiofx.OpenSLESConstants;
 import com.android.musicfx.seekbar.SeekBar;
 import com.android.musicfx.seekbar.SeekBar.OnSeekBarChangeListener;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -52,6 +53,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +102,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     private int mPRPresetPrevious;
 
     private boolean mIsHeadsetOn = false;
+    private CompoundButton mToggleSwitch;
 
     private StringBuilder mFormatBuilder = new StringBuilder();
     private Formatter mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
@@ -256,7 +259,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
         setContentView(R.layout.music_main);
         final ViewGroup viewGroup = (ViewGroup) findViewById(R.id.contentSoundEffects);
-        final View mainToggleView = findViewById(R.id.mainToggleEffectsLayout);
 
         // Fill array with presets from AudioEffects call.
         // allocate a space for 2 extra strings (CI Extreme & User)
@@ -277,8 +279,8 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             // Set the listener for the main enhancements toggle button.
             // Depending on the state enable the supported effects if they were
             // checked in the setup tab.
-            final CompoundButton toggleEffects = (CompoundButton) findViewById(R.id.mainToggleEffectsCheckBox);
-            toggleEffects.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            mToggleSwitch = new Switch(this);
+            mToggleSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(final CompoundButton buttonView,
                         final boolean isChecked) {
@@ -293,8 +295,6 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                     updateUIHeadset();
                 }
             });
-
-            mainToggleView.setVisibility(View.VISIBLE);
 
             // Initialize the Virtualizer elements.
             // Set the SeekBar listener.
@@ -424,12 +424,18 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
         } else {
             viewGroup.setVisibility(View.GONE);
-            mainToggleView.setVisibility(View.GONE);
             ((TextView) findViewById(R.id.noEffectsTextView)).setVisibility(View.VISIBLE);
         }
 
-        // TODO, actually use the action bar
-        getActionBar().hide();
+        ActionBar ab = getActionBar();
+        final int padding = getResources().getDimensionPixelSize(
+                R.dimen.action_bar_switch_padding);
+        mToggleSwitch.setPadding(0,0, padding, 0);
+        ab.setCustomView(mToggleSwitch, new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER_VERTICAL | Gravity.RIGHT));
+        ab.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
     }
 
     /*
@@ -543,7 +549,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     private void updateUI() {
         final boolean isEnabled = ControlPanelEffect.getParameterBoolean(mContext,
                 mCallingPackageName, mAudioSession, ControlPanelEffect.Key.global_enabled);
-        ((CompoundButton) findViewById(R.id.mainToggleEffectsCheckBox)).setChecked(isEnabled);
+        mToggleSwitch.setChecked(isEnabled);
         setEnabledAllChildren((ViewGroup) findViewById(R.id.contentSoundEffects), isEnabled);
         updateUIHeadset();
 
@@ -574,7 +580,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      * control/events.
      */
     private void updateUIHeadset() {
-        if (((CompoundButton) findViewById(R.id.mainToggleEffectsCheckBox)).isChecked()) {
+        if (mToggleSwitch.isChecked()) {
             ((TextView) findViewById(R.id.vIStrengthText)).setEnabled(mIsHeadsetOn);
             ((SeekBar) findViewById(R.id.vIStrengthSeekBar)).setEnabled(mIsHeadsetOn);
             findViewById(R.id.vILayout).setEnabled(!mIsHeadsetOn);
