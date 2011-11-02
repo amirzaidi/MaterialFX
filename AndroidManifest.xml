@@ -32,7 +32,7 @@
         <activity
             android:name=".ActivityMusic"
             android:theme="@android:style/Theme.Holo"
-            android:label="@string/app_name">
+            android:label="@string/eq_dialog_title">
             <intent-filter>
                 <action
                     android:name="android.media.action.DISPLAY_AUDIO_EFFECT_CONTROL_PANEL" />
