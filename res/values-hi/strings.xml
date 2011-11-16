@@ -20,7 +20,7 @@
     <string name="no_effects" msgid="2597309825423473135">"प्रभाव उपलब्ध नहीं"</string>
     <string name="main_toggle_effects_title" msgid="612896145300512593">"ऑडियो प्रभाव"</string>
     <string name="eq_dialog_title" msgid="2020244436368289652">"इक्वलाइज़र"</string>
-    <string name="headset_plug" msgid="1161319499289612110">"कृपया इन प्रभावों के लिए हेडफ़ोन प्‍लग करें"</string>
+    <string name="headset_plug" msgid="1161319499289612110">"कृपया इन प्रभावों के लिए हेडफ़ोन प्‍लग करें"</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"बेस बढ़ाएं"</string>
     <string name="virtualizer_strength" msgid="5035111173763913313">"3D प्रभाव"</string>
     <string name="pr_title" msgid="873875523196045130">"गूंज:"</string>
