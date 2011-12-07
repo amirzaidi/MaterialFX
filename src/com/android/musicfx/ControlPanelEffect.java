@@ -731,7 +731,7 @@ public class ControlPanelEffect {
 
             // Set preferences
             editor.putInt(strKey, value);
-            editor.commit();
+            editor.apply();
 
         } catch (final RuntimeException e) {
             Log.e(TAG, "setParameterInt: " + key + "; " + arg0 + "; " + arg1 + "; " + e);
