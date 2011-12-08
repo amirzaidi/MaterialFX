@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 
 public abstract class AbsSeekBar extends ProgressBar {
     private Drawable mThumb;
@@ -50,6 +51,10 @@ public abstract class AbsSeekBar extends ProgressBar {
     private static final int NO_ALPHA = 0xFF;
     private float mDisabledAlpha;
     
+    private int mScaledTouchSlop;
+    private float mTouchDownX;
+    private boolean mIsDragging;
+
     public AbsSeekBar(Context context) {
         super(context);
     }
@@ -75,6 +80,8 @@ public abstract class AbsSeekBar extends ProgressBar {
                 com.android.internal.R.styleable.Theme, 0, 0);
         mDisabledAlpha = a.getFloat(com.android.internal.R.styleable.Theme_disabledAlpha, 0.5f);
         a.recycle();
+
+        mScaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     /**
@@ -394,20 +401,48 @@ public abstract class AbsSeekBar extends ProgressBar {
         
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                setPressed(true);
-                onStartTrackingTouch();
-                trackTouchEvent(event);
+                if (isInScrollingContainer()) {
+                    mTouchDownX = event.getX();
+                } else {
+                    setPressed(true);
+                    if (mThumb != null) {
+                        invalidate(mThumb.getBounds()); // This may be within the padding region
+                    }
+                    onStartTrackingTouch();
+                    trackTouchEvent(event);
+                    attemptClaimDrag();
+                }
                 break;
                 
             case MotionEvent.ACTION_MOVE:
-                trackTouchEvent(event);
-                attemptClaimDrag();
+                if (mIsDragging) {
+                    trackTouchEvent(event);
+                } else {
+                    final float x = event.getX();
+                    if (Math.abs(x - mTouchDownX) > mScaledTouchSlop) {
+                        setPressed(true);
+                        if (mThumb != null) {
+                            invalidate(mThumb.getBounds()); // This may be within the padding region
+                        }
+                        onStartTrackingTouch();
+                        trackTouchEvent(event);
+                        attemptClaimDrag();
+                    }
+                }
                 break;
                 
             case MotionEvent.ACTION_UP:
-                trackTouchEvent(event);
-                onStopTrackingTouch();
-                setPressed(false);
+                if (mIsDragging) {
+                    trackTouchEvent(event);
+                    onStopTrackingTouch();
+                    setPressed(false);
+                } else {
+                    // Touch up when we never crossed the touch slop threshold should
+                    // be interpreted as a tap-seek to that location.
+                    onStartTrackingTouch();
+                    trackTouchEvent(event);
+                    onStopTrackingTouch();
+                }
                 // ProgressBar doesn't know to repaint the thumb drawable
                 // in its inactive state when the touch stops (because the
                 // value has not apparently changed)
@@ -415,8 +450,10 @@ public abstract class AbsSeekBar extends ProgressBar {
                 break;
                 
             case MotionEvent.ACTION_CANCEL:
-                onStopTrackingTouch();
-                setPressed(false);
+                if (mIsDragging) {
+                    onStopTrackingTouch();
+                    setPressed(false);
+                }
                 invalidate(); // see above explanation
                 break;
         }
@@ -476,6 +513,7 @@ public abstract class AbsSeekBar extends ProgressBar {
      * This is called when the user has started touching this widget.
      */
     void onStartTrackingTouch() {
+        mIsDragging = true;
     }
 
     /**
@@ -483,6 +521,7 @@ public abstract class AbsSeekBar extends ProgressBar {
      * canceled.
      */
     void onStopTrackingTouch() {
+        mIsDragging = false;
     }
 
     /**
