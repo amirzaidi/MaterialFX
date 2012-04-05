@@ -53,6 +53,7 @@ public abstract class AbsSeekBar extends ProgressBar {
     
     private int mScaledTouchSlop;
     private float mTouchDownX;
+    private float mTouchDownY;
     private boolean mIsDragging;
 
     public AbsSeekBar(Context context) {
@@ -403,6 +404,7 @@ public abstract class AbsSeekBar extends ProgressBar {
             case MotionEvent.ACTION_DOWN:
                 if (isInScrollingContainer()) {
                     mTouchDownX = event.getX();
+                    mTouchDownY = event.getY();
                 } else {
                     setPressed(true);
                     if (mThumb != null) {
@@ -419,7 +421,9 @@ public abstract class AbsSeekBar extends ProgressBar {
                     trackTouchEvent(event);
                 } else {
                     final float x = event.getX();
-                    if (Math.abs(x - mTouchDownX) > mScaledTouchSlop) {
+                    final float y = event.getX();
+                    if (Math.abs(mIsVertical ?
+                            (y - mTouchDownY) : (x - mTouchDownX)) > mScaledTouchSlop) {
                         setPressed(true);
                         if (mThumb != null) {
                             invalidate(mThumb.getBounds()); // This may be within the padding region
