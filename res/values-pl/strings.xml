@@ -27,7 +27,7 @@
     <string name="pr_summary" msgid="7457279522425453515">"Dodatkowe efekty pogłosu w pomieszczeniu"</string>
     <string name="pr_dialog_title" msgid="8080282254796293452">"Gotowe ustawienie pogłosu"</string>
     <string name="setup" msgid="1103677904576339192">"Konfiguracja"</string>
-    <string name="ci_extreme" msgid="1736938429763948084">"Wzmacniacz efektówtr"</string>
+    <string name="ci_extreme" msgid="1736938429763948084">"Wzmocnienie"</string>
     <string name="user" msgid="3949460956502898057">"Własne"</string>
     <string name="picker_title" msgid="8464126693702817261">"Panel efektów muzycznych"</string>
 </resources>
