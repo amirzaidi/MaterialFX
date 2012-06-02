@@ -918,12 +918,13 @@ public class ProgressBar extends View {
     /**
      * @hide
      */
+/*
     @Override
     public int getResolvedLayoutDirection(Drawable who) {
         return (who == mProgressDrawable || who == mIndeterminateDrawable) ?
             getResolvedLayoutDirection() : super.getResolvedLayoutDirection(who);
     }
-
+*/
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         updateDrawableBounds(w, h);
