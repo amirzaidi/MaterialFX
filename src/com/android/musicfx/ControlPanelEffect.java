@@ -1036,7 +1036,7 @@ public class ControlPanelEffect {
         // Exit after the virtualizer has been re-enabled
 
         if (isExistingAudioSession) {
-            editor.commit();
+            editor.apply();
             return;
         }
 
