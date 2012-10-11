@@ -59,6 +59,7 @@ import android.widget.Toast;
 
 import java.util.Formatter;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  *
@@ -75,6 +76,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      * Indicates if Virtualizer effect is supported.
      */
     private boolean mVirtualizerSupported;
+    private boolean mVirtualizerIsHeadphoneOnly;
     /**
      * Indicates if BassBoost effect is supported.
      */
@@ -248,6 +250,9 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
             if (effect.type.equals(AudioEffect.EFFECT_TYPE_VIRTUALIZER)) {
                 mVirtualizerSupported = true;
+                if (effect.uuid.equals(UUID.fromString("1d4033c0-8557-11df-9f2d-0002a5d5c51b"))) {
+                    mVirtualizerIsHeadphoneOnly = true;
+                }
             } else if (effect.type.equals(AudioEffect.EFFECT_TYPE_BASS_BOOST)) {
                 mBassBoostSupported = true;
             } else if (effect.type.equals(AudioEffect.EFFECT_TYPE_EQUALIZER)) {
@@ -581,9 +586,11 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
      */
     private void updateUIHeadset() {
         if (mToggleSwitch.isChecked()) {
-            ((TextView) findViewById(R.id.vIStrengthText)).setEnabled(mIsHeadsetOn);
-            ((SeekBar) findViewById(R.id.vIStrengthSeekBar)).setEnabled(mIsHeadsetOn);
-            findViewById(R.id.vILayout).setEnabled(!mIsHeadsetOn);
+            ((TextView) findViewById(R.id.vIStrengthText)).setEnabled(
+                    mIsHeadsetOn || !mVirtualizerIsHeadphoneOnly);
+            ((SeekBar) findViewById(R.id.vIStrengthSeekBar)).setEnabled(
+                    mIsHeadsetOn || !mVirtualizerIsHeadphoneOnly);
+            findViewById(R.id.vILayout).setEnabled(!mIsHeadsetOn || !mVirtualizerIsHeadphoneOnly);
             ((TextView) findViewById(R.id.bBStrengthText)).setEnabled(mIsHeadsetOn);
             ((SeekBar) findViewById(R.id.bBStrengthSeekBar)).setEnabled(mIsHeadsetOn);
             findViewById(R.id.bBLayout).setEnabled(!mIsHeadsetOn);
