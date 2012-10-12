@@ -124,6 +124,13 @@
                             android:paddingTop="2dip"
                             android:paddingLeft="20dip"
                             android:paddingRight="20dip" />
+                        <Switch
+                            android:id="@+id/vIStrengthToggle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="2dip"
+                            android:paddingLeft="20dip"
+                            android:paddingRight="20dip" />
                     </LinearLayout>
 
                     <Spinner android:id="@+id/prSpinner"

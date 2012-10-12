@@ -59,7 +59,12 @@ public class ControlPanelEffect {
     }
 
     static enum Key {
-        global_enabled, virt_enabled, virt_strength, virt_type, bb_enabled, bb_strength, te_enabled, te_strength, avl_enabled, lm_enabled, lm_strength, eq_enabled, eq_num_bands, eq_level_range, eq_center_freq, eq_band_level, eq_num_presets, eq_preset_name, eq_preset_user_band_level, eq_preset_user_band_level_default, eq_preset_opensl_es_band_level, eq_preset_ci_extreme_band_level, eq_current_preset, pr_enabled, pr_current_preset
+        global_enabled, virt_enabled, virt_strength_supported, virt_strength, virt_type, bb_enabled,
+        bb_strength, te_enabled, te_strength, avl_enabled, lm_enabled, lm_strength, eq_enabled,
+        eq_num_bands, eq_level_range, eq_center_freq, eq_band_level, eq_num_presets, eq_preset_name,
+        eq_preset_user_band_level, eq_preset_user_band_level_default,
+        eq_preset_opensl_es_band_level, eq_preset_ci_extreme_band_level, eq_current_preset,
+        pr_enabled, pr_current_preset
     }
 
     // Effect/audio session Mappings
@@ -171,6 +176,22 @@ public class ControlPanelEffect {
                     VIRTUALIZER_STRENGTH_DEFAULT);
             editor.putBoolean(Key.virt_enabled.toString(), isVIEnabled);
             editor.putInt(Key.virt_strength.toString(), vIStrength);
+            {
+                final MediaPlayer mediaPlayer = new MediaPlayer();
+                final int session = mediaPlayer.getAudioSessionId();
+                Virtualizer virtualizerEffect = null;
+                try {
+                    virtualizerEffect = new Virtualizer(PRIORITY, session);
+                    editor.putBoolean(Key.virt_strength_supported.toString(),
+                            virtualizerEffect.getStrengthSupported());
+                } finally {
+                    if (virtualizerEffect != null) {
+                        Log.d(TAG, "Releasing dummy Virtualizer effect");
+                        virtualizerEffect.release();
+                    }
+                    mediaPlayer.release();
+                }
+            }
 
             // BassBoost
             final boolean isBBEnabled = prefs.getBoolean(Key.bb_enabled.toString(),

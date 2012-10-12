@@ -351,6 +351,16 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                         }
                     }
                 });
+
+                final Switch sw = (Switch) findViewById(R.id.vIStrengthToggle);
+                sw.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(final CompoundButton buttonView,
+                            final boolean isChecked) {
+                        ControlPanelEffect.setParameterBoolean(mContext, mCallingPackageName,
+                                mAudioSession, ControlPanelEffect.Key.virt_enabled, isChecked);
+                    }
+                });
             }
 
             // Initialize the Bass Boost elements.
@@ -559,9 +569,21 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         updateUIHeadset();
 
         if (mVirtualizerSupported) {
-            ((SeekBar) findViewById(R.id.vIStrengthSeekBar)).setProgress(ControlPanelEffect
+            SeekBar bar = (SeekBar) findViewById(R.id.vIStrengthSeekBar);
+            Switch sw = (Switch) findViewById(R.id.vIStrengthToggle);
+            int strength = ControlPanelEffect
                     .getParameterInt(mContext, mCallingPackageName, mAudioSession,
-                            ControlPanelEffect.Key.virt_strength));
+                            ControlPanelEffect.Key.virt_strength);
+            bar.setProgress(strength);
+            boolean hasStrength = ControlPanelEffect.getParameterBoolean(mContext,
+                    mCallingPackageName, mAudioSession,
+                    ControlPanelEffect.Key.virt_strength_supported);
+            if (hasStrength) {
+                sw.setVisibility(View.GONE);
+            } else {
+                bar.setVisibility(View.GONE);
+                sw.setChecked(sw.isEnabled() && strength != 0);
+            }
         }
         if (mBassBoostSupported) {
             ((SeekBar) findViewById(R.id.bBStrengthSeekBar)).setProgress(ControlPanelEffect
