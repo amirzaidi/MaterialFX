@@ -45,7 +45,6 @@ import java.util.List;
 public class ControlPanelPicker extends AlertActivity implements OnClickListener, OnPrepareListViewListener {
 
     
-    int mClickedPos = -1;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -97,7 +96,7 @@ public class ControlPanelPicker extends AlertActivity implements OnClickListener
 
         public void onClick(DialogInterface dialog, int which) {
             // Save the position of most recently clicked item
-            mClickedPos = which;
+            mAlertParams.mCheckedItem = which;
         }
         
     };
@@ -108,7 +107,7 @@ public class ControlPanelPicker extends AlertActivity implements OnClickListener
             // set new default
             Intent updateIntent = new Intent(this, Service.class);
             Cursor c = mAlertParams.mCursor;
-            c.moveToPosition(mClickedPos);
+            c.moveToPosition(mAlertParams.mCheckedItem);
             updateIntent.putExtra("defPackage", c.getString(2));
             updateIntent.putExtra("defName", c.getString(3));
             startService(updateIntent);
