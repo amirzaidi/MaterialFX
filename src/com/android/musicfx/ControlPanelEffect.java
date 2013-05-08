@@ -172,8 +172,10 @@ public class ControlPanelEffect {
             // Virtualizer
             final boolean isVIEnabled = prefs.getBoolean(Key.virt_enabled.toString(),
                     VIRTUALIZER_ENABLED_DEFAULT);
+            final Virtualizer virt = new Virtualizer(0, audioSession);
             final int vIStrength = prefs.getInt(Key.virt_strength.toString(),
-                    VIRTUALIZER_STRENGTH_DEFAULT);
+                    virt.getRoundedStrength());
+            virt.release();
             editor.putBoolean(Key.virt_enabled.toString(), isVIEnabled);
             editor.putInt(Key.virt_strength.toString(), vIStrength);
             {
@@ -370,8 +372,9 @@ public class ControlPanelEffect {
                         if (virtualizerEffect != null) {
                             virtualizerEffect.setEnabled(prefs.getBoolean(
                                     Key.virt_enabled.toString(), VIRTUALIZER_ENABLED_DEFAULT));
+                            int defaultstrength = virtualizerEffect.getRoundedStrength();
                             final int vIStrength = prefs.getInt(Key.virt_strength.toString(),
-                                    VIRTUALIZER_STRENGTH_DEFAULT);
+                                    defaultstrength);
                             setParameterInt(context, packageName,
                                     audioSession, Key.virt_strength, vIStrength);
                         }
@@ -1026,8 +1029,9 @@ public class ControlPanelEffect {
                 // read parameters
                 final boolean isEnabled = prefs.getBoolean(Key.virt_enabled.toString(),
                         VIRTUALIZER_ENABLED_DEFAULT);
-                final int strength = prefs.getInt(Key.virt_strength.toString(),
-                        VIRTUALIZER_STRENGTH_DEFAULT);
+                int defaultstrength = isExistingAudioSession ? VIRTUALIZER_STRENGTH_DEFAULT :
+                    virtualizerEffect.getRoundedStrength();
+                final int strength = prefs.getInt(Key.virt_strength.toString(), defaultstrength);
                 // init settings
                 Virtualizer.Settings settings = new Virtualizer.Settings("Virtualizer;strength="
                         + strength);
