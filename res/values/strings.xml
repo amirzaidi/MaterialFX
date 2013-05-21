@@ -23,7 +23,7 @@
     <string name="eq_dialog_title">Equalizer</string>
     <string name="headset_plug">Plug in headphones for these effects.</string>
     <string name="bass_boost_strength">Bass boost</string>
-    <string name="virtualizer_strength">3D effect</string>
+    <string name="virtualizer_strength">Surround sound</string>
     <string name="pr_title">Reverb:</string>
     <string name="pr_summary">Additional room reverberation effects</string>
     <string name="pr_dialog_title">Reverb preset</string>
