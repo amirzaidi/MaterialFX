@@ -22,7 +22,7 @@
     <string name="eq_dialog_title" msgid="2020244436368289652">"इक्वलाइज़र"</string>
     <string name="headset_plug" msgid="4505819850289423141">"इन प्रभावों के लिए हेडफ़ोन प्‍लग इन करें."</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"बेस बढ़ाएं"</string>
-    <string name="virtualizer_strength" msgid="5035111173763913313">"3D प्रभाव"</string>
+    <string name="virtualizer_strength" msgid="106561253469770096">"सराउंड साउंड"</string>
     <string name="pr_title" msgid="873875523196045130">"गूंज:"</string>
     <string name="pr_summary" msgid="7457279522425453515">"अतिरिक्‍त कक्ष अनुगूंज प्रभाव"</string>
     <string name="pr_dialog_title" msgid="8080282254796293452">"गूंज प्रीसेट"</string>
