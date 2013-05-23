@@ -22,7 +22,7 @@
     <string name="eq_dialog_title" msgid="2020244436368289652">"Taajuuskorjain"</string>
     <string name="headset_plug" msgid="4505819850289423141">"Liitä kuulokkeet kuullaksesi tehosteet."</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"Basson tehostus"</string>
-    <string name="virtualizer_strength" msgid="5035111173763913313">"3D-tehoste"</string>
+    <string name="virtualizer_strength" msgid="106561253469770096">"Surround-ääni"</string>
     <string name="pr_title" msgid="873875523196045130">"Kaiku:"</string>
     <string name="pr_summary" msgid="7457279522425453515">"Muut kaikutehosteet"</string>
     <string name="pr_dialog_title" msgid="8080282254796293452">"Kaiku"</string>

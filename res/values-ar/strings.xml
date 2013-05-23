@@ -22,7 +22,7 @@
     <string name="eq_dialog_title" msgid="2020244436368289652">"المعادل"</string>
     <string name="headset_plug" msgid="4505819850289423141">"يمكنك توصيل سماعات الرأس للاستماع إلى هذه التأثيرات"</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"تحسين الجهير"</string>
-    <string name="virtualizer_strength" msgid="5035111173763913313">"تأثير ثلاثي الأبعاد"</string>
+    <string name="virtualizer_strength" msgid="106561253469770096">"الصوت المحيطي"</string>
     <string name="pr_title" msgid="873875523196045130">"الصدى:"</string>
     <string name="pr_summary" msgid="7457279522425453515">"التأثيرات الإضافية لصدى الغرفة"</string>
     <string name="pr_dialog_title" msgid="8080282254796293452">"الإعداد المسبق للصدى"</string>

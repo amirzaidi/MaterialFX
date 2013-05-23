@@ -22,7 +22,7 @@
     <string name="eq_dialog_title" msgid="2020244436368289652">"Equalizer"</string>
     <string name="headset_plug" msgid="4505819850289423141">"Podłącz słuchawki, aby usłyszeć te efekty."</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"Basy"</string>
-    <string name="virtualizer_strength" msgid="5035111173763913313">"Efekt 3D"</string>
+    <string name="virtualizer_strength" msgid="106561253469770096">"Dźwięk przestrzenny"</string>
     <string name="pr_title" msgid="873875523196045130">"Pogłos:"</string>
     <string name="pr_summary" msgid="7457279522425453515">"Dodatkowe efekty pogłosu w pomieszczeniu"</string>
     <string name="pr_dialog_title" msgid="8080282254796293452">"Gotowe ustawienie pogłosu"</string>

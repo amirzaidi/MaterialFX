@@ -22,12 +22,12 @@
     <string name="eq_dialog_title" msgid="2020244436368289652">"Equalizer"</string>
     <string name="headset_plug" msgid="4505819850289423141">"Sett inn hodetelefoner for å oppleve disse effektene."</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"Bassforsterking"</string>
-    <string name="virtualizer_strength" msgid="5035111173763913313">"3D-effekt"</string>
+    <string name="virtualizer_strength" msgid="106561253469770096">"Surround-lyd"</string>
     <string name="pr_title" msgid="873875523196045130">"Romklang:"</string>
     <string name="pr_summary" msgid="7457279522425453515">"Ytterligere effekter for romklang"</string>
     <string name="pr_dialog_title" msgid="8080282254796293452">"Forhåndsinnstilling for romklang"</string>
     <string name="setup" msgid="1103677904576339192">"Konfigurering"</string>
-    <string name="ci_extreme" msgid="1736938429763948084">"FX booster"</string>
+    <string name="ci_extreme" msgid="1736938429763948084">"Effekt"</string>
     <string name="user" msgid="3949460956502898057">"Bruker"</string>
     <string name="picker_title" msgid="8464126693702817261">"Kontr.panel for musikkeffekter"</string>
 </resources>
