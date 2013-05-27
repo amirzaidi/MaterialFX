@@ -22,8 +22,7 @@
     <string name="eq_dialog_title" msgid="2020244436368289652">"等化器"</string>
     <string name="headset_plug" msgid="4505819850289423141">"接上耳機即可體驗這些效果。"</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"低音加強"</string>
-    <!-- no translation found for virtualizer_strength (106561253469770096) -->
-    <skip />
+    <string name="virtualizer_strength" msgid="106561253469770096">"環繞音效"</string>
     <string name="pr_title" msgid="873875523196045130">"回響："</string>
     <string name="pr_summary" msgid="7457279522425453515">"額外空間回響效果"</string>
     <string name="pr_dialog_title" msgid="8080282254796293452">"回響預設"</string>
