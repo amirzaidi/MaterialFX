@@ -19,7 +19,7 @@
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
     <string name="no_effects" msgid="5067916002004255814">"Nem állnak rendelkezésre effektek."</string>
     <string name="main_toggle_effects_title" msgid="612896145300512593">"Hangeffektusok"</string>
-    <string name="eq_dialog_title" msgid="2020244436368289652">"Hangszínszabályzó"</string>
+    <string name="eq_dialog_title" msgid="2020244436368289652">"Hangszín"</string>
     <string name="headset_plug" msgid="4505819850289423141">"Dugja be a fejhallgatót ezekhez az effektekhez."</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"Mélyhangkiemelő"</string>
     <string name="virtualizer_strength" msgid="106561253469770096">"Térhatású hangzás"</string>
