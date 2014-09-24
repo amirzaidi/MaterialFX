@@ -33,7 +33,7 @@
         android:theme="@android:style/Theme.NoTitleBar">
         <activity
             android:name=".ActivityMusic"
-            android:theme="@android:style/Theme.Holo"
+            android:theme="@android:style/Theme.Material.Light"
             android:label="@string/eq_dialog_title">
             <intent-filter>
                 <action
