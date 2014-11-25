@@ -127,14 +127,14 @@ public class ControlPanelEffect {
             14000000 };
     private final static short[] EQUALIZER_PRESET_CIEXTREME_BAND_LEVEL = { 0, 800, 400, 100, 1000 };
     private final static short[] EQUALIZER_PRESET_USER_BAND_LEVEL_DEFAULT = { 0, 0, 0, 0, 0 };
-    private final static short[][] EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT = new short[EQUALIZER_NUMBER_PRESETS_DEFAULT][EQUALIZER_NUMBER_BANDS_DEFAULT];
 
     // EQ effect properties which are invariable over all EQ effects sessions
     private static short[] mEQBandLevelRange = EQUALIZER_BAND_LEVEL_RANGE_DEFAULT;
     private static short mEQNumBands = EQUALIZER_NUMBER_BANDS_DEFAULT;
     private static int[] mEQCenterFreq = EQUALIZER_CENTER_FREQ_DEFAULT;
     private static short mEQNumPresets = EQUALIZER_NUMBER_PRESETS_DEFAULT;
-    private static short[][] mEQPresetOpenSLESBandLevel = EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT;
+    private static short[][] mEQPresetOpenSLESBandLevel =
+            new short[EQUALIZER_NUMBER_PRESETS_DEFAULT][EQUALIZER_NUMBER_BANDS_DEFAULT];
     private static String[] mEQPresetNames;
     private static boolean mIsEQInitialized = false;
     private final static Object mEQInitLock = new Object();
@@ -251,17 +251,16 @@ public class ControlPanelEffect {
 
                         // When there was a failure set some good defaults
                         if (!mIsEQInitialized) {
+                            Log.e(TAG, "Error retrieving default EQ values, setting all presets"
+                                    + " to flat response");
                             mEQPresetOpenSLESBandLevel = new short[mEQNumPresets][mEQNumBands];
                             for (short preset = 0; preset < mEQNumPresets; preset++) {
                                 // Init preset names to a dummy name
                                 mEQPresetNames[preset] = prefs.getString(
                                         Key.eq_preset_name.toString() + preset,
                                         EQUALIZER_PRESET_NAME_DEFAULT + preset);
-                                if (preset < EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT.length) {
-                                    mEQPresetOpenSLESBandLevel[preset] = Arrays.copyOf(
-                                            EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT[preset],
-                                            mEQNumBands);
-                                }
+                                mEQPresetOpenSLESBandLevel[preset] = Arrays.copyOf(
+                                        EQUALIZER_PRESET_USER_BAND_LEVEL_DEFAULT, mEQNumBands);
                             }
                         }
                     }
@@ -705,7 +704,7 @@ public class ControlPanelEffect {
                             EQUALIZER_NUMBER_PRESETS_DEFAULT);
 
                     final short[][] eQPresetOpenSLESBandLevelDefault = Arrays.copyOf(
-                            EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT, numBands);
+                            mEQPresetOpenSLESBandLevel, numPresets);
                     final short[] eQPresetCIExtremeBandLevelDefault = Arrays.copyOf(
                             EQUALIZER_PRESET_CIEXTREME_BAND_LEVEL, numBands);
                     final short[] eQPresetUserBandLevelDefault = Arrays.copyOf(
