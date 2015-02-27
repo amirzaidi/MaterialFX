@@ -28,6 +28,6 @@
     <string name="pr_dialog_title" msgid="8080282254796293452">"Шаблон ревербератора"</string>
     <string name="setup" msgid="1103677904576339192">"Настройка"</string>
     <string name="ci_extreme" msgid="1736938429763948084">"Усилитель FX"</string>
-    <string name="user" msgid="3949460956502898057">"Пользователь"</string>
+    <string name="user" msgid="3949460956502898057">"Своя настройка"</string>
     <string name="picker_title" msgid="8464126693702817261">"Управление звуковыми эффектами"</string>
 </resources>
