@@ -17,8 +17,6 @@
 package com.android.musicfx;
 
 import com.android.audiofx.OpenSLESConstants;
-import com.android.musicfx.seekbar.SeekBar;
-import com.android.musicfx.seekbar.SeekBar.OnSeekBarChangeListener;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -52,6 +50,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -550,7 +550,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         final int count = viewGroup.getChildCount();
         for (int i = 0; i < count; i++) {
             final View view = viewGroup.getChildAt(i);
-            if ((view instanceof LinearLayout) || (view instanceof RelativeLayout)) {
+            if ((view instanceof ViewGroup)) {
                 final ViewGroup vg = (ViewGroup) view;
                 setEnabledAllChildren(vg, enabled);
             }
