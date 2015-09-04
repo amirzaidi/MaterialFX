@@ -73,6 +73,16 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
     private final static int EQUALIZER_MAX_BANDS = 32;
 
     /**
+     * Max levels per EQ band in millibels (1 dB = 100 mB)
+     */
+    private final static int EQUALIZER_MAX_LEVEL = 1000;
+
+    /**
+     * Min levels per EQ band in millibels (1 dB = 100 mB)
+     */
+    private final static int EQUALIZER_MIN_LEVEL = -1000;
+
+    /**
      * Indicates if Virtualizer effect is supported.
      */
     private boolean mVirtualizerSupported;
@@ -633,8 +643,8 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                 mCallingPackageName, mAudioSession, ControlPanelEffect.Key.eq_center_freq);
         final int[] bandLevelRange = ControlPanelEffect.getParameterIntArray(mContext,
                 mCallingPackageName, mAudioSession, ControlPanelEffect.Key.eq_level_range);
-        mEqualizerMinBandLevel = bandLevelRange[0];
-        final int mEqualizerMaxBandLevel = bandLevelRange[1];
+        mEqualizerMinBandLevel = (int) Math.max(EQUALIZER_MIN_LEVEL, bandLevelRange[0]);
+        final int mEqualizerMaxBandLevel = (int) Math.min(EQUALIZER_MAX_LEVEL, bandLevelRange[1]);
 
         for (int band = 0; band < mNumberEqualizerBands; band++) {
             // Unit conversion from mHz to Hz and use k prefix if necessary to display
@@ -661,13 +671,12 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
             eqcontainer.findViewById(EQViewElementIds[band][1]).setVisibility(View.GONE);
         }
 
-        // TODO: get the actual values from somewhere
         TextView tv = (TextView) findViewById(R.id.maxLevelText);
-        tv.setText("+15 dB");
+        tv.setText(String.format("+%d dB", (int) Math.ceil(mEqualizerMaxBandLevel / 100)));
         tv = (TextView) findViewById(R.id.centerLevelText);
         tv.setText("0 dB");
         tv = (TextView) findViewById(R.id.minLevelText);
-        tv.setText("-15 dB");
+        tv.setText(String.format("%d dB", (int) Math.floor(mEqualizerMinBandLevel / 100)));
         equalizerUpdateDisplay();
     }
 
