@@ -28,7 +28,8 @@
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:theme="@android:style/Theme.NoTitleBar"
+        android:allowBackup="false">
         <activity
             android:name=".ActivityMusic"
             android:theme="@android:style/Theme.Material.Light"
