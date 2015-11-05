@@ -20,7 +20,7 @@
     <string name="no_effects" msgid="5067916002004255814">"Эффекты недоступны."</string>
     <string name="eq_dialog_title" msgid="2020244436368289652">"Эквалайзер"</string>
     <string name="headset_plug" msgid="4505819850289423141">"Чтобы услышать эти эффекты, подключите наушники."</string>
-    <string name="bass_boost_strength" msgid="882301530007752270">"Усиление нижних частот"</string>
+    <string name="bass_boost_strength" msgid="882301530007752270">"Усиление басов"</string>
     <string name="virtualizer_strength" msgid="106561253469770096">"Объемный звук"</string>
     <string name="setup" msgid="1103677904576339192">"Настройка"</string>
     <string name="ci_extreme" msgid="1736938429763948084">"Усилитель FX"</string>
