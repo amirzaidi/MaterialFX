@@ -19,7 +19,7 @@
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
     <string name="no_effects" msgid="5067916002004255814">"Effekte nicht verfügbar"</string>
     <string name="eq_dialog_title" msgid="2020244436368289652">"Equalizer"</string>
-    <string name="headset_plug" msgid="4505819850289423141">"Für diese Effekte benötigen Sie Kopfhörer."</string>
+    <string name="headset_plug" msgid="4505819850289423141">"Für diese Effekte brauchst du Kopfhörer."</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"Bassverstärkung"</string>
     <string name="virtualizer_strength" msgid="106561253469770096">"Surround-Sound"</string>
     <string name="setup" msgid="1103677904576339192">"Einrichtung"</string>
