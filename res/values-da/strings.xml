@@ -24,6 +24,6 @@
     <string name="virtualizer_strength" msgid="106561253469770096">"Surroundsound"</string>
     <string name="setup" msgid="1103677904576339192">"Opsætning"</string>
     <string name="ci_extreme" msgid="1736938429763948084">"FX booster"</string>
-    <string name="user" msgid="3949460956502898057">"Bruger"</string>
+    <string name="user" msgid="3949460956502898057">"Tilpasset"</string>
     <string name="picker_title" msgid="8464126693702817261">"Kontrolpanel for musikeffekter"</string>
 </resources>
