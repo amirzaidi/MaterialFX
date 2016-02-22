@@ -447,20 +447,21 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                 reverbSpinnerInit((Spinner)findViewById(R.id.prSpinner));
             }
 
+            ActionBar ab = getActionBar();
+            final int padding = getResources().getDimensionPixelSize(
+                    R.dimen.action_bar_switch_padding);
+            mToggleSwitch.setPadding(0,0, padding, 0);
+            ab.setCustomView(mToggleSwitch, new ActionBar.LayoutParams(
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    Gravity.CENTER_VERTICAL | Gravity.RIGHT));
+            ab.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
+
         } else {
             viewGroup.setVisibility(View.GONE);
             ((TextView) findViewById(R.id.noEffectsTextView)).setVisibility(View.VISIBLE);
         }
 
-        ActionBar ab = getActionBar();
-        final int padding = getResources().getDimensionPixelSize(
-                R.dimen.action_bar_switch_padding);
-        mToggleSwitch.setPadding(0,0, padding, 0);
-        ab.setCustomView(mToggleSwitch, new ActionBar.LayoutParams(
-                ActionBar.LayoutParams.WRAP_CONTENT,
-                ActionBar.LayoutParams.WRAP_CONTENT,
-                Gravity.CENTER_VERTICAL | Gravity.RIGHT));
-        ab.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
     }
 
     /*
@@ -501,7 +502,10 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
         // Unregister for broadcast intents. (These affect the visible UI,
         // so we only care about them while we're in the foreground.)
-        unregisterReceiver(mReceiver);
+        if ((mVirtualizerSupported) || (mBassBoostSupported) || (mEqualizerSupported)
+                || (mPresetReverbSupported)) {
+            unregisterReceiver(mReceiver);
+        }
     }
 
     private void reverbSpinnerInit(Spinner spinner) {
