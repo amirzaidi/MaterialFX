@@ -496,7 +496,7 @@ public class ActivityMusic extends Activity {
     private void reverbSpinnerInit(Spinner spinner) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.spinner_item, mReverbPresetNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.spinner_detail_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 

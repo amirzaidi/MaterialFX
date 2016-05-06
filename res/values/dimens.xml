@@ -22,5 +22,7 @@
     <dimen name="action_bar_button_width">96dip</dimen>
     <dimen name="action_bar_button_height">34dip</dimen>
     <dimen name="switch_text_margin">58dp</dimen>
+    <dimen name="knob_text_size">20sp</dimen>
+    <dimen name="gallery_text_size">16sp</dimen>
 
 </resources>

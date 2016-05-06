@@ -54,6 +54,7 @@
                 android:layout_weight="1"
                 android:textAlignment="viewStart"
                 android:gravity="center_vertical"
+                android:textSize="18sp"
                 android:text="@string/toggle_button_on"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffffff" />
@@ -121,13 +122,13 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="32dp"
                         android:layout_marginTop="5dp"
-                        android:alpha="0.54"
+                        android:alpha="0.87"
                         android:ellipsize="marquee"
                         android:gravity="center"
                         android:text="@string/bass_boost_strength"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -149,13 +150,13 @@
                         android:layout_gravity="center|center_horizontal"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
-                        android:alpha="0.54"
+                        android:alpha="0.87"
                         android:ellipsize="marquee"
                         android:singleLine="true"
                         android:text="@string/virtualizer_strength"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -169,7 +170,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="70dp"
                     android:layout_marginRight="10dp"
                     android:alpha="0.54"
                     android:text="@string/pr_title"

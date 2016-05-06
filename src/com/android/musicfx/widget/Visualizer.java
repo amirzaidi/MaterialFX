@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2013-2014,2016, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -88,7 +88,7 @@ public class Visualizer extends LinearLayout {
         Resources res = getResources();
         mHighlightColor = res.getColor(R.color.highlight);
         mLowlightColor = res.getColor(R.color.lowlight);
-        mDisabledColor = res.getColor(R.color.disabled);
+        mDisabledColor = res.getColor(R.color.disabled_knob);
         mTVHeight = res.getDimension(R.dimen.eq_text_height);
 
         mTV = (TextView) findViewById(R.id.EQBandTextView);
