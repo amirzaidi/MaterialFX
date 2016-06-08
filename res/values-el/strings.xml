@@ -18,10 +18,14 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
     <string name="no_effects" msgid="5067916002004255814">"Τα εφέ δεν είναι διαθέσιμα."</string>
+    <string name="main_toggle_effects_title" msgid="612896145300512593">"Εφέ ήχου"</string>
     <string name="eq_dialog_title" msgid="2020244436368289652">"Ισοσταθμιστής"</string>
     <string name="headset_plug" msgid="4505819850289423141">"Συνδέστε τα ακουστικά για αυτά τα εφέ."</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"Ενίσχυση μπάσων"</string>
     <string name="virtualizer_strength" msgid="106561253469770096">"Περιφερειακός ήχος"</string>
+    <string name="pr_title" msgid="873875523196045130">"Αντήχηση:"</string>
+    <string name="pr_summary" msgid="7457279522425453515">"Πρόσθετα εφέ αντήχησης δωματίου"</string>
+    <string name="pr_dialog_title" msgid="8080282254796293452">"Προεπιλογή αντήχησης"</string>
     <string name="setup" msgid="1103677904576339192">"Ρύθμιση"</string>
     <string name="ci_extreme" msgid="1736938429763948084">"FX Booster"</string>
     <string name="user" msgid="3949460956502898057">"Xρήστης"</string>

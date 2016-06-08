@@ -61,9 +61,10 @@ public class ControlPanelEffect {
     static enum Key {
         global_enabled, virt_enabled, virt_strength_supported, virt_strength, virt_type, bb_enabled,
         bb_strength, te_enabled, te_strength, avl_enabled, lm_enabled, lm_strength, eq_enabled,
-        eq_num_bands, eq_level_range, eq_center_freq, eq_band_level, eq_num_presets, eq_preset_name,
-        eq_preset_user_band_level, eq_preset_user_band_level_default,
-        eq_preset_opensl_es_band_level, eq_preset_ci_extreme_band_level, eq_current_preset,
+        eq_num_bands, eq_level_range, eq_center_freq, eq_band_level, eq_band_level_no_save,
+        eq_num_presets, eq_preset_name, eq_preset_user_band_level,
+        eq_preset_user_band_level_default, eq_preset_opensl_es_band_level,
+        eq_preset_ci_extreme_band_level, eq_current_preset,
         pr_enabled, pr_current_preset
     }
 
@@ -114,8 +115,10 @@ public class ControlPanelEffect {
     private final static int VIRTUALIZER_STRENGTH_DEFAULT = 1000;
     private final static boolean BASS_BOOST_ENABLED_DEFAULT = true;
     private final static int BASS_BOOST_STRENGTH_DEFAULT = 667;
-    private final static boolean PRESET_REVERB_ENABLED_DEFAULT = false;
+    private final static boolean PRESET_REVERB_ENABLED_DEFAULT = true;
     private final static int PRESET_REVERB_CURRENT_PRESET_DEFAULT = 0; // None
+    private static int mPrevBassBoostStrength = 0;
+    private static int mPrevVirtStrength = 0;
 
     // EQ defaults
     private final static boolean EQUALIZER_ENABLED_DEFAULT = true;
@@ -127,14 +130,14 @@ public class ControlPanelEffect {
             14000000 };
     private final static short[] EQUALIZER_PRESET_CIEXTREME_BAND_LEVEL = { 0, 800, 400, 100, 1000 };
     private final static short[] EQUALIZER_PRESET_USER_BAND_LEVEL_DEFAULT = { 0, 0, 0, 0, 0 };
+    private final static short[][] EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT = new short[EQUALIZER_NUMBER_PRESETS_DEFAULT][EQUALIZER_NUMBER_BANDS_DEFAULT];
 
     // EQ effect properties which are invariable over all EQ effects sessions
     private static short[] mEQBandLevelRange = EQUALIZER_BAND_LEVEL_RANGE_DEFAULT;
     private static short mEQNumBands = EQUALIZER_NUMBER_BANDS_DEFAULT;
     private static int[] mEQCenterFreq = EQUALIZER_CENTER_FREQ_DEFAULT;
     private static short mEQNumPresets = EQUALIZER_NUMBER_PRESETS_DEFAULT;
-    private static short[][] mEQPresetOpenSLESBandLevel =
-            new short[EQUALIZER_NUMBER_PRESETS_DEFAULT][EQUALIZER_NUMBER_BANDS_DEFAULT];
+    private static short[][] mEQPresetOpenSLESBandLevel = EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT;
     private static String[] mEQPresetNames;
     private static boolean mIsEQInitialized = false;
     private final static Object mEQInitLock = new Object();
@@ -251,16 +254,17 @@ public class ControlPanelEffect {
 
                         // When there was a failure set some good defaults
                         if (!mIsEQInitialized) {
-                            Log.e(TAG, "Error retrieving default EQ values, setting all presets"
-                                    + " to flat response");
                             mEQPresetOpenSLESBandLevel = new short[mEQNumPresets][mEQNumBands];
                             for (short preset = 0; preset < mEQNumPresets; preset++) {
                                 // Init preset names to a dummy name
                                 mEQPresetNames[preset] = prefs.getString(
                                         Key.eq_preset_name.toString() + preset,
                                         EQUALIZER_PRESET_NAME_DEFAULT + preset);
-                                mEQPresetOpenSLESBandLevel[preset] = Arrays.copyOf(
-                                        EQUALIZER_PRESET_USER_BAND_LEVEL_DEFAULT, mEQNumBands);
+                                if (preset < EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT.length) {
+                                    mEQPresetOpenSLESBandLevel[preset] = Arrays.copyOf(
+                                            EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT[preset],
+                                            mEQNumBands);
+                                }
                             }
                         }
                     }
@@ -281,21 +285,19 @@ public class ControlPanelEffect {
                 editor.putInt(Key.eq_current_preset.toString(), eQPreset);
                 final short[] bandLevel = new short[mEQNumBands];
                 for (short band = 0; band < mEQNumBands; band++) {
-                    if (controlMode == ControlMode.CONTROL_PREFERENCES) {
-                        if (eQPreset < mEQNumPresets) {
-                            // OpenSL ES effect presets
-                            bandLevel[band] = mEQPresetOpenSLESBandLevel[eQPreset][band];
-                        } else if (eQPreset == mEQNumPresets) {
-                            // CI EXTREME
-                            bandLevel[band] = eQPresetCIExtremeBandLevel[band];
-                        } else {
-                            // User
-                            bandLevel[band] = (short) prefs.getInt(
-                                    Key.eq_preset_user_band_level.toString() + band,
-                                    eQPresetUserBandLevelDefault[band]);
-                        }
-                        editor.putInt(Key.eq_band_level.toString() + band, bandLevel[band]);
+                    if (eQPreset < mEQNumPresets) {
+                        // OpenSL ES effect presets
+                        bandLevel[band] = mEQPresetOpenSLESBandLevel[eQPreset][band];
+                    } else if (eQPreset == mEQNumPresets) {
+                        // CI EXTREME
+                        bandLevel[band] = eQPresetCIExtremeBandLevel[band];
+                    } else {
+                        // User
+                        bandLevel[band] = (short) prefs.getInt(
+                                Key.eq_preset_user_band_level.toString() + band,
+                                eQPresetUserBandLevelDefault[band]);
                     }
+                    editor.putInt(Key.eq_band_level.toString() + band, bandLevel[band]);
                     editor.putInt(Key.eq_center_freq.toString() + band, mEQCenterFreq[band]);
                     editor.putInt(Key.eq_preset_ci_extreme_band_level.toString() + band,
                             eQPresetCIExtremeBandLevel[band]);
@@ -369,22 +371,34 @@ public class ControlPanelEffect {
                     if (controlMode == ControlMode.CONTROL_EFFECTS) {
                         final Virtualizer virtualizerEffect = getVirtualizerEffect(audioSession);
                         if (virtualizerEffect != null) {
-                            virtualizerEffect.setEnabled(prefs.getBoolean(
-                                    Key.virt_enabled.toString(), VIRTUALIZER_ENABLED_DEFAULT));
+                            virtualizerEffect.setEnabled(true);
                             int defaultstrength = virtualizerEffect.getRoundedStrength();
                             final int vIStrength = prefs.getInt(Key.virt_strength.toString(),
                                     defaultstrength);
-                            setParameterInt(context, packageName,
-                                    audioSession, Key.virt_strength, vIStrength);
+                            boolean on = prefs.getBoolean(Key.virt_enabled.toString(), VIRTUALIZER_ENABLED_DEFAULT);
+                            if (on) {
+                                setParameterInt(context, packageName,
+                                        audioSession, Key.virt_strength, vIStrength);
+                            } else {
+                                mPrevVirtStrength = vIStrength;
+                                virtualizerEffect.setStrength((short) 0);
+                                virtualizerEffect.setEnabled(false);
+                            }
                         }
                         final BassBoost bassBoostEffect = getBassBoostEffect(audioSession);
                         if (bassBoostEffect != null) {
-                            bassBoostEffect.setEnabled(prefs.getBoolean(Key.bb_enabled.toString(),
-                                    BASS_BOOST_ENABLED_DEFAULT));
+                            bassBoostEffect.setEnabled(true);
                             final int bBStrength = prefs.getInt(Key.bb_strength.toString(),
                                     BASS_BOOST_STRENGTH_DEFAULT);
-                            setParameterInt(context, packageName,
-                                    audioSession, Key.bb_strength, bBStrength);
+                            boolean on = prefs.getBoolean(Key.bb_enabled.toString(), BASS_BOOST_ENABLED_DEFAULT);
+                            if (on) {
+                                setParameterInt(context, packageName,
+                                        audioSession, Key.bb_strength, bBStrength);
+                            } else {
+                                mPrevBassBoostStrength = bBStrength;
+                                bassBoostEffect.setStrength((short) 0);
+                                bassBoostEffect.setEnabled(false);
+                            }
                         }
                         final Equalizer equalizerEffect = getEqualizerEffect(audioSession);
                         if (equalizerEffect != null) {
@@ -396,17 +410,20 @@ public class ControlPanelEffect {
                             for (short band = 0; band < len; band++) {
                                 final int level = bandLevels[band];
                                 setParameterInt(context, packageName,
-                                        audioSession, Key.eq_band_level, level, band);
+                                        audioSession, Key.eq_band_level_no_save, level, band);
                             }
                         }
                         // XXX: Preset Reverb not used for the moment, so commented out the effect
                         // creation to not use MIPS
-                        // final PresetReverb presetReverbEffect =
-                        // getPresetReverbEffect(audioSession);
-                        // if (presetReverbEffect != null) {
-                        // presetReverbEffect.setEnabled(prefs.getBoolean(
-                        // Key.pr_enabled.toString(), PRESET_REVERB_ENABLED_DEFAULT));
-                        // }
+                        final PresetReverb presetReverbEffect = getPresetReverbEffect(audioSession);
+                        if (presetReverbEffect != null) {
+                            presetReverbEffect.setEnabled(prefs.getBoolean(Key.pr_enabled.toString(),
+                                    PRESET_REVERB_ENABLED_DEFAULT));
+                            final short presetPR = (short) prefs.getInt(Key.pr_current_preset.toString(),
+                                    PRESET_REVERB_CURRENT_PRESET_DEFAULT);
+                            setParameterInt(context, packageName,
+                                    audioSession, Key.pr_current_preset, presetPR);
+                        }
                     }
 
                     processingEnabled = true;
@@ -435,11 +452,12 @@ public class ControlPanelEffect {
                         }
                         // XXX: Preset Reverb not used for the moment, so commented out the effect
                         // creation to not use MIPS
-                        // final PresetReverb presetReverbEffect =
-                        // getPresetReverbEffect(audioSession);
-                        // if (presetReverbEffect != null) {
-                        // presetReverbEffect.setEnabled(false);
-                        // }
+                        final PresetReverb presetReverbEffect = getPresetReverbEffect(audioSession);
+                        if (presetReverbEffect != null) {
+                            mPresetReverbInstances.remove(audioSession, presetReverbEffect);
+                            presetReverbEffect.setEnabled(false);
+                            presetReverbEffect.release();
+                        }
                     }
 
                     processingEnabled = false;
@@ -461,8 +479,16 @@ public class ControlPanelEffect {
                     case virt_enabled:
                         final Virtualizer virtualizerEffect = getVirtualizerEffect(audioSession);
                         if (virtualizerEffect != null) {
-                            virtualizerEffect.setEnabled(value);
-                            enabled = virtualizerEffect.getEnabled();
+                            if (value) {
+                                virtualizerEffect.setEnabled(true);
+                                virtualizerEffect.setStrength((short) mPrevVirtStrength);
+                                enabled = true;
+                            } else {
+                                if (virtualizerEffect.getStrengthSupported())
+                                    mPrevVirtStrength = virtualizerEffect.getRoundedStrength();
+                                virtualizerEffect.setEnabled(false);
+                                enabled = false;
+                            }
                         }
                         break;
 
@@ -470,8 +496,16 @@ public class ControlPanelEffect {
                     case bb_enabled:
                         final BassBoost bassBoostEffect = getBassBoostEffect(audioSession);
                         if (bassBoostEffect != null) {
-                            bassBoostEffect.setEnabled(value);
-                            enabled = bassBoostEffect.getEnabled();
+                            if (value) {
+                                bassBoostEffect.setEnabled(true);
+                                bassBoostEffect.setStrength((short) mPrevBassBoostStrength);
+                                enabled = true;
+                            } else {
+                                if (bassBoostEffect.getStrengthSupported())
+                                    mPrevBassBoostStrength = bassBoostEffect.getRoundedStrength();
+                                bassBoostEffect.setEnabled(false);
+                                enabled = false;
+                            }
                         }
                         break;
 
@@ -488,12 +522,11 @@ public class ControlPanelEffect {
                     case pr_enabled:
                         // XXX: Preset Reverb not used for the moment, so commented out the effect
                         // creation to not use MIPS
-                        // final PresetReverb presetReverbEffect =
-                        // getPresetReverbEffect(audioSession);
-                        // if (presetReverbEffect != null) {
-                        // presetReverbEffect.setEnabled(value);
-                        // enabled = presetReverbEffect.getEnabled();
-                        // }
+                        final PresetReverb presetReverbEffect = getPresetReverbEffect(audioSession);
+                        if (presetReverbEffect != null) {
+                            presetReverbEffect.setEnabled(value);
+                            enabled = presetReverbEffect.getEnabled();
+                        }
                         break;
 
                     default:
@@ -570,19 +603,19 @@ public class ControlPanelEffect {
                 // Virtualizer
                 case virt_strength: {
                     final Virtualizer virtualizerEffect = getVirtualizerEffect(audioSession);
-                    if (virtualizerEffect != null) {
+                    boolean on = prefs.getBoolean(Key.virt_enabled.toString(), VIRTUALIZER_ENABLED_DEFAULT);
+                    if ((virtualizerEffect != null) && on) {
                         virtualizerEffect.setStrength((short) value);
-                        value = virtualizerEffect.getRoundedStrength();
-                    }
+                     }
                     break;
                 }
                     // BassBoost
                 case bb_strength: {
                     final BassBoost bassBoostEffect = getBassBoostEffect(audioSession);
-                    if (bassBoostEffect != null) {
+                    boolean on = prefs.getBoolean(Key.bb_enabled.toString(), BASS_BOOST_ENABLED_DEFAULT);
+                    if ((bassBoostEffect != null) && on) {
                         bassBoostEffect.setStrength((short) value);
-                        value = bassBoostEffect.getRoundedStrength();
-                    }
+                     }
                     break;
                 }
                     // Equalizer
@@ -598,6 +631,19 @@ public class ControlPanelEffect {
                         value = equalizerEffect.getBandLevel(band);
                         // save band level in User preset
                         editor.putInt(Key.eq_preset_user_band_level.toString() + band, value);
+                    }
+                    break;
+                }
+                // Same as eq_band_level except won't save band level in User preset
+                case eq_band_level_no_save: {
+                    if (arg1 == DUMMY_ARGUMENT) {
+                        throw new IllegalArgumentException("Dummy arg passed.");
+                    }
+                    final short band = (short) arg1;
+                    strKey = Key.eq_band_level.toString() + band;
+                    final Equalizer equalizerEffect = getEqualizerEffect(audioSession);
+                    if (equalizerEffect != null) {
+                        equalizerEffect.setBandLevel(band, (short) value);
                     }
                     break;
                 }
@@ -660,11 +706,11 @@ public class ControlPanelEffect {
                 case pr_current_preset:
                     // XXX: Preset Reverb not used for the moment, so commented out the effect
                     // creation to not use MIPS
-                    // final PresetReverb presetReverbEffect = getPresetReverbEffect(audioSession);
-                    // if (presetReverbEffect != null) {
-                    // presetReverbEffect.setPreset((short) value);
-                    // value = presetReverbEffect.getPreset();
-                    // }
+                    final PresetReverb presetReverbEffect = getPresetReverbEffect(audioSession);
+                    if (presetReverbEffect != null) {
+                        presetReverbEffect.setPreset((short) value);
+                        value = presetReverbEffect.getPreset();
+                    }
                     break;
                 default:
                     Log.e(TAG, "setParameterInt: Unknown/unsupported key " + key);
@@ -696,6 +742,16 @@ public class ControlPanelEffect {
                     editor.putInt(Key.eq_preset_user_band_level.toString() + band, value);
                     break;
                 }
+                // Same as eq_band_level except won't save band level in User preset
+                case eq_band_level_no_save: {
+                    if (arg1 == DUMMY_ARGUMENT) {
+                        throw new IllegalArgumentException("Dummy arg passed.");
+                    }
+                    final short band = (short) arg1;
+                    strKey = Key.eq_band_level.toString() + band;
+                    break;
+                }
+
                 case eq_current_preset: {
                     final short preset = (short) value;
                     final int numBands = prefs.getInt(Key.eq_num_bands.toString(),
@@ -704,7 +760,7 @@ public class ControlPanelEffect {
                             EQUALIZER_NUMBER_PRESETS_DEFAULT);
 
                     final short[][] eQPresetOpenSLESBandLevelDefault = Arrays.copyOf(
-                            mEQPresetOpenSLESBandLevel, numPresets);
+                            EQUALIZER_PRESET_OPENSL_ES_BAND_LEVEL_DEFAULT, numBands);
                     final short[] eQPresetCIExtremeBandLevelDefault = Arrays.copyOf(
                             EQUALIZER_PRESET_CIEXTREME_BAND_LEVEL, numBands);
                     final short[] eQPresetUserBandLevelDefault = Arrays.copyOf(
@@ -1096,7 +1152,9 @@ public class ControlPanelEffect {
 
                 // update preferences
                 editor.putBoolean(Key.bb_enabled.toString(), isEnabled);
-                editor.putInt(Key.bb_strength.toString(), settings.strength);
+                if (bassBoostEffect.getStrengthSupported()) {
+                    editor.putInt(Key.bb_strength.toString(), settings.strength);
+                }
             } catch (final RuntimeException e) {
                 Log.e(TAG, errorTag + e);
             }
@@ -1219,42 +1277,39 @@ public class ControlPanelEffect {
         // use MIPS left in the code for (future) reference.
         // Preset reverb
         // create effect
-        // final PresetReverb presetReverbEffect = getPresetReverbEffect(audioSession);
-        // {
-        // final String errorTag = methodTag + "PresetReverb error: ";
-        //
-        // try {
-        // // read parameters
-        // final boolean isEnabled = prefs.getBoolean(Key.pr_enabled.toString(),
-        // PRESET_REVERB_ENABLED_DEFAULT);
-        // final short preset = (short) prefs.getInt(Key.pr_current_preset.toString(),
-        // PRESET_REVERB_CURRENT_PRESET_DEFAULT);
-        //
-        // // init settings
-        // PresetReverb.Settings settings = new PresetReverb.Settings("PresetReverb;preset="
-        // + preset);
-        //
-        // // read/update preferences
-        // presetReverbEffect.setProperties(settings);
-        //
-        // // set parameters
-        // if (isGlobalEnabled == true) {
-        // presetReverbEffect.setEnabled(isEnabled);
-        // } else {
-        // presetReverbEffect.setEnabled(false);
-        // }
-        //
-        // // get parameters
-        // settings = presetReverbEffect.getProperties();
-        // Log.v(TAG, "Parameters: " + settings.toString() + ";enabled=" + isEnabled);
-        //
-        // // update preferences
-        // editor.putBoolean(Key.pr_enabled.toString(), isEnabled);
-        // editor.putInt(Key.pr_current_preset.toString(), settings.preset);
-        // } catch (final RuntimeException e) {
-        // Log.e(TAG, errorTag + e);
-        // }
-        // }
+        final PresetReverb presetReverbEffect = getPresetReverbEffect(audioSession);
+        {
+            final String errorTag = methodTag + "PresetReverb error: ";
+
+            try {
+                // read parameters
+                final boolean isEnabled = prefs.getBoolean(Key.pr_enabled.toString(), PRESET_REVERB_ENABLED_DEFAULT);
+                final short preset = (short) prefs.getInt(Key.pr_current_preset.toString(), PRESET_REVERB_CURRENT_PRESET_DEFAULT);
+
+                // init settings
+                PresetReverb.Settings settings = new PresetReverb.Settings("PresetReverb;preset=" + preset);
+
+                // read/update preferences
+                presetReverbEffect.setProperties(settings);
+
+                // set parameters
+                if (isGlobalEnabled == true) {
+                    presetReverbEffect.setEnabled(isEnabled);
+                } else {
+                    presetReverbEffect.setEnabled(false);
+                }
+
+                // get parameters
+                settings = presetReverbEffect.getProperties();
+                Log.v(TAG, "Parameters: " + settings.toString() + ";enabled=" + isEnabled);
+
+                // update preferences
+                editor.putBoolean(Key.pr_enabled.toString(), isEnabled);
+                editor.putInt(Key.pr_current_preset.toString(), settings.preset);
+            } catch (final RuntimeException e) {
+                Log.e(TAG, errorTag + e);
+            }
+        }
         editor.commit();
     }
 
@@ -1411,33 +1466,33 @@ public class ControlPanelEffect {
 
     // XXX: Preset Reverb not used for the moment, so commented out the effect creation to not
     // use MIPS
-    // /**
-    // * Gets the preset reverb effect for the given audio session. If the effect on the session
-    // * doesn't exist yet, create it and add to collection.
-    // *
-    // * @param audioSession
-    // * System wide unique audio session identifier.
-    // * @return presetReverbEffect
-    // */
-    // private static PresetReverb getPresetReverbEffect(final int audioSession) {
-    // PresetReverb presetReverbEffect = mPresetReverbInstances.get(audioSession);
-    // if (presetReverbEffect == null) {
-    // try {
-    // final PresetReverb newPresetReverbEffect = new PresetReverb(PRIORITY, audioSession);
-    // presetReverbEffect = mPresetReverbInstances.putIfAbsent(audioSession,
-    // newPresetReverbEffect);
-    // if (presetReverbEffect == null) {
-    // // put succeeded, use new value
-    // presetReverbEffect = newPresetReverbEffect;
-    // }
-    // } catch (final IllegalArgumentException e) {
-    // Log.e(TAG, "PresetReverb: " + e);
-    // } catch (final UnsupportedOperationException e) {
-    // Log.e(TAG, "PresetReverb: " + e);
-    // } catch (final RuntimeException e) {
-    // Log.e(TAG, "PresetReverb: " + e);
-    // }
-    // }
-    // return presetReverbEffect;
-    // }
+    /**
+    * Gets the preset reverb effect for the given audio session. If the effect on the session
+    * doesn't exist yet, create it and add to collection.
+    *
+    * @param audioSession
+    * System wide unique audio session identifier.
+    * @return presetReverbEffect
+    */
+    private static PresetReverb getPresetReverbEffect(final int audioSession) {
+        PresetReverb presetReverbEffect = mPresetReverbInstances.get(audioSession);
+        if (presetReverbEffect == null) {
+            try {
+                final PresetReverb newPresetReverbEffect = new PresetReverb(PRIORITY, audioSession);
+                presetReverbEffect = mPresetReverbInstances.putIfAbsent(audioSession,
+                newPresetReverbEffect);
+                if (presetReverbEffect == null) {
+                    // put succeeded, use new value
+                    presetReverbEffect = newPresetReverbEffect;
+                }
+            } catch (final IllegalArgumentException e) {
+                Log.e(TAG, "PresetReverb: " + e);
+            } catch (final UnsupportedOperationException e) {
+                Log.e(TAG, "PresetReverb: " + e);
+            } catch (final RuntimeException e) {
+                Log.e(TAG, "PresetReverb: " + e);
+            }
+        }
+        return presetReverbEffect;
+    }
 }

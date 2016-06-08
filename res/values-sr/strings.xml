@@ -23,7 +23,7 @@
     <string name="bass_boost_strength" msgid="882301530007752270">"Појачавање басова"</string>
     <string name="virtualizer_strength" msgid="106561253469770096">"Звучни систем"</string>
     <string name="setup" msgid="1103677904576339192">"Подешавање"</string>
-    <string name="ci_extreme" msgid="1736938429763948084">"FX појачавач"</string>
+    <string name="ci_extreme" msgid="1736938429763948084">"FX booster"</string>
     <string name="user" msgid="3949460956502898057">"Корисник"</string>
     <string name="picker_title" msgid="8464126693702817261">"Контр. табла музичких ефеката"</string>
 </resources>
