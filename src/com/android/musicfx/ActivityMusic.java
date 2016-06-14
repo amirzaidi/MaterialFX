@@ -674,8 +674,8 @@ public class ActivityMusic extends Activity {
                 mCallingPackageName, mAudioSession, ControlPanelEffect.Key.eq_center_freq);
         final int[] bandLevelRange = ControlPanelEffect.getParameterIntArray(mContext,
                 mCallingPackageName, mAudioSession, ControlPanelEffect.Key.eq_level_range);
-        mEqualizerMinBandLevel = (int) Math.max(EQUALIZER_MIN_LEVEL, bandLevelRange[0]);
-        final int mEqualizerMaxBandLevel = (int) Math.min(EQUALIZER_MAX_LEVEL, bandLevelRange[1]);
+        mEqualizerMinBandLevel = (int) Math.min(EQUALIZER_MIN_LEVEL, bandLevelRange[0]);
+        final int mEqualizerMaxBandLevel = (int) Math.max(EQUALIZER_MAX_LEVEL, bandLevelRange[1]);
         final OnSeekBarChangeListener listener = new OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(final Visualizer v, final int progress,
@@ -723,7 +723,7 @@ public class ActivityMusic extends Activity {
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        final int pixels = (int) (metrics.widthPixels / (mNumberEqualizerBands + 1.5f));
+        final int pixels = getResources().getDimensionPixelOffset(R.dimen.each_visualizer_width);
         final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 pixels, ViewGroup.LayoutParams.MATCH_PARENT);
         for (int band = 0; band < mNumberEqualizerBands; band++) {

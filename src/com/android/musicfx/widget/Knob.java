@@ -49,7 +49,7 @@ import java.lang.Math;
 import com.android.musicfx.R;
 
 public class Knob extends FrameLayout {
-    private static final int STROKE_WIDTH = 6;
+    private static final int STROKE_WIDTH = 15;
     private static final float TEXT_SIZE = 0.20f;
     private static final float TEXT_PADDING = 0.31f;
     private static final float LABEL_PADDING = 0.05f;
@@ -251,12 +251,12 @@ public class Knob extends FrameLayout {
         int diff;
         if (w > h) {
             diff = (w - h) / 2;
-            mRectF = new RectF(STROKE_WIDTH + diff, STROKE_WIDTH,
-                    w - STROKE_WIDTH - diff, h - STROKE_WIDTH);
+            mRectF = new RectF(STROKE_WIDTH / 2 + diff, STROKE_WIDTH / 2,
+                    w - STROKE_WIDTH / 2 - diff, h - STROKE_WIDTH / 2);
         } else {
             diff = (h - w) / 2;
-            mRectF = new RectF(STROKE_WIDTH, STROKE_WIDTH + diff,
-                    w - STROKE_WIDTH, h - STROKE_WIDTH - diff);
+            mRectF = new RectF(STROKE_WIDTH / 2, STROKE_WIDTH / 2 + diff,
+                    w - STROKE_WIDTH / 2, h - STROKE_WIDTH / 2 - diff);
         }
         int mKnobTextSize = getResources().getDimensionPixelSize(R.dimen.knob_text_size);
         mProgressTV.setTextSize(TypedValue.COMPLEX_UNIT_PX, mKnobTextSize);

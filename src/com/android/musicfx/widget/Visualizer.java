@@ -34,6 +34,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -54,7 +55,7 @@ public class Visualizer extends LinearLayout {
     }
 
     private final int MAX_TILES = 17;
-    private final float SPACE_RATIO = 2.618f;
+    private final float SPACE_RATIO = 1.0f;
     private final float HORIZONTAL_PADDING = 0.138f;
     private final int VERTICAL_PADDING = 20;
     private final static String TAG = "Visualizer-JAVA";
@@ -70,8 +71,12 @@ public class Visualizer extends LinearLayout {
 
     private int mWidth;
     private float mHeight;
+    private float mTileWidth;
     private float mBaseHeight;
     private final float mTVHeight;
+    private final float mTextBottom;
+    private final float mTileBottom;
+    private final float mLeftMargin;
 
     private int mHighlightColor;
     private int mLowlightColor;
@@ -90,6 +95,10 @@ public class Visualizer extends LinearLayout {
         mLowlightColor = res.getColor(R.color.lowlight);
         mDisabledColor = res.getColor(R.color.disabled_knob);
         mTVHeight = res.getDimension(R.dimen.eq_text_height);
+        mTextBottom = res.getDimensionPixelOffset(R.dimen.visualizer_text_bottom);
+        mTileBottom = res.getDimensionPixelOffset(R.dimen.visualizer_tile_bottom);
+        mTileWidth = res.getDimensionPixelOffset(R.dimen.tile_width);
+        mLeftMargin = res.getDimensionPixelOffset(R.dimen.visualizer_margin_left);
 
         mTV = (TextView) findViewById(R.id.EQBandTextView);
         mSB = (SeekBar) findViewById(R.id.EQBandSeekBar);
@@ -137,11 +146,11 @@ public class Visualizer extends LinearLayout {
         mWidth = w;
         mHeight = h;
         // Calculate the height of each tile
-        mBaseHeight = (mHeight - VERTICAL_PADDING * 2 - mTVHeight)
+        mBaseHeight = (mHeight - mTileBottom - mTVHeight - mTextBottom)
                 / (MAX_TILES * SPACE_RATIO + MAX_TILES - 1);
         Log.d(TAG, "onSizeChanged mBaseHeight="+mBaseHeight+" mTVHeight="+mTVHeight);
         final LayoutParams params = new LayoutParams(
-                LayoutParams.WRAP_CONTENT, (int) (mHeight - mTVHeight));
+                LayoutParams.WRAP_CONTENT, (int) (mHeight - mTVHeight - mTextBottom));
         mSB.setLayoutParams(params);
     }
 
@@ -166,12 +175,11 @@ public class Visualizer extends LinearLayout {
             } else {
                 mPaint.setColor(mDisabledColor);
             }
-
             // Draw a tile
-            rf.set(mWidth * HORIZONTAL_PADDING,
-                    i * (SPACE_RATIO + 1) * mBaseHeight + VERTICAL_PADDING,
-                    mWidth * (1 - HORIZONTAL_PADDING),
-                    ((i + 1) * SPACE_RATIO + i) * mBaseHeight + VERTICAL_PADDING);
+            rf.set(mLeftMargin,
+                    i * (SPACE_RATIO + 1) * mBaseHeight,
+                    mTileWidth + mLeftMargin,
+                    ((i + 1) * SPACE_RATIO + i) * mBaseHeight);
             canvas.drawRect(rf, mPaint);
         }
     }

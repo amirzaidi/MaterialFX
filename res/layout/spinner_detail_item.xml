@@ -32,7 +32,7 @@
                  style="?android:attr/spinnerDropDownItemStyle"
                  android:singleLine="true"
                  android:background="@color/spinner_detail_back"
-                 android:alpha="0.87"
+                 android:alpha="1"
                  android:layout_width="match_parent"
                  android:layout_height="48dip"
                  android:textSize="13sp"
