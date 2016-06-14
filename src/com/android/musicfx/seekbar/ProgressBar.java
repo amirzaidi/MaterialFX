@@ -241,9 +241,7 @@ public class ProgressBar extends View {
         this(context, attrs, defStyle, 0);
     }
 
-    /**
-     * @hide
-     */
+
     public ProgressBar(Context context, AttributeSet attrs, int defStyle, int styleRes) {
         super(context, attrs, defStyle);
         mUiThreadId = Thread.currentThread().getId();
