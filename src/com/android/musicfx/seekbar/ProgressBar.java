@@ -24,6 +24,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.AnimationDrawable;
@@ -960,6 +962,13 @@ public class ProgressBar extends View {
         }
     }
 
+    public int getThumbCenter(){
+        return 0;
+    }
+
+    public int getThumbTop(){
+        return 0;
+    }
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -970,6 +979,16 @@ public class ProgressBar extends View {
             // rotates properly in its animation
             canvas.save();
             canvas.translate(mPaddingLeft, mPaddingTop);
+            Paint p = new Paint();
+            p.setColor(0xFFE53935);
+            p.setStyle(Paint.Style.FILL);
+            Rect rect= d.getBounds();
+            canvas.drawRect((rect.left+rect.right)/2-4, getThumbCenter(),
+                    (rect.left+rect.right)/2+4 , rect.bottom, p);
+            p.setColor(Color.LTGRAY);
+            canvas.drawRect((rect.left+rect.right)/2-1, getThumbTop(),
+                    (rect.left+rect.right)/2+2 , rect.top-mPaddingTop, p);
+
             long time = getDrawingTime();
             if (mAnimation != null) {
                 mAnimation.getTransformation(time, mTransformation);

@@ -353,7 +353,19 @@ public abstract class AbsSeekBar extends ProgressBar {
             thumb.setBounds(thumbPos, topBound, thumbPos + thumbWidth, bottomBound);
         }
     }
-    
+
+    @Override
+    public int getThumbCenter(){
+        Rect rect= mThumb.getBounds();
+        return (rect.top+rect.bottom)/2;
+    }
+
+    @Override
+    public int getThumbTop(){
+        Rect rect= mThumb.getBounds();
+        return rect.top;
+    }
+
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
