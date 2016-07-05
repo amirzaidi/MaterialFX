@@ -77,7 +77,9 @@ public class Gallery extends android.widget.Gallery {
                 }
                 int mGalleryTextSize =
                         getResources().getDimensionPixelSize(R.dimen.gallery_text_size);
-                mLastView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mGalleryTextSize);
+                if (mLastView != null) {
+                    mLastView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mGalleryTextSize);
+                }
             }
 
             @Override
