@@ -154,7 +154,7 @@ public class Knob extends FrameLayout {
         if (mBinary) {
             s = mContext.getString(on ? R.string.toggle_button_on : R.string.toggle_button_off);
         } else {
-            s = on ? (int) (mProgress * 100) + "%" : "--%";
+            s = (int) (mProgress * 100) + "%";
         }
         mProgressTV.setText(s);
     }
@@ -237,9 +237,7 @@ public class Knob extends FrameLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if (mOn && mEnabled) {
-            canvas.drawArc(mRectF, -90, mBinary ? 360 : mProgress * 360, false, mPaint);
-        }
+        canvas.drawArc(mRectF, -90, mBinary ? 360 : mProgress * 360, false, mPaint);
     }
 
     @Override
