@@ -30,9 +30,11 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.audiofx.AudioEffect;
 import android.media.audiofx.AudioEffect.Descriptor;
+import android.media.audiofx.Virtualizer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -260,9 +262,7 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
 
             if (effect.type.equals(AudioEffect.EFFECT_TYPE_VIRTUALIZER)) {
                 mVirtualizerSupported = true;
-                if (effect.uuid.equals(UUID.fromString("1d4033c0-8557-11df-9f2d-0002a5d5c51b"))) {
-                    mVirtualizerIsHeadphoneOnly = true;
-                }
+                mVirtualizerIsHeadphoneOnly = !isVirtualizerTransauralSupported();
             } else if (effect.type.equals(AudioEffect.EFFECT_TYPE_BASS_BOOST)) {
                 mBassBoostSupported = true;
             } else if (effect.type.equals(AudioEffect.EFFECT_TYPE_EQUALIZER)) {
@@ -804,5 +804,21 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         final Toast toast = Toast.makeText(context, getString(R.string.headset_plug), duration);
         toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
         toast.show();
+    }
+
+    private static boolean isVirtualizerTransauralSupported() {
+        Virtualizer virt = null;
+        boolean transauralSupported = false;
+        try {
+            virt = new Virtualizer(0, android.media.AudioSystem.newAudioSessionId());
+            transauralSupported = virt.canVirtualize(AudioFormat.CHANNEL_OUT_STEREO,
+                    Virtualizer.VIRTUALIZATION_MODE_TRANSAURAL);
+        } catch (Exception e) {
+        } finally {
+            if (virt != null) {
+                virt.release();
+            }
+        }
+        return transauralSupported;
     }
 }
