@@ -45,6 +45,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.lang.Math;
+import android.util.Log;
 
 import com.android.musicfx.R;
 
@@ -56,6 +57,7 @@ public class Knob extends FrameLayout {
     private static final float LABEL_SIZE = 0.09f;
     private static final float LABEL_WIDTH = 0.80f;
     private static final float INDICATOR_RADIUS = 0.38f;
+    private final static String TAG = "Knob";
 
     public interface OnKnobChangeListener {
         void onValueChanged(Knob knob, int value, boolean fromUser);
@@ -114,6 +116,10 @@ public class Knob extends FrameLayout {
 
         ((ImageView) findViewById(R.id.knob_foreground)).setImageResource(R.drawable.knob);
         mProgressTV = (TextView) findViewById(R.id.knob_value);
+        int mKnobTextSize = getResources().getDimensionPixelSize(R.dimen.knob_text_size);
+        if(mProgressTV != null ){
+            mProgressTV.setTextSize(TypedValue.COMPLEX_UNIT_PX, mKnobTextSize);
+        }
 
         mKnobOn = (ImageView) findViewById(R.id.knob_toggle_on);
         mKnobOff = (ImageView) findViewById(R.id.knob_toggle_off);
@@ -156,6 +162,7 @@ public class Knob extends FrameLayout {
         } else {
             s = (int) (mProgress * 100) + "%";
         }
+        mProgressTV.setVisibility(View.VISIBLE);
         mProgressTV.setText(s);
     }
 
@@ -256,9 +263,6 @@ public class Knob extends FrameLayout {
             mRectF = new RectF(STROKE_WIDTH / 2, STROKE_WIDTH / 2 + diff,
                     w - STROKE_WIDTH / 2, h - STROKE_WIDTH / 2 - diff);
         }
-        int mKnobTextSize = getResources().getDimensionPixelSize(R.dimen.knob_text_size);
-        mProgressTV.setTextSize(TypedValue.COMPLEX_UNIT_PX, mKnobTextSize);
-        mProgressTV.setVisibility(View.VISIBLE);
     }
 
     @Override
