@@ -17,13 +17,39 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
-    <string name="no_effects" msgid="5067916002004255814">"無法使用效果。"</string>
-    <string name="eq_dialog_title" msgid="2020244436368289652">"等化器"</string>
-    <string name="headset_plug" msgid="4505819850289423141">"接上耳機即可體驗這些效果。"</string>
+    <string name="no_effects" msgid="5067916002004255814">"無法使用音效"</string>
+    <string name="main_toggle_effects_title" msgid="612896145300512593">"音效"</string>
+    <string name="eq_dialog_title" msgid="2020244436368289652">"驍龍音效"</string>
+    <string name="headset_plug" msgid="4505819850289423141">"插上耳機感受各種音效"</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"低音加強"</string>
     <string name="virtualizer_strength" msgid="106561253469770096">"環繞音效"</string>
+    <string name="pr_title" msgid="873875523196045130">"混響效果："</string>
+    <string name="pr_summary" msgid="7457279522425453515">"其他室內混響效果"</string>
+    <string name="pr_dialog_title" msgid="8080282254796293452">"混響效果預設"</string>
     <string name="setup" msgid="1103677904576339192">"設定"</string>
-    <string name="ci_extreme" msgid="1736938429763948084">"FX 輔助器"</string>
-    <string name="user" msgid="3949460956502898057">"使用者"</string>
-    <string name="picker_title" msgid="8464126693702817261">"音樂效果控制台"</string>
+
+    <string name="normal">普通</string>
+    <string name="classical">古典</string>
+    <string name="dance">舞曲</string>
+    <string name="flat">原聲</string>
+    <string name="folk">民謠</string>
+    <string name="heavy_metal">重金屬</string>
+    <string name="hip_hop">嘻哈</string>
+    <string name="jazz">爵士</string>
+    <string name="pop">流行</string>
+    <string name="rock">搖滾</string>
+    <string name="ci_extreme" msgid="1736938429763948084">電音</string>
+    <string name="user" msgid="3949460956502898057">自定義</string>
+
+    <string name="none">無</string>
+    <string name="smallroom">小房間</string>
+    <string name="mediumroom">中房間</string>
+    <string name="largeroom">大房間</string>
+    <string name="mediumhall">中廳</string>
+    <string name="largehall">大廳</string>
+    <string name="plate">金屬板</string>
+
+    <string name="eq_custom">切換到“自定義”以調整音效</string>
+    <string name="power_on_prompt">按右上角的開關打開音效</string>
+    <string name="picker_title" msgid="8464126693702817261">音樂效果控制台</string>
 </resources>

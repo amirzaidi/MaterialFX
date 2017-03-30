@@ -17,13 +17,43 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
-    <string name="no_effects" msgid="5067916002004255814">"没有音效。"</string>
-    <string name="eq_dialog_title" msgid="2020244436368289652">"均衡器"</string>
-    <string name="headset_plug" msgid="4505819850289423141">"插上耳机感受各种音效。"</string>
+    <string name="no_effects" msgid="5067916002004255814">"无法使用音效"</string>
+    <string name="main_toggle_effects_title" msgid="612896145300512593">"音效"</string>
+    <string name="eq_dialog_title" msgid="2020244436368289652">"骁龙音效"</string>
+    <string name="headset_plug" msgid="4505819850289423141">"插上耳机感受环绕声"</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"低音增强"</string>
     <string name="virtualizer_strength" msgid="106561253469770096">"环绕声"</string>
+    <string name="pr_title" msgid="873875523196045130">"混响效果："</string>
+    <string name="pr_summary" msgid="7457279522425453515">"其他室内混响效果"</string>
+    <string name="pr_dialog_title" msgid="8080282254796293452">"混响效果预设"</string>
     <string name="setup" msgid="1103677904576339192">"设置"</string>
-    <string name="ci_extreme" msgid="1736938429763948084">"音效增强器"</string>
-    <string name="user" msgid="3949460956502898057">"用户"</string>
+
+    <string name="normal">普通</string>
+    <string name="classical">古典</string>
+    <string name="dance">舞曲</string>
+    <string name="flat">原声</string>
+    <string name="folk">民谣</string>
+    <string name="heavy_metal">重金属</string>
+    <string name="hip_hop">嘻哈</string>
+    <string name="jazz">爵士</string>
+    <string name="pop">流行</string>
+    <string name="rock">摇滚</string>
+    <string name="ci_extreme">电音</string>
+    <string name="user">自定义</string>
+
+    <string name="none">无</string>
+    <string name="smallroom">小房间</string>
+    <string name="mediumroom">中房间</string>
+    <string name="largeroom">大房间</string>
+    <string name="mediumhall">中厅</string>
+    <string name="largehall">大厅</string>
+    <string name="plate">金属板</string>
+
+    <string name="eq_custom">切换到“自定义”以调整音效</string>
+    <string name="power_on_prompt">按右上角的开关打开音效</string>
+
     <string name="picker_title" msgid="8464126693702817261">"音乐效果控制面板"</string>
+
+    <string name="toggle_button_on">开</string>
+    <string name="toggle_button_off">关</string>
 </resources>

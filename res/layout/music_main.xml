@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (C) 2010-2011 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,123 +14,181 @@
      limitations under the License.
 -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.android.musicfx"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/noEffectsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center"
+        android:layout_weight="1"
         android:ellipsize="marquee"
         android:fadingEdge="horizontal"
-        android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/no_effects"
-        android:layout_weight="1"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:visibility="gone" />
 
-    <ScrollView
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dip" >
 
         <LinearLayout
-            android:id="@+id/contentSoundEffects"
+            android:id="@+id/togglelayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="#9e9e9e"
+            android:orientation="horizontal" >
 
-            <Spinner android:id="@+id/eqSpinner"
+            <TextView
+                android:id="@+id/switchstatus"
+                android:layout_width="0dp"
+                android:layout_marginLeft="@dimen/switch_text_margin"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textAlignment="viewStart"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:text="@string/toggle_button_on"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffffff" />
+
+
+            <ToggleButton
+                android:id="@+id/togglebutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="?android:attr/listPreferredItemHeight"
-                android:drawSelectorOnTop="true"
-            />
-
-            <include layout="@layout/music_eq" />
-
-            <LinearLayout
-                android:id="@+id/bBLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?android:attr/listPreferredItemHeight"
-                android:gravity="center_vertical"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="6dip"
-                android:layout_marginTop="6dip"
-                android:layout_marginBottom="6dip"
-                android:orientation="horizontal"
-                android:background="@android:drawable/list_selector_background">
-                <TextView
-                    android:id="@+id/bBStrengthText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
-                    android:text="@string/bass_boost_strength" />
-                <SeekBar
-                    android:id="@+id/bBStrengthSeekBar"
-                    android:layout_width="170dip"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="2dip"
-                    android:paddingLeft="20dip"
-                    android:paddingRight="20dip" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/vILayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?android:attr/listPreferredItemHeight"
-                android:gravity="center_vertical"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="6dip"
-                android:layout_marginTop="6dip"
-                android:layout_marginBottom="6dip"
-                android:orientation="horizontal"
-                android:background="@android:drawable/list_selector_background">
-                <TextView
-                    android:id="@+id/vIStrengthText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
-                    android:text="@string/virtualizer_strength" />
-                <SeekBar
-                    android:id="@+id/vIStrengthSeekBar"
-                    android:layout_width="170dip"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="2dip"
-                    android:paddingLeft="20dip"
-                    android:paddingRight="20dip" />
-                <Switch
-                    android:id="@+id/vIStrengthToggle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="2dip"
-                    android:paddingLeft="20dip"
-                    android:paddingRight="20dip" />
-            </LinearLayout>
-
-            <Spinner android:id="@+id/prSpinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?android:attr/listPreferredItemHeight"
-                android:drawSelectorOnTop="true"
-                android:visibility="gone"
-            />
-
+                android:layout_gravity="right"
+                android:background="@null"
+                android:button="@drawable/togglestate"
+                android:paddingRight="10dp"
+                android:textOff=""
+                android:textOn="" />
         </LinearLayout>
-    </ScrollView>
+
+        <com.android.musicfx.widget.InterceptableLinearLayout
+            android:id="@+id/contentSoundEffects"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/togglelayout"
+            android:orientation="vertical" >
+
+            <include
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="27"
+                layout="@layout/music_eq" />
+
+            <com.android.musicfx.widget.Gallery
+                android:id="@+id/eqPresets"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="7"
+                android:background="#ffffff"
+                android:fadingEdgeLength="70dip"
+                android:gravity="center_vertical"
+                android:padding="0dip"
+                android:requiresFadingEdge="horizontal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="23"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="7dp"
+                    android:orientation="vertical" >
+
+                    <com.android.musicfx.widget.Knob
+                        android:id="@+id/bBStrengthKnob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        custom:foreground="@drawable/knob"
+                        custom:label="@string/bass_boost_strength" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|center_horizontal"
+                        android:layout_marginTop="7dp"
+                        android:alpha="0.87"
+                        android:ellipsize="marquee"
+                        android:gravity="center"
+                        android:text="@string/bass_boost_strength"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="7dp"
+                    android:orientation="vertical" >
+
+                    <com.android.musicfx.widget.Knob
+                        android:id="@+id/vIStrengthKnob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        custom:foreground="@drawable/knob"
+                        custom:label="@string/virtualizer_strength" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|center_horizontal"
+                        android:layout_marginTop="7dp"
+                        android:alpha="0.87"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"
+                        android:text="@string/virtualizer_strength"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center|center_horizontal"
+                android:layout_marginBottom="12dp"
+                 android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:alpha="0.87"
+                    android:text="@string/pr_title"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/prSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/spinner_back_color"
+                    android:gravity="center"
+                    android:minHeight="10dp"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/actionbarcolor" />
+            </LinearLayout>
+        </com.android.musicfx.widget.InterceptableLinearLayout>
+    </RelativeLayout>
+
 </LinearLayout>

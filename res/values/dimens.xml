@@ -17,5 +17,18 @@
 <resources>
     <dimen name="eq_slider_margin">5dip</dimen>
     <dimen name="eq_slider_height">180dip</dimen>
+    <dimen name="eq_text_height">20dip</dimen>
     <dimen name="action_bar_switch_padding">16dip</dimen>
+    <dimen name="action_bar_button_width">96dip</dimen>
+    <dimen name="action_bar_button_height">34dip</dimen>
+    <dimen name="switch_text_margin">58dp</dimen>
+    <dimen name="knob_text_size">20sp</dimen>
+    <dimen name="gallery_text_size">16sp</dimen>
+    <dimen name="each_visualizer_width">48dp</dimen>
+    <dimen name="visualizer_margin_left">13dp</dimen>
+    <dimen name="visualizer_text_bottom">20dp</dimen>
+    <dimen name="visualizer_tile_bottom">16dp</dimen>
+    <dimen name="tile_width">22dp</dimen>
+    <dimen name="visualizer_tile_margin">26dp</dimen>
+
 </resources>

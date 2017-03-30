@@ -18,10 +18,14 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
     <string name="no_effects" msgid="5067916002004255814">"ኢፌክት አልተገኘም"</string>
+    <string name="main_toggle_effects_title" msgid="612896145300512593">"የድም ፅ ተፅዕኖች"</string>
     <string name="eq_dialog_title" msgid="2020244436368289652">"ማመጣጠኛ"</string>
     <string name="headset_plug" msgid="4505819850289423141">"እባክህ ለእነዚህ ኢፌክቶች የጆሮ ማዳመጫዎች ሰካ፡፡"</string>
     <string name="bass_boost_strength" msgid="882301530007752270">"ወፍራም ደምጽ መጨመር"</string>
     <string name="virtualizer_strength" msgid="106561253469770096">"የዙሪያ ድምጽ"</string>
+    <string name="pr_title" msgid="873875523196045130">"አስተጋባ"</string>
+    <string name="pr_summary" msgid="7457279522425453515">"ተጨማሪ የማስተጋቢያ ተፅዕኖዎች"</string>
+    <string name="pr_dialog_title" msgid="8080282254796293452">"የአስተጋባ ቅድመ ቅምጥ"</string>
     <string name="setup" msgid="1103677904576339192">"አዋቅር"</string>
     <string name="ci_extreme" msgid="1736938429763948084">"የኢፌክት መጨመሪያ"</string>
     <string name="user" msgid="3949460956502898057">"ተጠቃሚ"</string>
