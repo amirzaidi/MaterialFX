@@ -275,6 +275,10 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
         setContentView(R.layout.music_main);
         final ViewGroup viewGroup = (ViewGroup) findViewById(R.id.contentSoundEffects);
 
+        // Set accessibility label for bass boost and virtualizer strength seekbars.
+        findViewById(R.id.bBStrengthText).setLabelFor(R.id.bBStrengthSeekBar);
+        findViewById(R.id.vIStrengthText).setLabelFor(R.id.vIStrengthSeekBar);
+
         // Fill array with presets from AudioEffects call.
         // allocate a space for 2 extra strings (CI Extreme & User)
         final int numPresets = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
@@ -663,6 +667,8 @@ public class ActivityMusic extends Activity implements OnSeekBarChangeListener {
                     format("%.0f ", centerFreqHz) + unitPrefix + "Hz");
             mEqualizerSeekBar[band] = (SeekBar) eqcontainer
                     .findViewById(EQViewElementIds[band][1]);
+            eqcontainer.findViewById(EQViewElementIds[band][0])
+                    .setLabelFor(EQViewElementIds[band][1]);
             mEqualizerSeekBar[band].setMax(mEqualizerMaxBandLevel - mEqualizerMinBandLevel);
             mEqualizerSeekBar[band].setOnSeekBarChangeListener(this);
         }
