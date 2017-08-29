@@ -17,14 +17,13 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="5717136097222561957">"MusicFX"</string>
-    <string name="no_effects" msgid="5067916002004255814">"Effekter er ikke tilgjengelige."</string>
-    <string name="eq_dialog_title" msgid="2020244436368289652">"Equalizer"</string>
-    <string name="headset_plug" msgid="4505819850289423141">"Sett inn hodetelefoner for å oppleve disse effektene."</string>
-    <string name="bass_boost_strength" msgid="882301530007752270">"Bassforsterking"</string>
-    <!-- no translation found for virtualizer_strength (106561253469770096) -->
-    <skip />
-    <string name="setup" msgid="1103677904576339192">"Konfigurering"</string>
+    <string name="no_effects" msgid="5067916002004255814">"Efekti nisu dostupni."</string>
+    <string name="eq_dialog_title" msgid="2020244436368289652">"Ekvalizator"</string>
+    <string name="headset_plug" msgid="4505819850289423141">"Priključite slušalice za ove efekte."</string>
+    <string name="bass_boost_strength" msgid="882301530007752270">"Pojačanje basova"</string>
+    <string name="virtualizer_strength" msgid="106561253469770096">"Okružujući zvuk"</string>
+    <string name="setup" msgid="1103677904576339192">"Postavljanje"</string>
     <string name="ci_extreme" msgid="1736938429763948084">"FX booster"</string>
-    <string name="user" msgid="3949460956502898057">"Bruker"</string>
-    <string name="picker_title" msgid="8464126693702817261">"Kontr.panel for musikkeffekter"</string>
+    <string name="user" msgid="3949460956502898057">"Korisnik"</string>
+    <string name="picker_title" msgid="8464126693702817261">"Upravljačka ploča glazbenih efekata"</string>
 </resources>
