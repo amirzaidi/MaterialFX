@@ -28,7 +28,8 @@
     <string name="pr_summary" msgid="7457279522425453515">"Ytterligere effekter for romklang"</string>
     <string name="pr_dialog_title" msgid="8080282254796293452">"Forhåndsinnstilling for romklang"</string>
     <string name="setup" msgid="1103677904576339192">"Konfigurering"</string>
+    <string name="virtualizer_strength" msgid="106561253469770096">"Surround sound"</string>
     <string name="ci_extreme" msgid="1736938429763948084">"FX booster"</string>
-    <string name="user" msgid="3949460956502898057">"Bruker"</string>
-    <string name="picker_title" msgid="8464126693702817261">"Kontr.panel for musikkeffekter"</string>
+    <string name="user" msgid="3949460956502898057">"User"</string>
+    <string name="picker_title" msgid="8464126693702817261">"Music effects control panel"</string>
 </resources>
