@@ -158,7 +158,7 @@ public class Knob extends FrameLayout {
     private void setProgressText(boolean on) {
         final String s;
         if (mBinary) {
-            s = mContext.getString(on ? R.string.toggle_button_on : R.string.toggle_button_off);
+            s = getContext().getString(on ? R.string.toggle_button_on : R.string.toggle_button_off);
         } else {
             s = (int) (mProgress * 100) + "%";
         }

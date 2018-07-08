@@ -27,6 +27,8 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.util.Log;
 
+import com.android.musicfx.R;
+
 public abstract class AbsSeekBar extends ProgressBar {
     private Drawable mThumb;
     private int mThumbOffset;
@@ -70,18 +72,18 @@ public abstract class AbsSeekBar extends ProgressBar {
         super(context, attrs, defStyle);
 
         TypedArray a = context.obtainStyledAttributes(attrs,
-                com.android.internal.R.styleable.SeekBar, defStyle, 0);
-        Drawable thumb = a.getDrawable(com.android.internal.R.styleable.SeekBar_thumb);
+                R.styleable.SeekBar, defStyle, 0);
+        Drawable thumb = a.getDrawable(R.styleable.SeekBar_thumb);
         setThumb(thumb); // will guess mThumbOffset if thumb != null...
         // ...but allow layout to override this
         int thumbOffset = a.getDimensionPixelOffset(
-                com.android.internal.R.styleable.SeekBar_thumbOffset, getThumbOffset());
+                R.styleable.SeekBar_thumbOffset, getThumbOffset());
         setThumbOffset(thumbOffset);
         a.recycle();
 
         a = context.obtainStyledAttributes(attrs,
-                com.android.internal.R.styleable.Theme, 0, 0);
-        mDisabledAlpha = a.getFloat(com.android.internal.R.styleable.Theme_disabledAlpha, 0.5f);
+                R.styleable.Theme, 0, 0);
+        mDisabledAlpha = a.getFloat(R.styleable.Theme_disabledAlpha, 0.5f);
         a.recycle();
 
         mScaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
@@ -245,7 +247,7 @@ public abstract class AbsSeekBar extends ProgressBar {
             int thumbWidth = thumb == null ? 0 : thumb.getIntrinsicWidth();
             // The max width does not incorporate padding, whereas the width
             // parameter does
-            int trackWidth = Math.min(mMaxWidth, w - mPaddingLeft - mPaddingRight);
+            int trackWidth = Math.min(mMaxWidth, w - getPaddingLeft() - getPaddingRight());
 
             int max = getMax();
             float scale = max > 0 ? (float) getProgress() / (float) max : 0;
@@ -258,14 +260,14 @@ public abstract class AbsSeekBar extends ProgressBar {
                 if (d != null) {
                     // Canvas will be translated by the padding, so 0,0 is where we start drawing
                     d.setBounds(gapForCenteringTrack, 0,
-                            w - mPaddingRight - gapForCenteringTrack - mPaddingLeft,
-                            h - mPaddingBottom - mPaddingTop);
+                            w - getPaddingRight() - gapForCenteringTrack - getPaddingLeft(),
+                            h - getPaddingBottom() - getPaddingTop());
                 }
             } else {
                 if (d != null) {
                     // Canvas will be translated by the padding, so 0,0 is where we start drawing
-                    d.setBounds(0, 0, w - mPaddingRight - mPaddingLeft, h - mPaddingBottom
-                            - mPaddingTop);
+                    d.setBounds(0, 0, w - getPaddingRight() - getPaddingLeft(), h - getPaddingBottom()
+                            - getPaddingTop());
                 }
                 int gap = (trackWidth - thumbWidth) / 2;
                 if (thumb != null) {
@@ -276,7 +278,7 @@ public abstract class AbsSeekBar extends ProgressBar {
             int thumbHeight = thumb == null ? 0 : thumb.getIntrinsicHeight();
             // The max height does not incorporate padding, whereas the height
             // parameter does
-            int trackHeight = Math.min(mMaxHeight, h - mPaddingTop - mPaddingBottom);
+            int trackHeight = Math.min(mMaxHeight, h - getPaddingTop() - getPaddingBottom());
 
             int max = getMax();
             float scale = max > 0 ? (float) getProgress() / (float) max : 0;
@@ -289,14 +291,14 @@ public abstract class AbsSeekBar extends ProgressBar {
                 if (d != null) {
                     // Canvas will be translated by the padding, so 0,0 is where we start drawing
                     d.setBounds(0, gapForCenteringTrack,
-                            w - mPaddingRight - mPaddingLeft, h - mPaddingBottom - gapForCenteringTrack
-                            - mPaddingTop);
+                            w - getPaddingRight() - getPaddingLeft(), h - getPaddingBottom() - gapForCenteringTrack
+                            - getPaddingTop());
                 }
             } else {
                 if (d != null) {
                     // Canvas will be translated by the padding, so 0,0 is where we start drawing
-                    d.setBounds(0, 0, w - mPaddingRight - mPaddingLeft, h - mPaddingBottom
-                            - mPaddingTop);
+                    d.setBounds(0, 0, w - getPaddingRight() - getPaddingLeft(), h - getPaddingBottom()
+                            - getPaddingTop());
                 }
                 int gap = (trackHeight - thumbHeight) / 2;
                 if (thumb != null) {
@@ -314,9 +316,9 @@ public abstract class AbsSeekBar extends ProgressBar {
         int thumbWidth = thumb.getIntrinsicWidth();
         int thumbHeight = thumb.getIntrinsicHeight();
         if (mIsVertical) {
-            available = h - mPaddingTop - mPaddingBottom - thumbHeight;
+            available = h - getPaddingTop() - getPaddingBottom() - thumbHeight;
         } else {
-            available = w - mPaddingLeft - mPaddingRight - thumbWidth;
+            available = w - getPaddingLeft() - getPaddingRight() - thumbWidth;
         }
 
         // The extra space for the thumb to move on the track
@@ -374,11 +376,11 @@ public abstract class AbsSeekBar extends ProgressBar {
             // Translate the padding. For the x/y, we need to allow the thumb to
             // draw in its extra space
             if (mIsVertical) {
-                canvas.translate(mPaddingLeft, mPaddingTop - mThumbOffset);
+                canvas.translate(getPaddingLeft(), getPaddingTop() - mThumbOffset);
                 mThumb.draw(canvas);
                 canvas.restore();
             } else {
-                canvas.translate(mPaddingLeft - mThumbOffset, mPaddingTop);
+                canvas.translate(getPaddingLeft() - mThumbOffset, getPaddingTop());
                 mThumb.draw(canvas);
                 canvas.restore();
             }
@@ -397,8 +399,8 @@ public abstract class AbsSeekBar extends ProgressBar {
             dh = Math.max(mMinHeight, Math.min(mMaxHeight, d.getIntrinsicHeight()));
             dh = Math.max(thumbHeight, dh);
         }
-        dw += mPaddingLeft + mPaddingRight;
-        dh += mPaddingTop + mPaddingBottom;
+        dw += getPaddingLeft() + getPaddingRight();
+        dh += getPaddingTop() + getPaddingBottom();
         
         setMeasuredDimension(resolveSizeAndState(dw, widthMeasureSpec, 0),
                 resolveSizeAndState(dh, heightMeasureSpec, 0));
@@ -418,7 +420,7 @@ public abstract class AbsSeekBar extends ProgressBar {
         
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (isInScrollingContainer()) {
+                if (false) {
                     mTouchDownX = event.getX();
                     mTouchDownY = event.getY();
                 } else {
@@ -484,15 +486,15 @@ public abstract class AbsSeekBar extends ProgressBar {
         float progress = 0;
         if (mIsVertical) {
             final int height = getHeight();
-            final int available = height - mPaddingTop - mPaddingBottom;
+            final int available = height - getPaddingTop() - getPaddingBottom();
             int y = (int)event.getY();
             float scale;
-            if (y < mPaddingTop) {
+            if (y < getPaddingTop()) {
                 scale = 1.0f;
-            } else if (y > height - mPaddingBottom) {
+            } else if (y > height - getPaddingBottom()) {
                 scale = 0.0f;
             } else {
-                scale = 1.0f - (float)(y - mPaddingTop) / (float)available;
+                scale = 1.0f - (float)(y - getPaddingTop()) / (float)available;
                 progress = mTouchProgressOffset;
             }
 
@@ -500,15 +502,15 @@ public abstract class AbsSeekBar extends ProgressBar {
             progress += scale * max;
         } else {
             final int width = getWidth();
-            final int available = width - mPaddingLeft - mPaddingRight;
+            final int available = width - getPaddingLeft() - getPaddingRight();
             int x = (int)event.getX();
             float scale;
-            if (x < mPaddingLeft) {
+            if (x < getPaddingLeft()) {
                 scale = 0.0f;
-            } else if (x > width - mPaddingRight) {
+            } else if (x > width - getPaddingRight()) {
                 scale = 1.0f;
             } else {
-                scale = (float)(x - mPaddingLeft) / (float)available;
+                scale = (float)(x - getPaddingLeft()) / (float)available;
                 progress = mTouchProgressOffset;
             }
 
@@ -524,8 +526,8 @@ public abstract class AbsSeekBar extends ProgressBar {
      * ancestors from stealing events in the drag.
      */
     private void attemptClaimDrag() {
-        if (mParent != null) {
-            mParent.requestDisallowInterceptTouchEvent(true);
+        if (getParent() != null) {
+            getParent().requestDisallowInterceptTouchEvent(true);
         }
     }
     

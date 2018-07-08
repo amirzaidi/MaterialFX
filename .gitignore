@@ -1,0 +1,15 @@
+# Project files and paths.
+.classpath
+.project
+.project.properties
+*.iml
+**/*.iml
+.settings/
+bin/
+libs/
+gen/
+.idea/
+.gradle/
+gradle/
+build/
+gradlew*

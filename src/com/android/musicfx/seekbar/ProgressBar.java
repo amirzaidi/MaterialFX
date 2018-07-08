@@ -16,7 +16,7 @@
 
 package com.android.musicfx.seekbar;
 
-import com.android.internal.R;
+import com.android.musicfx.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -126,7 +126,7 @@ import android.util.Log;
  * can then increment the  progress with {@link #incrementProgressBy incrementProgressBy()} or
  * {@link #setProgress setProgress()}. By default, the progress bar is full when it reaches 100. If
  * necessary, you can adjust the maximum value (the value for a full bar) using the {@link
- * android.R.styleable#ProgressBar_max android:max} attribute. Other attributes available are listed
+ * R.styleable#ProgressBar_max android:max} attribute. Other attributes available are listed
  * below.</p>
  *
  * <p>Another common style to apply to the progress bar is {@link
@@ -168,8 +168,7 @@ import android.util.Log;
  *  
  * <p><strong>XML attributes</b></strong> 
  * <p> 
- * See {@link android.R.styleable#ProgressBar ProgressBar Attributes}, 
- * {@link android.R.styleable#View View Attributes}
+ * See {@link R.styleable#ProgressBar ProgressBar Attributes}
  * </p>
  * 
  * @attr ref android.R.styleable#ProgressBar_animationResolution
@@ -236,7 +235,7 @@ public class ProgressBar extends View {
     }
     
     public ProgressBar(Context context, AttributeSet attrs) {
-        this(context, attrs, com.android.internal.R.attr.progressBarStyle);
+        this(context, attrs, android.R.attr.progressBarStyle);
     }
 
     public ProgressBar(Context context, AttributeSet attrs, int defStyle) {
@@ -273,7 +272,7 @@ public class ProgressBar extends View {
         mBehavior = a.getInt(R.styleable.ProgressBar_indeterminateBehavior, mBehavior);
 
         final int resID = a.getResourceId(
-                com.android.internal.R.styleable.ProgressBar_interpolator, 
+                R.styleable.ProgressBar_interpolator,
                 android.R.anim.linear_interpolator); // default to linear interpolator
         if (resID > 0) {
             setInterpolator(context, resID);
@@ -320,7 +319,7 @@ public class ProgressBar extends View {
             for (int i = 0; i < N; i++) {
                 int id = background.getId(i);
                 outDrawables[i] = tileify(background.getDrawable(i),
-                        (id == R.id.progress || id == R.id.secondaryProgress));
+                        (id == android.R.id.progress || id == android.R.id.secondaryProgress));
             }
 
             LayerDrawable newBg = new LayerDrawable(outDrawables);
@@ -332,13 +331,14 @@ public class ProgressBar extends View {
             return newBg;
             
         } else if (drawable instanceof StateListDrawable) {
-            StateListDrawable in = (StateListDrawable) drawable;
+            /*StateListDrawable in = (StateListDrawable) drawable;
             StateListDrawable out = new StateListDrawable();
             int numStates = in.getStateCount();
             for (int i = 0; i < numStates; i++) {
                 out.addState(in.getStateSet(i), tileify(in.getStateDrawable(i), clip));
             }
-            return out;
+            return out;*/
+            return drawable.getConstantState().newDrawable();
             
         } else if (drawable instanceof BitmapDrawable) {
             final Bitmap tileBitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -532,8 +532,8 @@ public class ProgressBar extends View {
         if (needUpdate) {
             updateDrawableBounds(getWidth(), getHeight());
             updateDrawableState();
-            doRefreshProgress(R.id.progress, mProgress, false, false);
-            doRefreshProgress(R.id.secondaryProgress, mSecondaryProgress, false, false);
+            doRefreshProgress(android.R.id.progress, mProgress, false, false);
+            doRefreshProgress(android.R.id.secondaryProgress, mSecondaryProgress, false, false);
         }
     }
     
@@ -607,13 +607,15 @@ public class ProgressBar extends View {
             invalidate();
         }
         
-        if (callBackToApp && id == R.id.progress) {
+        if (callBackToApp && id == android.R.id.progress) {
             onProgressRefresh(scale, fromUser);
         }
     }
 
     void onProgressRefresh(float scale, boolean fromUser) {
-        if (AccessibilityManager.getInstance(mContext).isEnabled()) {
+        AccessibilityManager manager = (AccessibilityManager)
+                getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+        if (manager.isEnabled()) {
             scheduleAccessibilityEventSender();
         }
     }
@@ -670,7 +672,7 @@ public class ProgressBar extends View {
 
         if (progress != mProgress) {
             mProgress = progress;
-            refreshProgress(R.id.progress, mProgress, fromUser);
+            refreshProgress(android.R.id.progress, mProgress, fromUser);
         }
     }
 
@@ -702,7 +704,7 @@ public class ProgressBar extends View {
 
         if (secondaryProgress != mSecondaryProgress) {
             mSecondaryProgress = secondaryProgress;
-            refreshProgress(R.id.secondaryProgress, mSecondaryProgress, false);
+            refreshProgress(android.R.id.secondaryProgress, mSecondaryProgress, false);
         }
     }
 
@@ -776,7 +778,7 @@ public class ProgressBar extends View {
             if (mProgress > max) {
                 mProgress = max;
             }
-            refreshProgress(R.id.progress, mProgress, false);
+            refreshProgress(android.R.id.progress, mProgress, false);
         }
     }
     
@@ -908,8 +910,8 @@ public class ProgressBar extends View {
         if (!mInDrawing) {
             if (verifyDrawable(dr)) {
                 final Rect dirty = dr.getBounds();
-                final int scrollX = mScrollX + mPaddingLeft;
-                final int scrollY = mScrollY + mPaddingTop;
+                final int scrollX = getScrollX() + getPaddingLeft();
+                final int scrollY = getScrollY() + getPaddingTop();
 
                 invalidate(dirty.left + scrollX, dirty.top + scrollY,
                         dirty.right + scrollX, dirty.bottom + scrollY);
@@ -926,8 +928,8 @@ public class ProgressBar extends View {
 
     private void updateDrawableBounds(int w, int h) {
         // onDraw will translate the canvas so we draw starting at 0,0
-        int right = w - mPaddingRight - mPaddingLeft;
-        int bottom = h - mPaddingBottom - mPaddingTop;
+        int right = w - getPaddingRight() - getPaddingLeft();
+        int bottom = h - getPaddingBottom() - getPaddingTop();
         int top = 0;
         int left = 0;
 
@@ -978,7 +980,7 @@ public class ProgressBar extends View {
             // Translate canvas so a indeterminate circular progress bar with padding
             // rotates properly in its animation
             canvas.save();
-            canvas.translate(mPaddingLeft, mPaddingTop);
+            canvas.translate(getPaddingLeft(), getPaddingTop());
             Paint p = new Paint();
             p.setColor(0xFFE53935);
             p.setStyle(Paint.Style.FILL);
@@ -987,7 +989,7 @@ public class ProgressBar extends View {
                     (rect.left+rect.right)/2+4 , rect.bottom, p);
             p.setColor(Color.LTGRAY);
             canvas.drawRect((rect.left+rect.right)/2-1, getThumbTop(),
-                    (rect.left+rect.right)/2+2 , rect.top-mPaddingTop, p);
+                    (rect.left+rect.right)/2+2 , rect.top-getPaddingTop(), p);
 
             long time = getDrawingTime();
             if (mAnimation != null) {
@@ -1025,8 +1027,8 @@ public class ProgressBar extends View {
             dh = Math.max(mMinHeight, Math.min(mMaxHeight, d.getIntrinsicHeight()));
         }
         updateDrawableState();
-        dw += mPaddingLeft + mPaddingRight;
-        dh += mPaddingTop + mPaddingBottom;
+        dw += getPaddingLeft() + getPaddingRight();
+        dh += getPaddingTop() + getPaddingBottom();
 
         setMeasuredDimension(resolveSizeAndState(dw, widthMeasureSpec, 0),
                 resolveSizeAndState(dh, heightMeasureSpec, 0));

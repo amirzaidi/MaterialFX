@@ -24,31 +24,22 @@ import com.android.musicfx.widget.Knob.OnKnobChangeListener;
 import com.android.musicfx.widget.Visualizer;
 import com.android.musicfx.widget.Visualizer.OnSeekBarChangeListener;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.bluetooth.BluetoothClass;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.drawable.ColorDrawable;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioPort;
 import android.media.AudioPatch;
-import android.media.AudioManager.OnAudioPortUpdateListener;
+import android.media.AudioSystem;
 import android.media.audiofx.AudioEffect;
 import android.media.audiofx.AudioEffect.Descriptor;
 import android.media.audiofx.Virtualizer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -62,7 +53,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,11 +62,11 @@ import android.util.DisplayMetrics;
 
 import java.util.Formatter;
 import java.util.Locale;
-import java.util.UUID;
 
 /**
  *
  */
+@SuppressLint("PrivateApi")
 public class ActivityMusic extends Activity {
     private final static String TAG = "MusicFXActivityMusic";
 
@@ -177,16 +167,23 @@ public class ActivityMusic extends Activity {
             mIsSpeakerOn = false;
             mIsComboDevice = false;
 
-            int device = am.getDevicesForStream(AudioManager.STREAM_MUSIC);
-            if (device == AudioManager.DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES ||
-                device == AudioManager.DEVICE_OUT_BLUETOOTH_A2DP ||
-                device == AudioManager.DEVICE_OUT_WIRED_HEADPHONE ||
-                device == AudioManager.DEVICE_OUT_WIRED_HEADSET) {
+            int device = 0;
+            try {
+                device = (int) AudioManager.class
+                        .getDeclaredMethod("getDevicesForStream", int.class)
+                        .invoke(am, AudioManager.STREAM_MUSIC);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (device == AudioSystem.DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES ||
+                device == AudioSystem.DEVICE_OUT_BLUETOOTH_A2DP ||
+                device == AudioSystem.DEVICE_OUT_WIRED_HEADPHONE ||
+                device == AudioSystem.DEVICE_OUT_WIRED_HEADSET) {
                 mIsHeadsetOn = true;
-             } else if (device == AudioManager.DEVICE_OUT_SPEAKER) {
+             } else if (device == AudioSystem.DEVICE_OUT_SPEAKER) {
                 mIsSpeakerOn = true;
-             } else if (device == (AudioManager.DEVICE_OUT_SPEAKER |
-                                   AudioManager.DEVICE_OUT_WIRED_HEADPHONE)) {
+             } else if (device == (AudioSystem.DEVICE_OUT_SPEAKER |
+                                   AudioSystem.DEVICE_OUT_WIRED_HEADPHONE)) {
                mIsComboDevice = true;
              }
 
@@ -464,7 +461,14 @@ public class ActivityMusic extends Activity {
             if (mAudioPortUpdateListener == null) {
                 AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
                 mAudioPortUpdateListener = new MyOnAudioPortUpdateListener();
-                am.registerAudioPortUpdateListener(mAudioPortUpdateListener);
+
+                try {
+                    AudioManager.class
+                            .getDeclaredMethod("registerAudioPortUpdateListener", OnAudioPortUpdateListener.class)
+                            .invoke(am, mAudioPortUpdateListener);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             // Update UI
@@ -486,7 +490,14 @@ public class ActivityMusic extends Activity {
 
         if (mAudioPortUpdateListener != null) {
             AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-            am.unregisterAudioPortUpdateListener(mAudioPortUpdateListener);
+
+            try {
+                AudioManager.class
+                        .getDeclaredMethod("unregisterAudioPortUpdateListener", OnAudioPortUpdateListener.class)
+                        .invoke(am, mAudioPortUpdateListener);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mAudioPortUpdateListener = null;
         }
 
@@ -831,9 +842,9 @@ public class ActivityMusic extends Activity {
         Virtualizer virt = null;
         boolean transauralSupported = false;
         try {
-            virt = new Virtualizer(0, android.media.AudioSystem.newAudioSessionId());
+            /*virt = new Virtualizer(0, android.media.AudioSystem.newAudioSessionId());
             transauralSupported = virt.canVirtualize(AudioFormat.CHANNEL_OUT_STEREO,
-                    Virtualizer.VIRTUALIZATION_MODE_TRANSAURAL);
+                    Virtualizer.VIRTUALIZATION_MODE_TRANSAURAL);*/
         } catch (Exception e) {
         } finally {
             if (virt != null) {
@@ -841,5 +852,24 @@ public class ActivityMusic extends Activity {
             }
         }
         return transauralSupported;
+    }
+
+    public interface OnAudioPortUpdateListener {
+        /**
+         * Callback method called upon audio port list update.
+         * @param portList the updated list of audio ports
+         */
+        public void onAudioPortListUpdate(AudioPort[] portList);
+
+        /**
+         * Callback method called upon audio patch list update.
+         * @param patchList the updated list of audio patches
+         */
+        public void onAudioPatchListUpdate(AudioPatch[] patchList);
+
+        /**
+         * Callback method called when the mediaserver dies
+         */
+        public void onServiceDied();
     }
 }

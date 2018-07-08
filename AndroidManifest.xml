@@ -52,10 +52,6 @@
                     android:name="android.intent.category.CATEGORY_CONTENT_MUSIC" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ControlPanelPicker"
-            android:theme="@*android:style/Theme.Holo.Dialog.Alert"
-            android:excludeFromRecents="true" />
         <receiver
             android:name=".ControlPanelReceiver">
             <intent-filter>
