@@ -39,4 +39,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <color name="spinner_back_color">#d4d4d4</color>
     <color name="spinner_detail_back">#ffffff</color>
     <color name="spinner_detail_text">#000000</color>
+
+    <!-- Pixel -->
+    <color name="colorAccent">#ff4285f4</color>
 </resources>

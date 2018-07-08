@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2010-2011 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2010-2011 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -58,4 +57,11 @@
     <string name="picker_title">Music effects control panel"</string>
     <string name="toggle_button_on">On</string>
     <string name="toggle_button_off">Off</string>
+    <string name="title_activity_main">@string/app_name</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_bands">Bands</string>
+    <string name="title_effects">Effects</string>
 </resources>

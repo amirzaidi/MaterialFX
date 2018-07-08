@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.android.musicfx"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 27
     }
 
@@ -43,4 +43,6 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 }

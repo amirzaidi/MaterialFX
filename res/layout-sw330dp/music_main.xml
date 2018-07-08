@@ -91,11 +91,11 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             android:layout_below="@+id/togglelayout"
             android:orientation="vertical" >
 
-            <include
+            <!--<include
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_weight="27"
-                layout="@layout/music_eq" />
+                layout="@layout/music_eq" />-->
 
             <com.android.musicfx.widget.Gallery
                 android:id="@+id/eqPresets"
@@ -121,12 +121,12 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     android:layout_marginStart="36dp"
                     android:orientation="vertical" >
 
-                    <com.android.musicfx.widget.Knob
+                    <!--<com.android.musicfx.widget.Knob
                         android:id="@+id/bBStrengthKnob"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         custom:foreground="@drawable/knob"
-                        custom:label="@string/bass_boost_strength" />
+                        custom:label="@string/bass_boost_strength" />-->
 
                     <TextView
                         android:layout_width="match_parent"
@@ -150,12 +150,12 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     android:layout_marginEnd="36dp"
                     android:orientation="vertical" >
 
-                    <com.android.musicfx.widget.Knob
+                    <!--<com.android.musicfx.widget.Knob
                         android:id="@+id/vIStrengthKnob"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         custom:foreground="@drawable/knob"
-                        custom:label="@string/virtualizer_strength" />
+                        custom:label="@string/virtualizer_strength" />-->
 
                     <TextView
                         android:layout_width="match_parent"

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_bands"
+        android:icon="@drawable/ic_volume_up_black_24dp"
+        android:title="@string/title_bands" />
+
+    <item
+        android:id="@+id/navigation_effects"
+        android:icon="@drawable/ic_hearing_black_24dp"
+        android:title="@string/title_effects" />
+</menu>
