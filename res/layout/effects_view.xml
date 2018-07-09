@@ -33,11 +33,10 @@
     <PreferenceCategory
         android:title="@string/pr_title">
 
-        <!--<ListPreference
-            android:key="virtualization"
+        <ListPreference
+            android:key="reverb"
             android:title="@string/pr_dialog_title"
-            android:summary="@string/pr_summary"
-            android:value="None" />-->
+            android:summary="@string/pr_summary" />
 
     </PreferenceCategory>
 
