@@ -15,6 +15,7 @@
 
 <resources>
     <string name="app_name">MusicFX</string>
+    <string name="app_name_override">Material FX</string>
 
     <!-- ControlPanelMusic strings -->
     <string name="no_effects">Effects not available.</string>
@@ -57,7 +58,7 @@
     <string name="picker_title">Music effects control panel"</string>
     <string name="toggle_button_on">On</string>
     <string name="toggle_button_off">Off</string>
-    <string name="title_activity_main">@string/app_name</string>
+    <string name="title_activity_main">@string/app_name_override</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>

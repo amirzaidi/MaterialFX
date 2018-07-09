@@ -12,10 +12,9 @@
         android:id="@+id/toggles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:orientation="horizontal"
-        android:background="#18000000">
+        android:elevation="8dp"
+        android:background="#fff">
 
         <Space
             android:layout_width="0dp"
@@ -27,9 +26,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_speaker_black_24dp"
-            android:tint="@android:color/black"
-            android:alpha="0.65"
-            app:backgroundTint="@android:color/white"
+            android:theme="@style/FAB"
+            android:layout_marginTop="@dimen/fab_horizontal_margin"
+            android:layout_marginBottom="@dimen/fab_horizontal_margin"
+            android:onClick="toggleFab"
+            app:borderWidth="0dp"
             app:elevation="0dp" />
 
         <Space
@@ -42,9 +43,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_headset_black_24dp"
-            android:tint="@android:color/white"
-            android:alpha="1"
-            app:backgroundTint="@color/colorAccent"
+            android:theme="@style/FAB"
+            android:layout_marginTop="@dimen/fab_horizontal_margin"
+            android:layout_marginBottom="@dimen/fab_horizontal_margin"
+            android:onClick="toggleFab"
+            app:borderWidth="0dp"
             app:elevation="0dp" />
 
         <Space
@@ -57,9 +60,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_bluetooth_black_24dp"
-            android:tint="@android:color/black"
-            android:alpha="0.65"
-            app:backgroundTint="@android:color/white"
+            android:theme="@style/FAB"
+            android:layout_marginTop="@dimen/fab_horizontal_margin"
+            android:layout_marginBottom="@dimen/fab_horizontal_margin"
+            android:onClick="toggleFab"
+            app:borderWidth="0dp"
             app:elevation="0dp" />
 
         <Space
@@ -72,9 +77,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_usb_black_24dp"
-            android:tint="@android:color/black"
-            android:alpha="0.65"
-            app:backgroundTint="@android:color/white"
+            android:theme="@style/FAB"
+            android:layout_marginTop="@dimen/fab_horizontal_margin"
+            android:layout_marginBottom="@dimen/fab_horizontal_margin"
+            android:onClick="toggleFab"
+            app:borderWidth="0dp"
             app:elevation="0dp" />
 
         <Space

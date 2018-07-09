@@ -31,7 +31,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <resources>
     <color name="highlight">#ff4444</color>
     <color name="lowlight">#e53935</color>
-    <color name="grey">#000000</color>
+    <color name="old_grey">#000000</color>
     <color name="disabled">#525252</color>
     <color name="disabled_gallery">#888888</color>
     <color name="disabled_knob">#9e9e9e</color>
@@ -39,6 +39,9 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <color name="spinner_back_color">#d4d4d4</color>
     <color name="spinner_detail_back">#ffffff</color>
     <color name="spinner_detail_text">#000000</color>
+
+    <color name="grey_fg">#555</color>
+    <color name="grey_bg">#ddd</color>
 
     <!-- Pixel -->
     <color name="colorAccent">#ff4285f4</color>

@@ -31,9 +31,14 @@
     <style name="ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@android:color/white</item>
         <item name="titleTextStyle">@style/ActionBarText</item>
+        <item name="elevation">0dp</item>
     </style>
 
     <style name="ActionBarText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="FAB">
+        <item name="android:clickable">true</item>
     </style>
 </resources>
