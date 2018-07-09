@@ -1040,8 +1040,6 @@ public class ControlPanelEffect {
     public static void openSession(final Context context, final String packageName,
             final int audioSession) {
 
-        context.startService(new Intent(context, AudioPortUpdater.class));
-
         Log.v(TAG, "openSession(" + context + ", " + packageName + ", " + audioSession + ")");
         final String methodTag = "openSession: ";
 
@@ -1324,6 +1322,8 @@ public class ControlPanelEffect {
             }
         }
         editor.commit();
+
+        AudioPortUpdater.getInstance(context).update();
     }
 
     /**

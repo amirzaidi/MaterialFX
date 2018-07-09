@@ -1,15 +1,12 @@
 package com.android.musicfx.material;
 
 import android.annotation.SuppressLint;
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.AudioPatch;
 import android.media.AudioPort;
 import android.media.AudioSystem;
-import android.os.IBinder;
 
 import com.android.musicfx.ControlPanelEffect;
 
@@ -17,8 +14,8 @@ import java.util.Map;
 
 @SuppressWarnings("JavaReflectionMemberAccess")
 @SuppressLint("PrivateApi")
-public class AudioPortUpdater extends Service
-        implements android.media.AudioManager.OnAudioPortUpdateListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class AudioPortUpdater implements android.media.AudioManager.OnAudioPortUpdateListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "AudioPortUpdater";
 
     public enum Mode {
@@ -28,18 +25,27 @@ public class AudioPortUpdater extends Service
         Unknown
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private static AudioPortUpdater sInstance;
+
+    private final Context mContext;
+
+    // Handler to update global on/off state
+    private final AudioHandler mAudioHandler;
+
     // Current output routing mode
     private Mode mOut = Mode.Unknown;
 
-    // Handler to update global on/off state
-    private AudioHandler mAudioHandler;
+    public static AudioPortUpdater getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new AudioPortUpdater(context);
+        }
+        return sInstance;
+    }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        android.util.Log.v(TAG, "onCreate");
-
-        mAudioHandler = new AudioHandler(this, getPackageName(), 0);
+    private AudioPortUpdater(Context context) {
+        mContext = context;
+        mAudioHandler = new AudioHandler(context, context.getPackageName(), 0);
         onAudioPortListUpdate(null);
 
         try {
@@ -50,30 +56,7 @@ public class AudioPortUpdater extends Service
             e.printStackTrace();
         }
 
-        Utilities.prefs(this).registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public void onDestroy() {
-        Utilities.prefs(this).unregisterOnSharedPreferenceChangeListener(this);
-
-        try {
-            AudioManager.class
-                    .getDeclaredMethod("unregisterAudioPortUpdateListener", android.media.AudioManager.OnAudioPortUpdateListener.class)
-                    .invoke(getAudioManager(), this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        mAudioHandler = null;
-
-        super.onDestroy();
-        android.util.Log.v(TAG, "onDestroy");
+        Utilities.prefs(context).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -118,7 +101,15 @@ public class AudioPortUpdater extends Service
 
     @Override
     public void onServiceDied() {
-        stopSelf();
+        try {
+            AudioManager.class
+                    .getDeclaredMethod("unregisterAudioPortUpdateListener", android.media.AudioManager.OnAudioPortUpdateListener.class)
+                    .invoke(getAudioManager(), this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        android.util.Log.e(TAG, "onServiceDied");
     }
 
     public void update() {
@@ -126,12 +117,12 @@ public class AudioPortUpdater extends Service
         android.util.Log.v(TAG, "Setting enabled to " + enabled);
         for (Map.Entry<String, Integer> entry : ControlPanelEffect.getSessions().entrySet()) {
             android.util.Log.v(TAG, "Setting for " + entry.getKey() + " " + entry.getValue());
-            ControlPanelEffect.setParameterBoolean(AudioPortUpdater.this, entry.getKey(),
+            ControlPanelEffect.setParameterBoolean(mContext, entry.getKey(),
                     entry.getValue(), ControlPanelEffect.Key.global_enabled, enabled);
         }
     }
 
     private AudioManager getAudioManager() {
-        return (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        return (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
     }
 }

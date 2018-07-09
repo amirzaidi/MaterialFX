@@ -50,11 +50,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
-        <service
-            android:name=".AudioPortUpdater"
-            android:enabled="true"
-            android:exported="true"></service>
     </application>
 
 </manifest>
