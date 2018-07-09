@@ -687,7 +687,7 @@ public class ActivityMusic extends Activity {
                     final boolean fromUser) {
                 for (short band = 0; band < mNumberEqualizerBands; ++band) {
                     if (mEqualizerVisualizer[band] == v) {
-                        final short level = (short) (progress + mEqualizerMinBandLevel);
+                        final short level = (short) (progress + minBandLevel);
                         if (fromUser) {
                             equalizerBandUpdate(band, level);
                         }
@@ -743,7 +743,7 @@ public class ActivityMusic extends Activity {
 
             /*final Visualizer v = new Visualizer(mContext);
             v.setText(format("%.0f", centerFreqHz) + unitPrefix);
-            v.setMax(mEqualizerMaxBandLevel - mEqualizerMinBandLevel);
+            v.setMax(maxBandLevel - minBandLevel);
             v.setOnSeekBarChangeListener(listener);
             v.setOnTouchListener(tl);
             eqcontainer.addView(v, lp);
@@ -751,11 +751,11 @@ public class ActivityMusic extends Activity {
         }
 
         /*TextView tv = (TextView) findViewById(R.id.maxLevelText);
-        tv.setText(String.format("+%d dB", (int) Math.ceil(mEqualizerMaxBandLevel / 100)));
+        tv.setText(String.format("+%d dB", (int) Math.ceil(maxBandLevel / 100)));
         tv = (TextView) findViewById(R.id.centerLevelText);
         tv.setText("0 dB");
         tv = (TextView) findViewById(R.id.minLevelText);
-        tv.setText(String.format("%d dB", (int) Math.floor(mEqualizerMinBandLevel / 100)));
+        tv.setText(String.format("%d dB", (int) Math.floor(minBandLevel / 100)));
         equalizerUpdateDisplay();*/
     }
 

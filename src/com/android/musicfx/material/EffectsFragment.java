@@ -1,16 +1,39 @@
 package com.android.musicfx.material;
 
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
-public class EffectsFragment extends PreferenceFragment {
+public class EffectsFragment extends PreferenceFragmentCompat
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.effects_view, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Utilities.prefs(getContext()).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        Utilities.prefs(getContext()).unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
+    }
+
+    @SuppressLint("ResourceType")
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        addPreferencesFromResource(R.layout.effects_view);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        AudioHandler handler = getMainActivity().getAudioHandler();
+
+
+
+    }
+
+    private MainActivity getMainActivity() {
+        return (MainActivity) getActivity();
     }
 }

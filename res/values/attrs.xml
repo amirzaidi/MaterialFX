@@ -29,5 +29,5 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
 <resources>
-
+    <attr name="verticalSeekbarStyle" format="reference" />
 </resources>

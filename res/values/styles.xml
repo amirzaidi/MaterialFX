@@ -17,12 +17,19 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
         <item name="android:colorPrimary">@android:color/white</item>
-        <item name="android:colorPrimaryDark">@android:color/white</item>
+        <item name="android:colorPrimaryDark">?android:colorPrimary</item>
+
         <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:thumbTint">@color/colorAccent</item>
+        <item name="android:progressTint">@color/colorAccent</item>
         <item name="android:windowLightStatusBar">true</item>
+
         <item name="actionBarSize">@dimen/action_bar_height</item>
         <item name="actionBarTheme">@style/ActionBarTheme</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
+
+        <item name="verticalSeekbarStyle">@style/SeekBar</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -42,4 +49,6 @@
     <style name="FAB">
         <item name="android:clickable">true</item>
     </style>
+
+    <style name="SeekBar" parent="@style/Widget.AppCompat.SeekBar.Discrete" />
 </resources>

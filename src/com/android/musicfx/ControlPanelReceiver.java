@@ -23,18 +23,15 @@ import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.util.HashMap;
-
 public class ControlPanelReceiver extends BroadcastReceiver {
 
-    private final static String TAG = "MusicFXControlPanelReceiver";
+    private final static String TAG = "ControlPanelReceiver";
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
-
         Log.v(TAG, "onReceive");
 
-        if ((context == null) || (intent == null)) {
+        if (context == null || intent == null) {
             Log.w(TAG, "Context or intent is null. Do nothing.");
             return;
         }
@@ -55,51 +52,41 @@ public class ControlPanelReceiver extends BroadcastReceiver {
         }
 
         // check audio session
-        if ((audioSession == AudioEffect.ERROR_BAD_VALUE) || (audioSession < 0)) {
+        if ((audioSession == AudioEffect.ERROR_BAD_VALUE) || audioSession < 0) {
             Log.w(TAG, "Invalid or missing audio session " + audioSession);
             return;
         }
 
-        // open audio session
-        if (action.equals(AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION)) {
+        switch (action) {
+            case AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION:
+                ControlPanelEffect.openSession(context, packageName, audioSession);
+                break;
 
-            // retrieve the effect enabled state
-            final boolean isGlobalEnabled = context.getSharedPreferences(packageName,
-                    Context.MODE_PRIVATE).getBoolean(
-                    ControlPanelEffect.Key.global_enabled.toString(),
-                    ControlPanelEffect.GLOBAL_ENABLED_DEFAULT);
+            case AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION:
+                ControlPanelEffect.closeSession(context, packageName, audioSession);
+                break;
 
-            ControlPanelEffect.openSession(context, packageName, audioSession);
-        }
+            case "AudioEffect.ACTION_SET_PARAM":
+                final String setParam = intent.getStringExtra("AudioEffect.EXTRA_PARAM");
 
-        // close audio session
-        if (action.equals(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION)) {
+                if (setParam.equals("GLOBAL_ENABLED")) {
+                    final Boolean value = intent.getBooleanExtra("AudioEffect.EXTRA_VALUE", false);
+                    ControlPanelEffect.setParameterBoolean(context, packageName, audioSession,
+                            ControlPanelEffect.Key.global_enabled, value);
+                }
+                break;
 
-            ControlPanelEffect.closeSession(context, packageName, audioSession);
-        }
+            case "AudioEffect.ACTION_GET_PARAM":
+                final String getParam = intent.getStringExtra("AudioEffect.EXTRA_PARAM");
 
-        // set params
-        if (action.equals("AudioEffect.ACTION_SET_PARAM")) {
-            final String param = intent.getStringExtra("AudioEffect.EXTRA_PARAM");
-
-            if (param.equals("GLOBAL_ENABLED")) {
-                final Boolean value = intent.getBooleanExtra("AudioEffect.EXTRA_VALUE", false);
-                ControlPanelEffect.setParameterBoolean(context, packageName, audioSession,
-                        ControlPanelEffect.Key.global_enabled, value);
-            }
-        }
-
-        // get params
-        if (action.equals("AudioEffect.ACTION_GET_PARAM")) {
-            final String param = intent.getStringExtra("AudioEffect.EXTRA_PARAM");
-
-            if (param.equals("GLOBAL_ENABLED")) {
-                final Boolean value = ControlPanelEffect.getParameterBoolean(context, packageName,
-                        audioSession, ControlPanelEffect.Key.global_enabled);
-                final Bundle extras = new Bundle();
-                extras.putBoolean("GLOBAL_ENABLED", value);
-                setResultExtras(extras);
-            }
+                if (getParam.equals("GLOBAL_ENABLED")) {
+                    final Boolean value = ControlPanelEffect.getParameterBoolean(context, packageName,
+                            audioSession, ControlPanelEffect.Key.global_enabled);
+                    final Bundle extras = new Bundle();
+                    extras.putBoolean("GLOBAL_ENABLED", value);
+                    setResultExtras(extras);
+                }
+                break;
         }
     }
 }

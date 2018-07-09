@@ -1,19 +1,29 @@
 package com.android.musicfx.material;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+import android.media.AudioManager;
+import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.musicfx.ActivityMusic;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+
+    private AudioHandler mAudioHandler;
 
     private ColorStateList mWhite;
     private ColorStateList mAccent;
@@ -50,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final Intent intent = getIntent();
+        int audioSession = intent.getIntExtra(AudioEffect.EXTRA_AUDIO_SESSION,
+                AudioEffect.ERROR_BAD_VALUE);
+        Log.v(TAG, "audio session: " + audioSession);
+
+        mAudioHandler = new AudioHandler(this, getCallingPackage(), audioSession);
+
         View barView = getLayoutInflater().inflate(R.layout.actionbar, null);
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/GoogleSans-Regular.ttf");
         ((TextView) barView.findViewById(R.id.actionbar_title)).setTypeface(tf);
@@ -77,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         mBands = new BandsFragment();
         mEffects = new EffectsFragment();
 
-        getFragmentManager()
+        getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_holder, mBands)
                 .commit();
@@ -93,6 +110,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mAudioHandler.attach();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAudioHandler.detach();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
@@ -101,30 +130,42 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public AudioHandler getAudioHandler() {
+        return mAudioHandler;
+    }
+
     private void switchToBands() {
-        getFragmentManager()
+        getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_holder, mBands)
                 .commit();
     }
 
     private void switchToEffects() {
-        getFragmentManager()
+        getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_holder, mEffects)
                 .commit();
     }
 
+    /**
+     * Inverts the mode (enabled or disabled) for the pressed button.
+     * @param view The button that was pressed.
+     */
     public void toggleFab(View view) {
         FloatingActionButton button = (FloatingActionButton) view;
-        int id = view.getId();
+        AudioHandler.Mode mode = getMode(button);
+        mAudioHandler.setEnabled(mode, !mAudioHandler.isEnabled(mode));
         loadToggleViews();
     }
 
+    /**
+     * Sets the colors for all the buttons.
+     */
     private void loadToggleViews() {
         for (View view : new View[] { mSpeakerToggle, mAuxToggle, mBtToggle, mUsbToggle }) {
             FloatingActionButton button = (FloatingActionButton) view;
-            if (isEnabled(button)) {
+            if (mAudioHandler.isEnabled(getMode(button))) {
                 button.setImageTintList(mWhite);
                 button.setBackgroundTintList(mAccent);
             } else {
@@ -134,7 +175,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isEnabled(FloatingActionButton view) {
-        return view == mAuxToggle;
+    /**
+     * Transforms a button into the corresponding Mode.
+     * @param view The button.
+     * @return The corresponding mode.
+     */
+    private AudioHandler.Mode getMode(FloatingActionButton view) {
+        AudioHandler.Mode mode = AudioHandler.Mode.Unknown;
+        if (view == mSpeakerToggle) {
+            mode = AudioHandler.Mode.Speaker;
+        } else if (view == mAuxToggle) {
+            mode = AudioHandler.Mode.Aux;
+        } else if (view == mBtToggle) {
+            mode = AudioHandler.Mode.Bluetooth;
+        }
+        return mode;
     }
 }

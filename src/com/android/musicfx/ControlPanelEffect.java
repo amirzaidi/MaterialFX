@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ControlPanelEffect {
 
-    private final static String TAG = "MusicFXControlPanelEffect";
+    private final static String TAG = "ControlPanelEffect";
 
     /**
      * Audio session priority
@@ -58,7 +58,7 @@ public class ControlPanelEffect {
         CONTROL_PREFERENCES
     }
 
-    static enum Key {
+    public enum Key {
         global_enabled, virt_enabled, virt_strength_supported, virt_strength, virt_type, bb_enabled,
         bb_strength, te_enabled, te_strength, avl_enabled, lm_enabled, lm_strength, eq_enabled,
         eq_num_bands, eq_level_range, eq_center_freq, eq_band_level, eq_band_level_no_save,
@@ -281,7 +281,7 @@ public class ControlPanelEffect {
                         EQUALIZER_PRESET_USER_BAND_LEVEL_DEFAULT, mEQNumBands);
                 // If no preset prefs set use CI EXTREME (= numPresets)
                 final short eQPreset = (short) prefs.getInt(Key.eq_current_preset.toString(),
-                        mEQNumPresets);
+                        mEQNumPresets + 1);
                 editor.putInt(Key.eq_current_preset.toString(), eQPreset);
                 final short[] bandLevel = new short[mEQNumBands];
                 for (short band = 0; band < mEQNumBands; band++) {
