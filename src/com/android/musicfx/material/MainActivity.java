@@ -91,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
         mUsbToggle = findViewById(R.id.toggle_usb);
         loadToggleViews();
 
+        // ToDo: Support
+        mSpeakerToggle.setEnabled(false);
+        mBtToggle.setEnabled(false);
+        mUsbToggle.setEnabled(false);
+
         mBands = new BandsFragment();
         mEffects = new EffectsFragment();
 
