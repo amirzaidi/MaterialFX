@@ -40,6 +40,8 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <color name="spinner_detail_back">#ffffff</color>
     <color name="spinner_detail_text">#000000</color>
 
+    <color name="background_material_light">#fffafafa</color>
+
     <color name="grey_fg">#555</color>
     <color name="grey_bg">#ddd</color>
 
