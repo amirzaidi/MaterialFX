@@ -138,14 +138,14 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_holder, mBands)
-                .commit();
+                .commitNow();
     }
 
     private void switchToEffects() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_holder, mEffects)
-                .commit();
+                .commitNow();
     }
 
     /**

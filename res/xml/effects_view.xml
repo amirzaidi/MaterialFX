@@ -1,0 +1,48 @@
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="@string/bass_boost_strength">
+
+        <SwitchPreferenceCompat
+            android:key="bass"
+            android:title="Enable"
+            android:defaultValue="false"
+            android:persistent="false" />
+
+        <com.android.musicfx.material.SeekBarPreference
+            android:key="bass_strength"
+            android:max="10"
+            android:persistent="false" />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="@string/virtualizer_strength">
+
+        <SwitchPreferenceCompat
+            android:key="virtualization"
+            android:title="Enable"
+            android:defaultValue="false"
+            android:persistent="false"  />
+
+        <com.android.musicfx.material.SeekBarPreference
+            android:key="virtualization_strength"
+            android:max="10"
+            android:persistent="false"  />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="@string/pr_title">
+
+        <ListPreference
+            android:key="reverb"
+            android:title="@string/pr_dialog_title"
+            android:summary="@string/pr_summary"
+            android:persistent="false"  />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>
