@@ -44,11 +44,11 @@
     <string name="user">Custom</string>
 
     <string name="none">None</string>
-    <string name="smallroom">SmallRoom</string>
-    <string name="mediumroom">MediumRoom</string>
-    <string name="largeroom">LargeRoom</string>
-    <string name="mediumhall">MediumHall</string>
-    <string name="largehall">LargeHall</string>
+    <string name="smallroom">Small Room</string>
+    <string name="mediumroom">Medium Room</string>
+    <string name="largeroom">Large Room</string>
+    <string name="mediumhall">Medium Hall</string>
+    <string name="largehall">Large Hall</string>
     <string name="plate">Plate</string>
 
     <string name="eq_custom">To customize, select "Custom"</string>
