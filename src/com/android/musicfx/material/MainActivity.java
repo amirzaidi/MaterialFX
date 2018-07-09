@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        startService(new Intent(this, AudioPortUpdater.class));
+
         final Intent intent = getIntent();
         int audioSession = intent.getIntExtra(AudioEffect.EXTRA_AUDIO_SESSION,
                 AudioEffect.ERROR_BAD_VALUE);
@@ -91,11 +93,6 @@ public class MainActivity extends AppCompatActivity {
         mUsbToggle = findViewById(R.id.toggle_usb);
         loadToggleViews();
 
-        // ToDo: Support
-        mSpeakerToggle.setEnabled(false);
-        mBtToggle.setEnabled(false);
-        mUsbToggle.setEnabled(false);
-
         mBands = new BandsFragment();
         mEffects = new EffectsFragment();
 
@@ -112,18 +109,6 @@ public class MainActivity extends AppCompatActivity {
             root.setSystemUiVisibility(root.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
             getWindow().setNavigationBarColor(getColor(R.color.background_material_light));
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mAudioHandler.attach();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mAudioHandler.detach();
     }
 
     @Override
@@ -159,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void toggleFab(View view) {
         FloatingActionButton button = (FloatingActionButton) view;
-        AudioHandler.Mode mode = getMode(button);
+        AudioPortUpdater.Mode mode = getMode(button);
         mAudioHandler.setEnabled(mode, !mAudioHandler.isEnabled(mode));
         loadToggleViews();
     }
@@ -185,14 +170,14 @@ public class MainActivity extends AppCompatActivity {
      * @param view The button.
      * @return The corresponding mode.
      */
-    private AudioHandler.Mode getMode(FloatingActionButton view) {
-        AudioHandler.Mode mode = AudioHandler.Mode.Unknown;
+    private AudioPortUpdater.Mode getMode(FloatingActionButton view) {
+        AudioPortUpdater.Mode mode = AudioPortUpdater.Mode.Unknown;
         if (view == mSpeakerToggle) {
-            mode = AudioHandler.Mode.Speaker;
+            mode = AudioPortUpdater.Mode.Speaker;
         } else if (view == mAuxToggle) {
-            mode = AudioHandler.Mode.Aux;
+            mode = AudioPortUpdater.Mode.Aux;
         } else if (view == mBtToggle) {
-            mode = AudioHandler.Mode.Bluetooth;
+            mode = AudioPortUpdater.Mode.Bluetooth;
         }
         return mode;
     }

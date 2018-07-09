@@ -16,7 +16,10 @@
 
 package com.android.musicfx;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.audiofx.AudioEffect;
@@ -24,7 +27,10 @@ import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.PresetReverb;
 import android.media.audiofx.Virtualizer;
+import android.os.IBinder;
 import android.util.Log;
+
+import com.android.musicfx.material.AudioPortUpdater;
 
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
@@ -1010,12 +1016,16 @@ public class ControlPanelEffect {
      * @param packageName
      * @param audioSession
      *            System wide unique audio session identifier.
-     * @param args
+     * @param arg
      * @return parameter value
      */
     public static String getParameterString(final Context context, final String packageName,
             final int audioSession, final Key key, final int arg) {
         return getParameterString(context, packageName, audioSession, key.toString() + arg);
+    }
+
+    public static ConcurrentHashMap<String, Integer> getSessions() {
+        return mPackageSessions;
     }
 
     /**
@@ -1029,6 +1039,9 @@ public class ControlPanelEffect {
      */
     public static void openSession(final Context context, final String packageName,
             final int audioSession) {
+
+        context.startService(new Intent(context, AudioPortUpdater.class));
+
         Log.v(TAG, "openSession(" + context + ", " + packageName + ", " + audioSession + ")");
         final String methodTag = "openSession: ";
 
