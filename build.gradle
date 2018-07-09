@@ -15,9 +15,11 @@ android {
     buildToolsVersion "27.0.3"
 
     defaultConfig {
-        applicationId "com.android.musicfx"
+        applicationId "com.android.musicfx.material"
         minSdkVersion 23
         targetSdkVersion 27
+        versionCode 1
+        versionName "Alpha"
     }
 
     buildTypes {

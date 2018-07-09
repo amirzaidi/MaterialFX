@@ -1,13 +1,10 @@
-package com.android;
+package com.android.musicfx.material;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
-
-import com.android.musicfx.R;
 
 public class MainActivity extends AppCompatActivity {
     private BandsFragment mBands;
@@ -42,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
         mEffects = new EffectsFragment();
 
         getFragmentManager().beginTransaction().add(R.id.fragment_holder, mBands).commit();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void switchToBands() {

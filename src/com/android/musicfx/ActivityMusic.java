@@ -17,6 +17,7 @@
 package com.android.musicfx;
 
 import com.android.audiofx.OpenSLESConstants;
+import com.android.musicfx.material.R;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;

@@ -1,12 +1,10 @@
-package com.android;
+package com.android.musicfx.material;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.android.musicfx.R;
 
 public class BandsFragment extends PreferenceFragment {
     @Override

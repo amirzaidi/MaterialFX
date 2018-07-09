@@ -20,10 +20,15 @@
         <item name="android:colorPrimaryDark">@android:color/white</item>
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="actionBarStyle">@style/ActionBarTheme</item>
+        <item name="actionBarTheme">@style/ActionBarTheme</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
     </style>
 
-    <style name="ActionBarTheme" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/colorAccent</item>
+    </style>
+
+    <style name="ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@android:color/white</item>
         <item name="titleTextStyle">@style/ActionBarText</item>
     </style>

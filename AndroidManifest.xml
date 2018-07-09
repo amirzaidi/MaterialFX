@@ -14,18 +14,9 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.musicfx"
-    android:installLocation="auto"
-    android:versionCode="10400"
-    android:versionName="1.4">
+    package="com.android.musicfx.material">
 
-    <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="23" />
-
-    <uses-permission android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_ROUTING" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -40,8 +31,9 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.android.MainActivity"
-            android:label="@string/title_activity_main">
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.media.action.DISPLAY_AUDIO_EFFECT_CONTROL_PANEL" />
@@ -52,20 +44,7 @@
             </intent-filter>
         </activity>
 
-        <!--<activity
-            android:name=".ActivityMusic"
-            android:label="@string/eq_dialog_title"
-            android:screenOrientation="portrait"
-            android:theme="@style/EqTheme">
-            <intent-filter>
-                <action android:name="android.media.action.DISPLAY_AUDIO_EFFECT_CONTROL_PANEL" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.CATEGORY_CONTENT_MUSIC" />
-            </intent-filter>
-        </activity>-->
-
-        <receiver android:name=".ControlPanelReceiver">
+        <receiver android:name="com.android.musicfx.ControlPanelReceiver">
             <intent-filter>
                 <action android:name="android.media.action.OPEN_AUDIO_EFFECT_CONTROL_SESSION" />
                 <action android:name="android.media.action.CLOSE_AUDIO_EFFECT_CONTROL_SESSION" />
@@ -75,35 +54,5 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".Compatibility$Receiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name=".Compatibility$Service"
-            android:exported="false" />
-
-        <activity android:name=".Compatibility$Redirector">
-            <intent-filter android:priority="2147483647">
-                <action android:name="android.media.action.DISPLAY_AUDIO_EFFECT_CONTROL_PANEL" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
     </application>
 </manifest>
