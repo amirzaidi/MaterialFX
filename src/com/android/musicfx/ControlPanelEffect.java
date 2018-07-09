@@ -287,7 +287,7 @@ public class ControlPanelEffect {
                         EQUALIZER_PRESET_USER_BAND_LEVEL_DEFAULT, mEQNumBands);
                 // If no preset prefs set use CI EXTREME (= numPresets)
                 final short eQPreset = (short) prefs.getInt(Key.eq_current_preset.toString(),
-                        mEQNumPresets + 1);
+                        mEQNumPresets);
                 editor.putInt(Key.eq_current_preset.toString(), eQPreset);
                 final short[] bandLevel = new short[mEQNumBands];
                 for (short band = 0; band < mEQNumBands; band++) {
@@ -1040,6 +1040,8 @@ public class ControlPanelEffect {
     public static void openSession(final Context context, final String packageName,
             final int audioSession) {
 
+        AudioPortUpdater portManager = AudioPortUpdater.getInstance(context);
+
         Log.v(TAG, "openSession(" + context + ", " + packageName + ", " + audioSession + ")");
         final String methodTag = "openSession: ";
 
@@ -1051,10 +1053,6 @@ public class ControlPanelEffect {
         final boolean isGlobalEnabled = prefs.getBoolean(Key.global_enabled.toString(),
                 GLOBAL_ENABLED_DEFAULT);
         editor.putBoolean(Key.global_enabled.toString(), isGlobalEnabled);
-
-        if (!isGlobalEnabled) {
-            return;
-        }
 
         // Manage audioSession information
 
@@ -1105,11 +1103,7 @@ public class ControlPanelEffect {
                 virtualizerEffect.setProperties(settings);
 
                 // set parameters
-                if (isGlobalEnabled == true) {
-                    virtualizerEffect.setEnabled(isEnabled);
-                } else {
-                    virtualizerEffect.setEnabled(false);
-                }
+                virtualizerEffect.setEnabled(isGlobalEnabled && isEnabled);
 
                 // get parameters
                 settings = virtualizerEffect.getProperties();
@@ -1151,11 +1145,7 @@ public class ControlPanelEffect {
                 bassBoostEffect.setProperties(settings);
 
                 // set parameters
-                if (isGlobalEnabled == true) {
-                    bassBoostEffect.setEnabled(isEnabled);
-                } else {
-                    bassBoostEffect.setEnabled(false);
-                }
+                bassBoostEffect.setEnabled(isGlobalEnabled && isEnabled);
 
                 // get parameters
                 settings = bassBoostEffect.getProperties();
@@ -1254,11 +1244,7 @@ public class ControlPanelEffect {
                 final boolean isEnabled = prefs.getBoolean(Key.eq_enabled.toString(),
                         EQUALIZER_ENABLED_DEFAULT);
                 editor.putBoolean(Key.eq_enabled.toString(), isEnabled);
-                if (isGlobalEnabled == true) {
-                    equalizerEffect.setEnabled(isEnabled);
-                } else {
-                    equalizerEffect.setEnabled(false);
-                }
+                equalizerEffect.setEnabled(isGlobalEnabled && isEnabled);
 
                 // dump
                 Log.v(TAG, "Parameters: Equalizer");
@@ -1304,11 +1290,7 @@ public class ControlPanelEffect {
                 presetReverbEffect.setProperties(settings);
 
                 // set parameters
-                if (isGlobalEnabled == true) {
-                    presetReverbEffect.setEnabled(isEnabled);
-                } else {
-                    presetReverbEffect.setEnabled(false);
-                }
+                presetReverbEffect.setEnabled(isGlobalEnabled && isEnabled);
 
                 // get parameters
                 settings = presetReverbEffect.getProperties();
@@ -1323,7 +1305,7 @@ public class ControlPanelEffect {
         }
         editor.commit();
 
-        AudioPortUpdater.getInstance(context).update();
+        portManager.update();
     }
 
     /**
