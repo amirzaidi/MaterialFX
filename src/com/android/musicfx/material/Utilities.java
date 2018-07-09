@@ -10,4 +10,12 @@ public class Utilities {
     public static SharedPreferences prefs(Context context) {
         return context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
     }
+
+    public static String floatToString(float in) {
+        String out = String.valueOf(in);
+        if (out.endsWith(".0")) {
+            out = out.substring(0, out.length() - 2);
+        }
+        return out;
+    }
 }

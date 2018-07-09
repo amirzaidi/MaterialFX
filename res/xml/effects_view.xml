@@ -11,7 +11,7 @@
             android:defaultValue="false"
             android:persistent="false" />
 
-        <com.android.musicfx.material.SeekBarPreference
+        <com.android.musicfx.material.SyncedSeekBar
             android:key="bass_strength"
             android:max="10"
             android:persistent="false" />
@@ -27,7 +27,7 @@
             android:defaultValue="false"
             android:persistent="false"  />
 
-        <com.android.musicfx.material.SeekBarPreference
+        <com.android.musicfx.material.SyncedSeekBar
             android:key="virtualization_strength"
             android:max="10"
             android:persistent="false"  />

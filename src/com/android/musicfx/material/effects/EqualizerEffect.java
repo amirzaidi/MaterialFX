@@ -3,6 +3,7 @@ package com.android.musicfx.material.effects;
 import android.content.Context;
 
 import com.android.musicfx.ControlPanelEffect;
+import com.android.musicfx.material.Utilities;
 
 public class EqualizerEffect {
     // Max levels per EQ band in millibels (1 dB = 100 mB)
@@ -60,7 +61,7 @@ public class EqualizerEffect {
             centerFreqHz = centerFreqHz / 1000;
             unitPrefix = "k";
         }
-        return centerFreqHz + unitPrefix + "Hz";
+        return Utilities.floatToString(centerFreqHz) + unitPrefix + "Hz";
     }
 
     public int getBandLevel(int band) {

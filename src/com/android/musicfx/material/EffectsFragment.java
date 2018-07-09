@@ -24,6 +24,7 @@ public class EffectsFragment extends PreferenceFragmentCompat
         prefVirt.setOnPreferenceChangeListener(this);
 
         SyncedSeekBar prefVirtStr = (SyncedSeekBar) findPreference(PREF_VIRT_STR);
+        prefVirtStr.setEnabled(prefVirt.isChecked());
         prefVirtStr.setValue(handler.getVirtualizer().getStrength());
         prefVirtStr.setOnPreferenceChangeListener(this);
 
@@ -32,6 +33,7 @@ public class EffectsFragment extends PreferenceFragmentCompat
         prefBass.setOnPreferenceChangeListener(this);
 
         SyncedSeekBar prefBassStr = (SyncedSeekBar) findPreference(PREF_BASS_STR);
+        prefBassStr.setEnabled(prefBass.isChecked());
         prefBassStr.setValue(handler.getBass().getStrength());
         prefBassStr.setOnPreferenceChangeListener(this);
     }
@@ -51,12 +53,14 @@ public class EffectsFragment extends PreferenceFragmentCompat
         switch (preference.getKey()) {
             case PREF_VIRT:
                 handler.getVirtualizer().setEnabled((boolean) newValue);
+                findPreference(PREF_VIRT_STR).setEnabled((boolean) newValue);
                 break;
             case PREF_VIRT_STR:
                 handler.getVirtualizer().setStrength((int) newValue);
                 break;
             case PREF_BASS:
                 handler.getBass().setEnabled((boolean) newValue);
+                findPreference(PREF_BASS_STR).setEnabled((boolean) newValue);
                 break;
             case PREF_BASS_STR:
                 handler.getBass().setStrength((int) newValue);
