@@ -84,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        if (Utilities.V26) {
+            View root = getWindow().getDecorView();
+            root.setSystemUiVisibility(root.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+            getWindow().setNavigationBarColor(getColor(android.R.color.white));
+        }
     }
 
     @Override

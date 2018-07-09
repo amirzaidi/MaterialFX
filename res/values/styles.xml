@@ -20,6 +20,7 @@
         <item name="android:colorPrimaryDark">@android:color/white</item>
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="actionBarSize">@dimen/action_bar_height</item>
         <item name="actionBarTheme">@style/ActionBarTheme</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
     </style>
