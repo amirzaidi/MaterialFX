@@ -1,6 +1,7 @@
 package com.android.musicfx.material;
 
 import android.os.Bundle;
+import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
@@ -36,6 +37,10 @@ public class EffectsFragment extends PreferenceFragmentCompat
         prefBassStr.setEnabled(prefBass.isChecked());
         prefBassStr.setValue(handler.getBass().getStrength());
         prefBassStr.setOnPreferenceChangeListener(this);
+
+        ListPreference prefReverb = (ListPreference) findPreference(PREF_REVERB);
+        prefReverb.setValue(String.valueOf(handler.getReverb().getPreset()));
+        prefReverb.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -66,6 +71,7 @@ public class EffectsFragment extends PreferenceFragmentCompat
                 handler.getBass().setStrength((int) newValue);
                 break;
             case PREF_REVERB:
+                handler.getReverb().setPreset(Integer.valueOf((String) newValue));
                 break;
         }
         return true;

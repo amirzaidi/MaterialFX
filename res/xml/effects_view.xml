@@ -37,11 +37,13 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="@string/pr_title">
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
             android:key="reverb"
             android:title="@string/pr_dialog_title"
             android:summary="@string/pr_summary"
-            android:persistent="false"  />
+            android:entries="@array/reverb_entries"
+            android:entryValues="@array/reverb_entryValues"
+            android:persistent="false" />
 
     </android.support.v7.preference.PreferenceCategory>
 
