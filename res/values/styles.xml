@@ -29,8 +29,10 @@
         <item name="actionBarStyle">@style/ActionBarStyle</item>
 
         <item name="verticalSeekbarStyle">@style/SeekBar</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
+
+        <item name="preferenceTheme">@style/PreferenceTheme</item>
+        <item name="dialogTheme">@style/DialogStyle</item>
+        <item name="alertDialogTheme">@style/AlertDialogStyle</item>
     </style>
 
     <style name="ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -52,4 +54,19 @@
     </style>
 
     <style name="SeekBar" parent="@style/Widget.AppCompat.SeekBar.Discrete" />
+
+    <style name="PreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
+    <style name="DialogStyle" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
+    <style name="AlertDialogStyle" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
 </resources>
