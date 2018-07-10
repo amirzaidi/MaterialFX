@@ -285,9 +285,9 @@ public class ControlPanelEffect {
                         EQUALIZER_PRESET_CIEXTREME_BAND_LEVEL, mEQNumBands);
                 final short[] eQPresetUserBandLevelDefault = Arrays.copyOf(
                         EQUALIZER_PRESET_USER_BAND_LEVEL_DEFAULT, mEQNumBands);
-                // If no preset prefs set use CI EXTREME (= numPresets)
+                // If no preset prefs set use custom (= numPresets + 1)
                 final short eQPreset = (short) prefs.getInt(Key.eq_current_preset.toString(),
-                        mEQNumPresets);
+                        mEQNumPresets + 1);
                 editor.putInt(Key.eq_current_preset.toString(), eQPreset);
                 final short[] bandLevel = new short[mEQNumBands];
                 for (short band = 0; band < mEQNumBands; band++) {
@@ -1198,9 +1198,9 @@ public class ControlPanelEffect {
                             EQUALIZER_PRESET_CIEXTREME_BAND_LEVEL, mEQNumBands);
                     final short[] eQPresetUserBandLevelDefault = Arrays.copyOf(
                             EQUALIZER_PRESET_USER_BAND_LEVEL_DEFAULT, mEQNumBands);
-                    // If no preset prefs set use CI EXTREME (= numPresets)
+                    // If no preset prefs set use custom (= numPresets + 1)
                     eQPreset = (short) prefs
-                            .getInt(Key.eq_current_preset.toString(), mEQNumPresets);
+                            .getInt(Key.eq_current_preset.toString(), mEQNumPresets + 1);
                     if (eQPreset < mEQNumPresets) {
                         // OpenSL ES effect presets
                         equalizerEffect.usePreset(eQPreset);
