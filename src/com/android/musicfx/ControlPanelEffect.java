@@ -243,12 +243,6 @@ public class ControlPanelEffect {
                         }
 
                         mIsEQInitialized = true;
-                    } catch (final IllegalStateException e) {
-                        Log.e(TAG, "Equalizer: " + e);
-                    } catch (final IllegalArgumentException e) {
-                        Log.e(TAG, "Equalizer: " + e);
-                    } catch (final UnsupportedOperationException e) {
-                        Log.e(TAG, "Equalizer: " + e);
                     } catch (final RuntimeException e) {
                         Log.e(TAG, "Equalizer: " + e);
                     } finally {
@@ -1383,10 +1377,6 @@ public class ControlPanelEffect {
                     // put succeeded, use new value
                     virtualizerEffect = newVirtualizerEffect;
                 }
-            } catch (final IllegalArgumentException e) {
-                Log.e(TAG, "Virtualizer: " + e);
-            } catch (final UnsupportedOperationException e) {
-                Log.e(TAG, "Virtualizer: " + e);
             } catch (final RuntimeException e) {
                 Log.e(TAG, "Virtualizer: " + e);
             }
@@ -1416,10 +1406,6 @@ public class ControlPanelEffect {
                     // put succeeded, use new value
                     bassBoostEffect = newBassBoostEffect;
                 }
-            } catch (final IllegalArgumentException e) {
-                Log.e(TAG, "BassBoost: " + e);
-            } catch (final UnsupportedOperationException e) {
-                Log.e(TAG, "BassBoost: " + e);
             } catch (final RuntimeException e) {
                 Log.e(TAG, "BassBoost: " + e);
             }
@@ -1448,10 +1434,6 @@ public class ControlPanelEffect {
                     // put succeeded, use new value
                     equalizerEffect = newEqualizerEffect;
                 }
-            } catch (final IllegalArgumentException e) {
-                Log.e(TAG, "Equalizer: " + e);
-            } catch (final UnsupportedOperationException e) {
-                Log.e(TAG, "Equalizer: " + e);
             } catch (final RuntimeException e) {
                 Log.e(TAG, "Equalizer: " + e);
             }

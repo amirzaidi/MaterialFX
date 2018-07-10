@@ -14,17 +14,17 @@ public class AudioManager {
          * Callback method called upon audio port list update.
          * @param portList the updated list of audio ports
          */
-        public void onAudioPortListUpdate(AudioPort[] portList);
+        void onAudioPortListUpdate(AudioPort[] portList);
 
         /**
          * Callback method called upon audio patch list update.
          * @param patchList the updated list of audio patches
          */
-        public void onAudioPatchListUpdate(AudioPatch[] patchList);
+        void onAudioPatchListUpdate(AudioPatch[] patchList);
 
         /**
          * Callback method called when the mediaserver dies
          */
-        public void onServiceDied();
+        void onServiceDied();
     }
 }
