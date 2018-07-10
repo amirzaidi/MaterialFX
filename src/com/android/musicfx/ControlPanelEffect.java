@@ -181,10 +181,8 @@ public class ControlPanelEffect {
             // Virtualizer
             final boolean isVIEnabled = prefs.getBoolean(Key.virt_enabled.toString(),
                     VIRTUALIZER_ENABLED_DEFAULT);
-            final Virtualizer virt = new Virtualizer(0, audioSession);
             final int vIStrength = prefs.getInt(Key.virt_strength.toString(),
-                    virt.getRoundedStrength());
-            virt.release();
+                    VIRTUALIZER_STRENGTH_DEFAULT);
             editor.putBoolean(Key.virt_enabled.toString(), isVIEnabled);
             editor.putInt(Key.virt_strength.toString(), vIStrength);
             {
