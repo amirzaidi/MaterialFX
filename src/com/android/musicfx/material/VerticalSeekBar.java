@@ -1,41 +1,53 @@
 package com.android.musicfx.material;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.support.v7.widget.AppCompatSeekBar;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.ViewGroup;
 
-public class VerticalSeekBar extends AppCompatSeekBar {
-    private int mMin;
-    private int mMax;
-    private int mStep;
-
+@SuppressWarnings("SuspiciousNameCombination")
+public class VerticalSeekBar extends ExtendedSeekBar {
     public VerticalSeekBar(Context context) {
-        this(context, null);
+        super(context);
+    }
+
+    public VerticalSeekBar(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
     }
 
     public VerticalSeekBar(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
     }
 
-    public VerticalSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, R.attr.verticalSeekbarStyle);
+    public void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(h, w, oldh, oldw);
     }
 
-    public void init(int min, int max, int step) {
-        mMin = min;
-        mMax = max;
-        mStep = step;
+    @Override
+    protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(heightMeasureSpec, widthMeasureSpec);
+        setMeasuredDimension(getMeasuredHeight(), getMeasuredWidth());
 
-        setMax((max - min) * step);
-        set((max + min) / 2f);
+        getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
     }
 
-    public void set(float progress) {
-        setProgress((int)((progress - mMin) * mStep));
+    protected void onDraw(Canvas c) {
+        c.rotate(270);
+        c.translate(-getHeight(), 0);
+
+        super.onDraw(c);
     }
 
-    public float get() {
-        return (float) getProgress() / mStep + mMin;
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return false;
     }
+
+    @Override
+    public void setPressed(boolean pressed) {
+    }
+
 }

@@ -20,6 +20,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
+    private Typeface mGSans;
     private AudioHandler mAudioHandler;
 
     private ColorStateList mWhite;
@@ -73,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
         mAudioHandler = new AudioHandler(this, getCallingPackage(), audioSession);
 
         View barView = getLayoutInflater().inflate(R.layout.actionbar, null);
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/GoogleSans-Regular.ttf");
-        ((TextView) barView.findViewById(R.id.actionbar_title)).setTypeface(tf);
+        mGSans = Typeface.createFromAsset(getAssets(), "fonts/GoogleSans-Medium.ttf");
+        ((TextView) barView.findViewById(R.id.actionbar_title)).setTypeface(mGSans);
 
         ActionBar bar = getSupportActionBar();
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -124,18 +125,22 @@ public class MainActivity extends AppCompatActivity {
         return mAudioHandler;
     }
 
-    private void switchToBands() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_holder, mBands)
-                .commitNow();
+    public Typeface getGSans() {
+        return mGSans;
     }
 
     private void switchToPresets() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_holder, mPresets)
-                .commitNow();
+                .commit();
+    }
+
+    private void switchToBands() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_holder, mBands)
+                .commit();
     }
 
     private void switchToEffects() {

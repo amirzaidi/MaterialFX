@@ -13,7 +13,7 @@
         android:textSize="15sp"
         android:gravity="center" />
 
-    <com.android.musicfx.material.VerticalSeekBar
+    <com.android.musicfx.material.ExtendedSeekBar
         android:id="@+id/band_slider"
         android:layout_height="match_parent"
         android:layout_width="0dp"

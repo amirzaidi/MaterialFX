@@ -43,7 +43,7 @@ public class BandsFragment extends Fragment {
             final TextView name = layout.findViewById(R.id.band_name);
             name.setText(eq.getBandFreq(band));
 
-            final VerticalSeekBar slider = layout.findViewById(R.id.band_slider);
+            final ExtendedSeekBar slider = layout.findViewById(R.id.band_slider);
             slider.init(eq.minBandLevel / 100, eq.maxBandLevel / 100, 2);
             slider.set(level);
 

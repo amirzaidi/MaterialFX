@@ -66,4 +66,6 @@
     <string name="title_bands">Bands</string>
     <string name="title_presets">Presets</string>
     <string name="title_effects">Effects</string>
+    <string name="applied">Applied</string>
+    <string name="apply">Click to apply</string>
 </resources>

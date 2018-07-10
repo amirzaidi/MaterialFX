@@ -7,18 +7,8 @@
         android:id="@+id/presets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="hi" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="bye" />
-
-    </android.support.v7.widget.LinearLayoutCompat>
+        android:orientation="vertical"
+        android:layout_margin="@dimen/preset_card_margin"
+        android:paddingBottom="@dimen/presets_bottom_margin" />
 
 </ScrollView>

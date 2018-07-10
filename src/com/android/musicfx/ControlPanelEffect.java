@@ -339,6 +339,11 @@ public class ControlPanelEffect {
                 mEQPresetOpenSLESBandLevel[preset].length);
     }
 
+    public static short[] getCiPreset() {
+        return Arrays.copyOf(EQUALIZER_PRESET_CIEXTREME_BAND_LEVEL,
+                EQUALIZER_PRESET_CIEXTREME_BAND_LEVEL.length);
+    }
+
     /**
      * Gets the effect control mode based on the given audio session in the control panel. Control
      * mode defines if the control panel is controlling effects and/or preferences

@@ -3,7 +3,11 @@ package com.android.musicfx.material.effects;
 import android.content.Context;
 
 import com.android.musicfx.ControlPanelEffect;
+import com.android.musicfx.material.R;
 import com.android.musicfx.material.Utilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EqualizerEffect {
     public class Preset {
@@ -37,7 +41,7 @@ public class EqualizerEffect {
 
     public final int numberEqualizerBands;
 
-    private final Preset[] mPresets;
+    private final List<Preset> mPresets;
 
     //private int[] mEQPresetUserBandLevelsPrev;
 
@@ -55,12 +59,18 @@ public class EqualizerEffect {
         numberEqualizerBands = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
                 mAudioSession, ControlPanelEffect.Key.eq_num_bands);
 
-        mPresets = new Preset[ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
-                mAudioSession, ControlPanelEffect.Key.eq_num_presets)];
+        int presets = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
+                mAudioSession, ControlPanelEffect.Key.eq_num_presets);
 
-        for (int i = 0; i < mPresets.length; i++) {
-            mPresets[i] = new Preset(ControlPanelEffect.getPresetName(i),
-                    ControlPanelEffect.getPreset(i));
+        mPresets = new ArrayList<>(presets + 1);
+        for (int i = 0; i < presets; i++) {
+            mPresets.add(new Preset(ControlPanelEffect.getPresetName(i),
+                    ControlPanelEffect.getPreset(i)));
+        }
+
+        short[] ciBands = ControlPanelEffect.getCiPreset();
+        if (ciBands.length == numberEqualizerBands) {
+            mPresets.add(new Preset(context.getString(R.string.ci_extreme), ciBands));
         }
 
         /*mEQPresetUserBandLevelsPrev = ControlPanelEffect.getParameterIntArray(mContext,
@@ -101,17 +111,17 @@ public class EqualizerEffect {
     }
 
     public int getPresetCount() {
-        return mPresets.length;
+        return mPresets.size();
     }
 
-    public Preset getPreset(int preset) {
-        return mPresets[preset];
+    public Preset getPreset(int index) {
+        return mPresets.get(index);
     }
 
-    public void applyPreset(int preset) {
-        Preset presetBands = getPreset(preset);
+    public void applyPreset(int index) {
+        Preset preset = getPreset(index);
         for (int i = 0; i < numberEqualizerBands; i++) {
-            setBandLevel(i, presetBands.getLevel(i));
+            setBandLevel(i, preset.getLevel(i));
         }
     }
 
