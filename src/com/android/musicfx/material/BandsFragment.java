@@ -35,7 +35,7 @@ public class BandsFragment extends Fragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         // Update and show the active N-Band Equalizer bands.
-        for (int band = 0; band < eq.getNumberEqualizerBands(); band++) {
+        for (int band = 0; band < eq.numberEqualizerBands; band++) {
             float level = eq.getBandLevel(band) / 100f;
 
             LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.band, root, false);

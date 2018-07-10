@@ -64,5 +64,6 @@
     <string name="title_notifications">Notifications</string>
 
     <string name="title_bands">Bands</string>
+    <string name="title_presets">Presets</string>
     <string name="title_effects">Effects</string>
 </resources>

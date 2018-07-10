@@ -330,6 +330,15 @@ public class ControlPanelEffect {
         }
     }
 
+    public static String getPresetName(final int preset) {
+        return mEQPresetNames[preset];
+    }
+
+    public static short[] getPreset(final int preset) {
+        return Arrays.copyOf(mEQPresetOpenSLESBandLevel[preset],
+                mEQPresetOpenSLESBandLevel[preset].length);
+    }
+
     /**
      * Gets the effect control mode based on the given audio session in the control panel. Control
      * mode defines if the control panel is controlling effects and/or preferences

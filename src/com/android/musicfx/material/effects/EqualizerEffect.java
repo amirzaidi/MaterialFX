@@ -6,6 +6,25 @@ import com.android.musicfx.ControlPanelEffect;
 import com.android.musicfx.material.Utilities;
 
 public class EqualizerEffect {
+    public class Preset {
+        public final String name;
+        private final int[] mLevels;
+
+        private Preset(final String eqName, final short[] levels) {
+            name = eqName;
+            mLevels = new int[levels.length];
+            for (int i = 0; i < levels.length; i++) {
+                mLevels[i] = levels[i];
+            }
+        }
+
+        public int getLevel(int band) {
+            return mLevels[band];
+        }
+    }
+
+    public final static int PRESET_CUSTOM = -1;
+
     // Max levels per EQ band in millibels (1 dB = 100 mB)
     private final static int EQUALIZER_MAX_LEVEL = 1000;
 
@@ -16,7 +35,10 @@ public class EqualizerEffect {
     private final String mCallingPackageName;
     private final int mAudioSession;
 
-    private int mNumberEqualizerBands;
+    public final int numberEqualizerBands;
+
+    private final Preset[] mPresets;
+
     //private int[] mEQPresetUserBandLevelsPrev;
 
     private int[] mBandFreqs;
@@ -30,8 +52,16 @@ public class EqualizerEffect {
         mCallingPackageName = callingPackageName;
         mAudioSession = audioSession;
 
-        mNumberEqualizerBands = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
+        numberEqualizerBands = ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
                 mAudioSession, ControlPanelEffect.Key.eq_num_bands);
+
+        mPresets = new Preset[ControlPanelEffect.getParameterInt(mContext, mCallingPackageName,
+                mAudioSession, ControlPanelEffect.Key.eq_num_presets)];
+
+        for (int i = 0; i < mPresets.length; i++) {
+            mPresets[i] = new Preset(ControlPanelEffect.getPresetName(i),
+                    ControlPanelEffect.getPreset(i));
+        }
 
         /*mEQPresetUserBandLevelsPrev = ControlPanelEffect.getParameterIntArray(mContext,
                 mCallingPackageName, mAudioSession,
@@ -48,10 +78,6 @@ public class EqualizerEffect {
 
         mBandLevels = ControlPanelEffect.getParameterIntArray(mContext,
                 mCallingPackageName, mAudioSession, ControlPanelEffect.Key.eq_band_level);
-    }
-
-    public int getNumberEqualizerBands() {
-        return mNumberEqualizerBands;
     }
 
     public String getBandFreq(int band) {
@@ -72,5 +98,38 @@ public class EqualizerEffect {
         mBandLevels[band] = level;
         ControlPanelEffect.setParameterInt(mContext, mCallingPackageName, mAudioSession,
                 ControlPanelEffect.Key.eq_band_level, level, band);
+    }
+
+    public int getPresetCount() {
+        return mPresets.length;
+    }
+
+    public Preset getPreset(int preset) {
+        return mPresets[preset];
+    }
+
+    public void applyPreset(int preset) {
+        Preset presetBands = getPreset(preset);
+        for (int i = 0; i < numberEqualizerBands; i++) {
+            setBandLevel(i, presetBands.getLevel(i));
+        }
+    }
+
+    public int currentPreset() {
+        for (int i = 0; i < getPresetCount(); i++) {
+            if (isPresetApplied(getPreset(i))) {
+                return i;
+            }
+        }
+        return PRESET_CUSTOM;
+    }
+
+    private boolean isPresetApplied(Preset preset) {
+        for (int i = 0; i < numberEqualizerBands; i++) {
+            if (preset.getLevel(i) != getBandLevel(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

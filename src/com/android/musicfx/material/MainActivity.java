@@ -1,10 +1,9 @@
 package com.android.musicfx.material;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
-import android.media.AudioManager;
 import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +16,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import com.android.musicfx.ActivityMusic;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -35,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton mBtToggle;
     private FloatingActionButton mUsbToggle;
 
+    private PresetsFragment mPresets;
     private BandsFragment mBands;
     private EffectsFragment mEffects;
 
@@ -44,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.navigation_presets:
+                    switchToPresets();
+                    return true;
                 case R.id.navigation_bands:
                     switchToBands();
                     return true;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @SuppressWarnings("ConstantConditions")
+    @SuppressLint("InflateParams")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,16 +96,13 @@ public class MainActivity extends AppCompatActivity {
         mUsbToggle = findViewById(R.id.toggle_usb);
         loadToggleViews();
 
+        mPresets = new PresetsFragment();
         mBands = new BandsFragment();
         mEffects = new EffectsFragment();
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_holder, mBands)
-                .commit();
-
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_bands);
 
         if (Utilities.V26) {
             View root = getWindow().getDecorView();
@@ -128,6 +128,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_holder, mBands)
+                .commitNow();
+    }
+
+    private void switchToPresets() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_holder, mPresets)
                 .commitNow();
     }
 
